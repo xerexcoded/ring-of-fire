@@ -1,0 +1,17 @@
+# /etc/cron.d/restless-pacific
+# Replace /srv/restless-pacific if DEPLOY_PATH differs. Database advisory locks
+# are the final duplicate-run guard; flock avoids spawning needless containers.
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Five-minute recent-earthquake upsert.
+*/5 * * * * restless-pacific /usr/bin/flock -n /tmp/restless-usgs-live.lock sh -c 'cd /srv/restless-pacific && docker compose --profile tools run --rm backend-ingest-live clojure -M:ingest usgs 2>&1 | logger -t restless-usgs-live'
+
+# Daily reconciliation; the command is idempotent and resolves revisions/deletions.
+18 2 * * * restless-pacific /usr/bin/flock -n /tmp/restless-usgs-reconcile.lock sh -c 'cd /srv/restless-pacific && docker compose --profile tools run --rm backend-ingest-live clojure -M:ingest usgs 2>&1 | logger -t restless-usgs-reconcile'
+
+# Weekly GVP, then monthly plate and NOAA refreshes at separated times.
+42 3 * * 1 restless-pacific /usr/bin/flock -n /tmp/restless-gvp.lock sh -c 'cd /srv/restless-pacific && docker compose --profile tools run --rm backend-ingest-live clojure -M:ingest gvp 2>&1 | logger -t restless-gvp'
+17 4 2 * * restless-pacific /usr/bin/flock -n /tmp/restless-plates.lock sh -c 'cd /srv/restless-pacific && docker compose --profile tools run --rm backend-ingest-live clojure -M:ingest plates 2>&1 | logger -t restless-plates'
+47 4 2 * * restless-pacific /usr/bin/flock -n /tmp/restless-noaa.lock sh -c 'cd /srv/restless-pacific && docker compose --profile tools run --rm backend-ingest-live clojure -M:ingest noaa 2>&1 | logger -t restless-noaa'
+

@@ -1,0 +1,26 @@
+# Opt-in local profile for Docker environments constrained to roughly 4 GB.
+# Use with: make dev-low-memory
+#
+# These limits are based on the measured idle stack: Metabase is the largest
+# consumer, followed by the API, scheduler, and Postgres. They are intentionally
+# not part of the production Compose file, whose documented target is 8 GB.
+services:
+  postgres:
+    mem_limit: 640m
+
+  backend:
+    mem_limit: 768m
+
+  metabase:
+    mem_limit: 1500m
+    environment:
+      JAVA_OPTS: -Xms256m -Xmx1024m
+
+  scheduler:
+    mem_limit: 640m
+
+  web:
+    mem_limit: 256m
+
+  caddy:
+    mem_limit: 128m

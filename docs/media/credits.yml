@@ -1,0 +1,23 @@
+version: 1
+policy:
+  photographs: "Only public-domain or CC0 photographs may be committed. Verify each item before merge."
+  maps: "OpenFreeMap tiles and OpenMapTiles/OpenStreetMap-derived data retain visible attribution in MapLibre."
+  scientific_data: "Dataset citations belong in source_dataset and the public sourcebook, not only this manifest."
+
+assets:
+  - id: openfreemap-fiord
+    kind: basemap
+    used_in:
+      - / 
+      - /atlas
+    title: OpenFreeMap Fiord style
+    creator: OpenFreeMap contributors
+    source_url: https://openfreemap.org/
+    license: See provider attribution and upstream OpenMapTiles/OpenStreetMap notices
+    verification_status: verified
+    notes: Attribution must remain visible on every interactive map.
+
+# Add a record before committing any photograph or illustration. Required keys:
+# id, kind, path, used_in, title, creator, source_url, license,
+# verification_status, and notes.
+

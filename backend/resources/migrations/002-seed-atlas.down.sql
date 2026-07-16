@@ -1,0 +1,17 @@
+DELETE FROM core.story_region;
+--;;
+DELETE FROM core.tsunami_event WHERE event_id LIKE 'noaa-seed-%';
+--;;
+DELETE FROM core.plate_boundary WHERE boundary_id LIKE 'seed-%';
+--;;
+DELETE FROM core.earthquake WHERE event_id LIKE 'seed-%';
+--;;
+DELETE FROM core.eruption WHERE eruption_number IN (2410700260,2430402022,2830301707,3210501980,3510201985);
+--;;
+DELETE FROM core.ring_membership WHERE dataset_version='5.3.6';
+--;;
+DELETE FROM core.volcano WHERE volcano_number IN (241070,243040,273030,283030,300260,321050,341090,342090,351020,357120);
+--;;
+DELETE FROM core.volcanic_region WHERE source_version='5.3.6';
+--;;
+DELETE FROM ops.source_dataset WHERE source_key IN ('gvp','usgs-earthquakes','usgs-plates','noaa-tsunami');

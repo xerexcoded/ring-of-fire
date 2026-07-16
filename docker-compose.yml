@@ -1,0 +1,268 @@
+name: ${COMPOSE_PROJECT_NAME:-restless-pacific}
+
+x-backend-environment: &backend-environment
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  DB_NAME: ring_data
+  DATABASE_URL: jdbc:postgresql://postgres:5432/ring_data
+  DATABASE_USER: ring_writer
+  DATABASE_PASSWORD: ${RING_WRITER_PASSWORD:-dev-only-ring-writer-change-me}
+  ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:3000,http://www.localhost}
+  METABASE_URL: http://metabase:3000
+  METABASE_PUBLIC_URL: ${ANALYTICS_ORIGIN:-http://analytics.localhost}
+  METABASE_ADMIN_EMAIL: ${METABASE_ADMIN_EMAIL:-atlas-admin@example.test}
+  METABASE_ADMIN_PASSWORD: ${METABASE_ADMIN_PASSWORD:-RestlessPacific-Atlas!2026-Local}
+  METABASE_ADMIN_FIRST_NAME: ${METABASE_ADMIN_FIRST_NAME:-Restless}
+  METABASE_ADMIN_LAST_NAME: ${METABASE_ADMIN_LAST_NAME:-Pacific}
+  METABASE_SITE_NAME: ${METABASE_SITE_NAME:-Restless Pacific Data Lab}
+  METABASE_EMBEDDING_SECRET: ${METABASE_EMBEDDING_SECRET:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+  METABASE_TOKEN_TTL_SECONDS: ${METABASE_TOKEN_TTL_SECONDS:-3600}
+  METABASE_READER_USER: metabase_reader
+  METABASE_READER_PASSWORD: ${METABASE_READER_PASSWORD:-dev-only-metabase-reader-change-me}
+  GVP_EXPECTED_VERSION: ${GVP_EXPECTED_VERSION:-5.3.6}
+  GVP_EXPECTED_PROF_VOLCANOES: ${GVP_EXPECTED_PROF_VOLCANOES:-688}
+  GVP_EXPECTED_PROF_REGIONS: ${GVP_EXPECTED_PROF_REGIONS:-41}
+  USGS_MIN_MAGNITUDE: ${USGS_MIN_MAGNITUDE:-2.5}
+  USGS_HISTORY_START: ${USGS_HISTORY_START:-1960-01-01}
+
+services:
+  postgres:
+    image: postgis/postgis:17-3.5-alpine
+    # The official PostGIS 17/3.5 Alpine image is amd64-only. Docker Desktop
+    # transparently emulates it on Apple Silicon; the target VPS is amd64.
+    platform: ${POSTGRES_PLATFORM:-linux/amd64}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev-only-postgres-change-me}
+      POSTGRES_DB: postgres
+      RING_WRITER_PASSWORD: ${RING_WRITER_PASSWORD:-dev-only-ring-writer-change-me}
+      METABASE_DB_PASSWORD: ${METABASE_DB_PASSWORD:-dev-only-metabase-app-change-me}
+      METABASE_READER_PASSWORD: ${METABASE_READER_PASSWORD:-dev-only-metabase-reader-change-me}
+    ports:
+      - 127.0.0.1:${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks: [atlas]
+
+  backend:
+    image: ${BACKEND_IMAGE:-restless-pacific/backend:local}
+    build:
+      context: ./backend
+    restart: unless-stopped
+    init: true
+    environment: *backend-environment
+    command: ["clojure", "-M:run"]
+    ports:
+      - 127.0.0.1:${API_PORT:-8080}:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks: [atlas]
+
+  metabase:
+    image: metabase/metabase:v0.62.4.3
+    restart: unless-stopped
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_HOST: postgres
+      MB_DB_PORT: "5432"
+      MB_DB_DBNAME: metabase_app
+      MB_DB_USER: metabase_app
+      MB_DB_PASS: ${METABASE_DB_PASSWORD:-dev-only-metabase-app-change-me}
+      MB_SITE_URL: ${ANALYTICS_ORIGIN:-http://analytics.localhost}
+      MB_ENCRYPTION_SECRET_KEY: ${METABASE_ENCRYPTION_SECRET:-dev-only-encryption-secret-change-me-32chars}
+      JAVA_TIMEZONE: UTC
+      JAVA_OPTS: -Xms512m -Xmx1536m
+    ports:
+      - 127.0.0.1:${METABASE_PORT:-3001}:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1:3000/api/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 40
+      start_period: 60s
+    volumes:
+      - metabase-plugins:/plugins
+    networks: [atlas]
+
+  scheduler:
+    image: ${BACKEND_IMAGE:-restless-pacific/backend:local}
+    restart: unless-stopped
+    init: true
+    environment:
+      <<: *backend-environment
+      USGS_POLL_SECONDS: ${USGS_POLL_SECONDS:-300}
+      USGS_RECONCILE_SECONDS: ${USGS_RECONCILE_SECONDS:-86400}
+      GVP_REFRESH_SECONDS: ${GVP_REFRESH_SECONDS:-604800}
+      PLATE_REFRESH_SECONDS: ${PLATE_REFRESH_SECONDS:-2592000}
+      NOAA_REFRESH_SECONDS: ${NOAA_REFRESH_SECONDS:-2592000}
+      SCHEDULER_RUN_SLOW_ON_START: ${SCHEDULER_RUN_SLOW_ON_START:-false}
+      USGS_HISTORY_ENABLED: ${USGS_HISTORY_ENABLED:-false}
+    command: ["clojure", "-M:scheduler"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "kill -0 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks: [atlas]
+
+  web:
+    image: ${WEB_IMAGE:-restless-pacific/web:local}
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://api.localhost/api/v1}
+        NEXT_PUBLIC_METABASE_URL: ${NEXT_PUBLIC_METABASE_URL:-http://analytics.localhost}
+        NEXT_PUBLIC_REPOSITORY_URL: ${NEXT_PUBLIC_REPOSITORY_URL:-https://github.com/}
+    restart: unless-stopped
+    init: true
+    environment:
+      API_BASE_URL: http://backend:8080/api/v1
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://api.localhost/api/v1}
+      NEXT_PUBLIC_METABASE_URL: ${NEXT_PUBLIC_METABASE_URL:-http://analytics.localhost}
+      NEXT_PUBLIC_REPOSITORY_URL: ${NEXT_PUBLIC_REPOSITORY_URL:-https://github.com/}
+      NODE_ENV: production
+    ports:
+      - 127.0.0.1:${WEB_PORT:-3000}:3000
+    depends_on:
+      backend:
+        condition: service_healthy
+      metabase:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks: [atlas]
+
+  caddy:
+    image: caddy:2.10.2-alpine
+    restart: unless-stopped
+    environment:
+      WEB_ORIGIN: ${WEB_ORIGIN:-http://www.localhost}
+      API_ORIGIN: ${API_ORIGIN:-http://api.localhost}
+      ANALYTICS_ORIGIN: ${ANALYTICS_ORIGIN:-http://analytics.localhost}
+      ACME_EMAIL: ${ACME_EMAIL:-ops@example.com}
+    ports:
+      - ${HTTP_PORT:-80}:80
+      - ${HTTPS_PORT:-443}:443
+      - ${HTTPS_PORT:-443}:443/udp
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      web:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      metabase:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:2019/config/"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    networks: [atlas]
+
+  backend-seed:
+    image: ${BACKEND_IMAGE:-restless-pacific/backend:local}
+    profiles: [tools]
+    environment:
+      <<: *backend-environment
+      INGESTION_MODE: fixture
+    command: ["clojure", "-M:ingest", "seed"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [atlas]
+
+  backend-ingest-live:
+    image: ${BACKEND_IMAGE:-restless-pacific/backend:local}
+    profiles: [tools]
+    environment:
+      <<: *backend-environment
+      INGESTION_MODE: live
+    command: ["clojure", "-M:ingest", "all"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks: [atlas]
+
+  metabase-bootstrap:
+    image: ${BACKEND_IMAGE:-restless-pacific/backend:local}
+    profiles: [tools]
+    environment: *backend-environment
+    command: ["clojure", "-M:bootstrap"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      metabase:
+        condition: service_healthy
+    networks: [atlas]
+
+  backup:
+    build:
+      context: ./infra/backup
+    image: restless-pacific/backup:local
+    profiles: [ops]
+    restart: unless-stopped
+    environment:
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGUSER: ${POSTGRES_USER:-postgres}
+      PGPASSWORD: ${POSTGRES_PASSWORD:-dev-only-postgres-change-me}
+      BACKUP_DATABASES: ring_data metabase_app
+      BACKUP_AGE_RECIPIENT: ${BACKUP_AGE_RECIPIENT:-}
+      BACKUP_INTERVAL_SECONDS: ${BACKUP_INTERVAL_SECONDS:-86400}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
+    volumes:
+      - ${BACKUP_HOST_PATH:-./.data/backups}:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "find /backups/.last-success -mmin -2880 -print -quit | grep -q ."]
+      interval: 1h
+      start_interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 2m
+    networks: [atlas]
+
+volumes:
+  postgres-data:
+  metabase-plugins:
+  caddy-data:
+  caddy-config:
+
+networks:
+  atlas:
+    driver: bridge

@@ -1,0 +1,29 @@
+#!/bin/sh
+set -eu
+
+: "${BACKUP_AGE_RECIPIENT:?BACKUP_AGE_RECIPIENT must be an age public recipient}"
+
+timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+workdir="$(mktemp -d)"
+archive="/backups/restless-pacific-${timestamp}.tar.gz.age"
+trap 'rm -rf "$workdir"' EXIT HUP INT TERM
+
+for database in ${BACKUP_DATABASES:-ring_data metabase_app}; do
+  pg_dump --format=custom --no-owner --no-acl --file="$workdir/${database}.dump" "$database"
+done
+
+cat > "$workdir/manifest.txt" <<EOF
+created_at=${timestamp}
+postgres_host=${PGHOST:-postgres}
+databases=${BACKUP_DATABASES:-ring_data metabase_app}
+format=pg_dump_custom_inside_tar_gzip_then_age
+EOF
+
+tar -C "$workdir" -czf - . | age --recipient "$BACKUP_AGE_RECIPIENT" --output "$archive"
+printf '%s\n' "$timestamp" > /backups/.last-success
+
+find /backups -type f -name 'restless-pacific-*.tar.gz.age' \
+  -mtime "+${BACKUP_RETENTION_DAYS:-14}" -delete
+
+echo "Encrypted backup written: $archive"
+

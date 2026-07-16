@@ -1,0 +1,127 @@
+{:definition-key "smithsonian-prof"
+ :version "5.3.6"
+ :published-at "2026-05-26T00:00:00Z"
+ :citation-url "https://volcano.si.edu/faq/Pacific_Ring_of_Fire.cfm"
+ :expected-volcano-count 688
+ :expected-region-count 41
+ :catalog-resource "fixtures/gvp-prof-5.3.6.tsv"
+ :included-ids-resource "fixtures/gvp-prof-5.3.6.ids"
+ :included-id-sha256 "efccd415cc6851623f20851af5abd872717e014486e2194453139ab78adf4525"
+ :selection-mode :reviewed-volcano-membership
+ :region-only-matching-sufficient? false
+ :review-note "The Smithsonian definition contains volcano-level exclusions inside included regions, including parts of the Izu arc. Region matching may nominate records for review but must never silently create authoritative membership."
+ :explicit-exclusions
+ {266010 "Reviewed exception inside Sangihe Volcanic Arc; outside the v5.3.6 PROF boundary selection."
+  284042 "Southern Izu Arc exception away from mainland Japan."
+  284050 "Southern Izu Arc exception away from mainland Japan."
+  284060 "Southern Izu Arc exception away from mainland Japan."
+  284061 "Southern Izu Arc exception away from mainland Japan."
+  284070 "Southern Izu Arc exception away from mainland Japan."
+  284080 "Southern Izu Arc exception away from mainland Japan."
+  284090 "Southern Izu Arc exception away from mainland Japan."
+  284091 "Southern Izu Arc exception away from mainland Japan."
+  285041 "Reviewed Kuril-region exception outside the Pacific boundary selection."
+  343150 "Reviewed Central America region exception outside the Pacific boundary selection."
+  354000 "Reviewed Central Andes region exception outside the Pacific boundary selection."
+  358080 "Reviewed Austral Andes region exception outside the Pacific boundary selection."}
+ :detailed-wfs-missing-regions
+ {282021 "Ryukyu Volcanic Arc"
+  283010 "Izu Volcanic Arc"
+  283031 "Northeast Japan Volcanic Arc"
+  283040 "Nankai Volcanic Arc"
+  283122 "Northeast Japan Volcanic Arc"
+  283141 "Northeast Japan Volcanic Arc"
+  283150 "Northeast Japan Volcanic Arc"
+  283190 "Northeast Japan Volcanic Arc"
+  283220 "Northeast Japan Volcanic Arc"
+  285070 "Kuril Volcanic Arc"
+  290021 "Kuril Volcanic Arc"
+  290030 "Kuril Volcanic Arc"
+  290050 "Kuril Volcanic Arc"
+  290070 "Kuril Volcanic Arc"
+  290072 "Kuril Volcanic Arc"
+  290080 "Kuril Volcanic Arc"}
+ :regions
+ ["Austral Andean Volcanic Arc"
+  "Southern Andean Volcanic Arc"
+  "Central Andean Volcanic Arc"
+  "Northern Andean Volcanic Arc"
+  "Central America Volcanic Arc"
+  "Chiapanecan Volcanic Arc"
+  "Trans-Mexican Volcanic Arc"
+  "Gulf of California Rift Volcanic Province"
+  "California Coast Ranges Volcano Group"
+  "High Cascades Volcanic Arc"
+  "Garibaldi Volcanic Arc"
+  "Queen Charlotte Volcano Group"
+  "Northern Cordilleran Volcanic Province"
+  "Wrangell Volcanic Arc"
+  "Alaska Peninsula Volcanic Arc"
+  "Aleutian Ridge Volcanic Arc"
+  "Central Kamchatka Volcanic Arc"
+  "Eastern Kamchatka Volcanic Arc"
+  "Kuril Volcanic Arc"
+  "Northeast Japan Volcanic Arc"
+  "Izu Volcanic Arc"
+  "Nankai Volcanic Arc"
+  "Ryukyu Volcanic Arc"
+  "Luzon Volcanic Arc"
+  "Eastern Philippine Volcanic Arc"
+  "Negros-Sulu Volcanic Arc"
+  "Mindanao Volcanic Province"
+  "Sangihe Volcanic Arc"
+  "Halmahera Volcanic Arc"
+  "Bismarck Volcanic Arc"
+  "Bougainville Volcanic Arc"
+  "Solomon Volcanic Province"
+  "Vanuatu Volcanic Arc"
+  "Fiji Volcanic Arc"
+  "Northeast Lau Basin Volcano Group"
+  "Tofua Volcanic Arc"
+  "Northern Kermadec Volcanic Arc"
+  "Middle Kermadec Volcanic Arc"
+  "Southern Kermadec Volcanic Arc"
+ "Taupo Volcanic Arc"
+  "Western North Island Volcanic Province"]
+ :volcano-counts-by-region
+ {"Austral Andean Volcanic Arc" 5
+  "Southern Andean Volcanic Arc" 58
+  "Central Andean Volcanic Arc" 52
+  "Northern Andean Volcanic Arc" 35
+  "Central America Volcanic Arc" 62
+  "Chiapanecan Volcanic Arc" 1
+  "Trans-Mexican Volcanic Arc" 17
+  "Gulf of California Rift Volcanic Province" 6
+  "California Coast Ranges Volcano Group" 1
+  "High Cascades Volcanic Arc" 19
+  "Garibaldi Volcanic Arc" 8
+  "Queen Charlotte Volcano Group" 4
+  "Northern Cordilleran Volcanic Province" 13
+  "Wrangell Volcanic Arc" 2
+  "Alaska Peninsula Volcanic Arc" 27
+  "Aleutian Ridge Volcanic Arc" 47
+  "Central Kamchatka Volcanic Arc" 17
+  "Eastern Kamchatka Volcanic Arc" 29
+  "Kuril Volcanic Arc" 66
+  "Northeast Japan Volcanic Arc" 40
+  "Izu Volcanic Arc" 9
+  "Nankai Volcanic Arc" 13
+  "Ryukyu Volcanic Arc" 15
+  "Luzon Volcanic Arc" 9
+  "Eastern Philippine Volcanic Arc" 7
+  "Negros-Sulu Volcanic Arc" 1
+  "Mindanao Volcanic Province" 6
+  "Sangihe Volcanic Arc" 10
+  "Halmahera Volcanic Arc" 13
+  "Bismarck Volcanic Arc" 24
+  "Bougainville Volcanic Arc" 5
+  "Solomon Volcanic Province" 6
+  "Vanuatu Volcanic Arc" 15
+  "Fiji Volcanic Arc" 2
+  "Northeast Lau Basin Volcano Group" 6
+  "Tofua Volcanic Arc" 14
+  "Northern Kermadec Volcanic Arc" 3
+  "Middle Kermadec Volcanic Arc" 5
+  "Southern Kermadec Volcanic Arc" 8
+  "Taupo Volcanic Arc" 6
+  "Western North Island Volcanic Province" 2}}

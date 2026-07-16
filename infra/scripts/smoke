@@ -1,0 +1,44 @@
+#!/bin/sh
+set -eu
+
+web_origin="${WEB_ORIGIN:-http://www.localhost}"
+api_origin="${API_ORIGIN:-http://api.localhost}"
+analytics_origin="${ANALYTICS_ORIGIN:-http://analytics.localhost}"
+
+curl --fail --silent --show-error "$web_origin/" >/dev/null
+curl --fail --silent --show-error "$api_origin/healthz" >/dev/null
+curl --fail --silent --show-error "$api_origin/api/v1/sources/status" \
+  | grep -q 'datasets'
+curl --fail --silent --show-error "$analytics_origin/api/health" \
+  | grep -q 'ok'
+
+token_status="$(curl --silent --output /tmp/restless-pacific-token-problem.json \
+  --write-out '%{http_code}' \
+  --header 'Content-Type: application/json' \
+  --header "Origin: $web_origin" \
+  --data '{"entityType":"dashboard","entityId":2147483647}' \
+  "$api_origin/api/v1/metabase/guest-token")"
+test "$token_status" = "404" || {
+  echo "Expected unknown Metabase resource to return 404; got $token_status" >&2
+  cat /tmp/restless-pacific-token-problem.json >&2
+  exit 1
+}
+rm -f /tmp/restless-pacific-token-problem.json
+
+docker compose exec -T postgres sh -ec '
+  export PGPASSWORD="$METABASE_READER_PASSWORD"
+  psql --quiet --tuples-only --username metabase_reader --dbname ring_data \
+    --command "SELECT count(*) >= 0 FROM analytics.volcanoes" | grep -q t
+'
+
+if docker compose exec -T postgres sh -ec '
+  export PGPASSWORD="$METABASE_READER_PASSWORD"
+  psql --quiet --username metabase_reader --dbname ring_data \
+    --command "SELECT 1 FROM core.volcano LIMIT 1" >/dev/null 2>&1
+'; then
+  echo "metabase_reader unexpectedly read core.volcano" >&2
+  exit 1
+fi
+
+echo "Smoke checks passed: public surfaces, source status, token allow-list, and database isolation."
+

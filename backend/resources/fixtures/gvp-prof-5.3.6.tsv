@@ -1,0 +1,689 @@
+volcano_number	name	country	volcanic_region	volcano_type	tectonic_setting	evidence_category	elevation_m	last_eruption_year	longitude	latitude
+241020	Auckland Volcanic Field	New Zealand	Western North Island Volcanic Province	Volcanic field	Intraplate / Continental crust (> 25 km)	Eruption Dated	260	1446	174.81	-36.89
+241021	Tuhua/Mayor Island	New Zealand	Taupo Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	355	-5055	176.25	-37.28
+241030	Taranaki	New Zealand	Western North Island Volcanic Province	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2518	1800	174.07	-39.3
+241040	Whakaari/White Island	New Zealand	Taupo Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	294	2026	177.18	-37.52
+241050	Okataina	New Zealand	Taupo Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1111	1981	176.5069	-38.1569
+241070	Taupo	New Zealand	Taupo Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	760	260	175.893	-38.7811
+241080	Tongariro	New Zealand	Taupo Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1978	2012	175.632	-39.157
+241100	Ruapehu	New Zealand	Taupo Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2797	2007	175.57	-39.28
+241101	Clark	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-860		177.839	-36.446
+241102	Tangaroa	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-600		178.028	-36.321
+241110	Rumble V	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-400		178.196	-36.142
+241120	Rumble IV	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-500		178.05	-36.13
+241130	Rumble III	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-220	2008	178.478	-35.745
+241131	Rumble II West	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-1200		178.527	-35.353
+241140	Healy	New Zealand	Southern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Dated	-980	1360	178.973	-35.004
+241150	Brothers	New Zealand	Southern Kermadec Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-1350		179.0667	-34.875
+242001	Wright	New Zealand	Middle Kermadec Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-900		-179.18	-31.85
+242005	Havre Seamount	New Zealand	Middle Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-897	2012	-179.033	-31.08
+242010	Curtis Island	New Zealand	Middle Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	47		-178.556	-30.543
+242021	Macauley	New Zealand	Middle Kermadec Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Dated	238	-4360	-178.475	-30.21
+242022	Giggenbach	New Zealand	Middle Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-65		-178.712	-30.036
+242030	Raoul Island	New Zealand	Northern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	516	2006	-177.92	-29.27
+242050	Monowai	New Zealand	Northern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-132	2014	-177.188	-25.887
+243001	Kermadec Arc at 24.8°S	Tonga	Northern Kermadec Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-385		-177.02	-24.8
+243010	Tofua Arc at 21.3°S	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-68	1932	-175.65	-21.338
+243011	Tofua Arc at 21.1°S	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	-65		-175.75	-21.15
+243030	Tofua Arc at 20.9°S	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-296	2017	-175.55	-20.852
+243040	Hunga Tonga-Hunga Ha'apai	Tonga	Tofua Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	114	2022	-175.3841	-20.5532
+243050	Fonuafo'ou	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-17	1936	-175.42	-20.32
+243060	Tofua	Tonga	Tofua Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	515	2026	-175.07	-19.75
+243061	Kao	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1009	1847	-175.016	-19.668
+243070	Lateiki	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	43	2019	-174.87	-19.18
+243080	Home Reef	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-10	2026	-174.775	-18.992
+243090	Late	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	540	1854	-174.65	-18.806
+243091	Tofua Arc at 18.3°S	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-40	2019	-174.365	-18.325
+243100	Fonualei	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	188	1957	-174.317	-18.023
+243101	Tafahi	Tonga	Tofua Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Uncertain	546		-173.747	-15.854
+243102	Curacoa	Tonga	Tofua Volcanic Arc	Complex	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-33	1979	-173.67	-15.62
+243110	Niuafo'ou	Tonga	Northeast Lau Basin Volcano Group	Shield	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	260	1946	-175.63	-15.6
+243111	Dugong	Tonga	Northeast Lau Basin Volcano Group	Shield		Evidence Uncertain	-1170		-175.725	-15.431
+243112	Lobster	Tonga	Northeast Lau Basin Volcano Group	Shield		Evidence Uncertain	-1500		-176.283	-15.333
+243120	Tafu-Maka	Tonga	Northeast Lau Basin Volcano Group	Fissure vent	Rift zone / Oceanic crust (< 15 km)	Eruption Observed	-1400	2008	-174.23	-15.37
+243130	West Mata	Tonga	Northeast Lau Basin Volcano Group	Fissure vent(s)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-1174	2009	-173.75	-15.1
+243140	Niuatahi	Tonga	Northeast Lau Basin Volcano Group	Caldera	Subduction zone / Oceanic crust (< 15 km)	Unrest / Holocene	-1270		-174.0028	-15.3675
+245010	Taveuni	Fiji	Fiji Volcanic Arc	Shield	Subduction zone / Crustal thickness unknown	Eruption Dated	1241	1550	-179.9644	-16.8412
+245030	Nabukelevu	Fiji	Fiji Volcanic Arc	Lava dome(s)	Subduction zone / Crustal thickness unknown	Eruption Dated	791	1660	177.9815	-19.1181
+251001	Blup Blup	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	402		144.605	-3.507
+251002	Kadovar	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	365	2023	144.588	-3.608
+251010	Bam	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	685	1960	144.818	-3.613
+251020	Manam	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1807	2026	145.037	-4.08
+251030	Karkar	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1839	1979	145.976	-4.647
+251041	Hankow Reef	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	-5		146.717	-4.883
+251050	Long Island	Papua New Guinea	Bismarck Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1263	1993	147.105	-5.3144
+251060	Umboi	Papua New Guinea	Bismarck Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1335		147.892	-5.592
+251070	Ritter Island	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	75	2007	148.115	-5.519
+251080	Sakar	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	947		148.0836	-5.4098
+252010	Langila	Papua New Guinea	Bismarck Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1330	2026	148.42	-5.525
+252040	Dakataua	Papua New Guinea	Bismarck Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	408	1895	150.0996	-5.0455
+252050	Bola	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1116		150.038	-5.141
+252060	Garua Harbour	Papua New Guinea	Bismarck Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	565		150.07	-5.3
+252070	Krummel-Garbuna-Welcker	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	564	2008	150.027	-5.416
+252071	Lolo	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	796		150.509	-5.466
+252080	Witori	Papua New Guinea	Bismarck Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	724	2012	150.5161	-5.5745
+252090	Sulu Range	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Unrest / Holocene	610		150.942	-5.5
+252100	Hargy	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1148	950	151.1	-5.33
+252110	Bamus	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2248	1886	151.23	-5.2
+252120	Ulawun	Papua New Guinea	Bismarck Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2334	2025	151.33	-5.05
+252130	Lolobau	Papua New Guinea	Bismarck Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	878	1912	151.1617	-4.9156
+252140	Rabaul	Papua New Guinea	Bismarck Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	688	2014	152.1937	-4.2459
+252150	Tavui	Papua New Guinea	Bismarck Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	200	-4946	152.2134	-4.1089
+255010	Balbi	Papua New Guinea	Bougainville Volcanic Arc	Stratovolcano	Subduction zone / Crustal thickness unknown	Evidence Credible	2715		155.0008	-5.9156
+255011	Billy Mitchell	Papua New Guinea	Bougainville Volcanic Arc	Caldera	Subduction zone / Crustal thickness unknown	Eruption Dated	1544	1580	155.2254	-6.0898
+255020	Bagana	Papua New Guinea	Bougainville Volcanic Arc	Lava cone	Subduction zone / Crustal thickness unknown	Eruption Observed	1855	2026	155.196	-6.137
+255021	Takuan Group	Papua New Guinea	Bougainville Volcanic Arc	Compound	Subduction zone / Crustal thickness unknown	Evidence Credible	2210		155.608	-6.442
+255030	Loloru	Papua New Guinea	Bougainville Volcanic Arc	Compound	Subduction zone / Crustal thickness unknown	Eruption Dated	1887	-1050	155.62	-6.52
+255050	Simbo	Solomon Islands	Solomon Volcanic Province	Stratovolcano(es)	Subduction zone / Crustal thickness unknown	Eruption Dated	335	1910	156.52	-8.292
+255052	Kana Keoki	Solomon Islands	Solomon Volcanic Province	Stratovolcano	Subduction zone / Crustal thickness unknown	Evidence Credible	-700		157.03	-8.75
+255053	Coleman Seamount	Solomon Islands	Solomon Volcanic Province	Stratovolcano	Subduction zone / Crustal thickness unknown	Evidence Credible	-717		157.16	-8.841
+255060	Kavachi	Solomon Islands	Solomon Volcanic Province	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	-20	2014	157.979	-8.991
+255061	New Georgia at 8.9°S	Solomon Islands	Solomon Volcanic Province	Stratovolcano	Subduction zone / Crustal thickness unknown	Evidence Credible	-240		158.03	-8.92
+255070	Savo	Solomon Islands	Solomon Volcanic Province	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	455	1847	159.8119	-9.1324
+256010	Tinakula	Solomon Islands	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	796	2024	165.804	-10.386
+257001	Motlav	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	411		167.67	-13.67
+257010	Suretamatai	Vanuatu	Vanuatu Volcanic Arc	Complex	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	921	1966	167.47	-13.8
+257020	Gaua	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	729	2022	167.514	-14.281
+257030	Ambae	Vanuatu	Vanuatu Volcanic Arc	Shield	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1496	2026	167.835	-15.389
+257040	Ambrym	Vanuatu	Vanuatu Volcanic Arc	Shield(pyroclastic)	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1334	2024	168.12	-16.25
+257050	Lopevi	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1413	2007	168.346	-16.507
+257060	East Epi	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	833	2023	168.3893	-16.6797
+257070	Kuwae	Vanuatu	Vanuatu Volcanic Arc	Caldera	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	-2	1974	168.5227	-16.8304
+257081	Nguna-Emau	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	589		168.353	-17.4522
+257090	Traitor's Head	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	817	1881	169.238	-18.754
+257100	Yasur	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	361	2026	169.447	-19.532
+258001	Gemini-Oscostar	Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Rift zone / Oceanic crust (< 15 km)	Eruption Observed	-33	1996	170.13	-20.957
+258010	Matthew Island	France - claimed by Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	177	1956	171.32	-22.33
+258020	Hunter Island	France - claimed by Vanuatu	Vanuatu Volcanic Arc	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	297	1903	172.05	-22.4
+266020	Ambang	Indonesia	Sangihe Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1795	2005	124.42	0.75
+266030	Soputan	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1785	2020	124.737	1.112
+266100	Lokon-Empung	Indonesia	Sangihe Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1580	2015	124.7992	1.3644
+266110	Mahawu	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1299	1977	124.865	1.352
+266120	Klabat	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Unrest / Holocene	1968		125.031	1.454
+266130	Tangkoko-Duasudara	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1334	1880	125.185	1.518
+267010	Ruang	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	703	2024	125.3671	2.3058
+267020	Karangetang	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1797	2023	125.407	2.781
+267030	Banua Wuhu	Indonesia	Sangihe Volcanic Arc	Complex	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-5	1919	125.4422	3.1463
+267040	Awu	Indonesia	Sangihe Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1318	2004	125.447	3.689
+268001	Tarakan	Indonesia	Halmahera Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	317		127.825	1.832
+268010	Dukono	Indonesia	Halmahera Volcanic Arc	Complex	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1273	2026	127.8783	1.6992
+268020	Tobaru	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	1035		127.67	1.63
+268030	Ibu	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1357	2026	127.6324	1.4941
+268040	Gamkonora	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1635	2007	127.53	1.38
+268050	Todoko-Ranu	Indonesia	Halmahera Volcanic Arc	Caldera(s)	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	979		127.4556	1.2389
+268051	Jailolo	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	993		127.439	1.08
+268052	Hiri	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	687		127.317	0.8971
+268060	Gamalama	Indonesia	Halmahera Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1714	2018	127.3322	0.81
+268061	Kie Matubu	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Dated	1713	1210	127.4029	0.6623
+268062	Mare	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	308		127.4	0.57
+268063	Moti	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	927		127.411	0.454
+268070	Kie Besi	Indonesia	Halmahera Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1357	1988	127.4	0.32
+271011	Melebingoy	Philippines	Mindanao Volcanic Province	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1824	1641	124.892	6.113
+271020	Matutum	Philippines	Mindanao Volcanic Province	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2262	1290	125.0765	6.3604
+271031	Leonard Range	Philippines	Eastern Philippine Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1080	80	126.047	7.382
+271040	Makaturing	Philippines	Mindanao Volcanic Province	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1818	1882	124.317	7.644
+271060	Ragang	Philippines	Mindanao Volcanic Province	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2790	1916	124.507	7.691
+271070	Musuan	Philippines	Mindanao Volcanic Province	Lava dome	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	610		125.0697	7.8765
+271080	Camiguin	Philippines	Mindanao Volcanic Province	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1552	1953	124.673	9.203
+272020	Kanlaon	Philippines	Negros-Sulu Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2422	2026	123.13	10.4096
+272050	Cabalían	Philippines	Eastern Philippine Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	912	1820	125.218	10.285
+272080	Biliran	Philippines	Eastern Philippine Volcanic Arc	Compound	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1301	1939	124.535	11.523
+273010	Bulusan	Philippines	Eastern Philippine Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1535	2025	124.056	12.769
+273030	Mayon	Philippines	Eastern Philippine Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2462	2026	123.685	13.257
+273041	Iriga	Philippines	Eastern Philippine Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1138		123.451	13.458
+273042	Isarog	Philippines	Eastern Philippine Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1966	-3500	123.38	13.658
+273050	Banahaw	Philippines	Luzon Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2158		121.48	14.07
+273060	San Pablo Volcanic Field	Philippines	Luzon Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1090	1350	121.3	14.12
+273070	Taal	Philippines	Luzon Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	311	2026	120.9975	14.0106
+273083	Pinatubo	Philippines	Luzon Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1486	2021	120.35	15.13
+273090	Cagua	Philippines	Luzon Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1133	1860	122.123	18.222
+274010	Camiguin de Babuyanes	Philippines	Luzon Volcanic Arc	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	712	1857	121.86	18.83
+274020	Didicas	Philippines	Luzon Volcanic Arc	Compound	Subduction zone / Crustal thickness unknown	Eruption Observed	228	1978	122.202	19.077
+274030	Babuyan Claro	Philippines	Luzon Volcanic Arc	Stratovolcano(es)	Subduction zone / Crustal thickness unknown	Eruption Observed	1064	1924	121.95	19.524
+274060	Iraya	Philippines	Luzon Volcanic Arc	Stratovolcano	Subduction zone / Crustal thickness unknown	Eruption Observed	1009	1454	122.01	20.469
+281031	Kueishantao	Taiwan	Ryukyu Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	361	1853	121.953	24.841
+281032	Tatun Volcanic Group	Taiwan	Ryukyu Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1120	648	121.553	25.178
+282010	Submarine Volcano NNE of Iriomotejima	Japan	Ryukyu Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	-200	1924	123.93	24.57
+282020	Io-Torishima	Japan	Ryukyu Volcanic Arc	Complex	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	212	1968	128.223	27.881
+282021	Yokoatejima	Japan	Ryukyu Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)		495	1835	128.9958	28.7994
+282022	Akusekijima	Japan	Ryukyu Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Evidence Uncertain	555		129.594	29.465
+282030	Suwanosejima	Japan	Ryukyu Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	796	2026	129.714	29.638
+282040	Nakanoshima	Japan	Ryukyu Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	979	1914	129.857	29.859
+282043	Kuchinoshima	Japan	Ryukyu Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Eruption Dated	628	1190	129.926	29.968
+282050	Kuchinoerabujima	Japan	Ryukyu Volcanic Arc	Stratovolcano(es)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	657	2020	130.217	30.443
+282060	Kikai	Japan	Ryukyu Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	704	2025	130.305	30.793
+282070	Ata	Japan	Ryukyu Volcanic Arc	Caldera(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	924	885	130.57	31.22
+282080	Aira	Japan	Ryukyu Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1117	2026	130.6589	31.5772
+282081	Yonemaru-Sumiyoshiike	Japan	Ryukyu Volcanic Arc	Maar(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	40	-6200	130.592	31.771
+282090	Kirishimayama	Japan	Ryukyu Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1700	2025	130.862	31.934
+282091	Fukue	Japan	Nankai Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	315	-400	128.849	32.657
+282100	Unzendake	Japan	Nankai Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1483	1996	130.299	32.761
+282110	Asosan	Japan	Nankai Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1592	2021	131.085	32.8849
+282120	Kujusan	Japan	Nankai Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1791	1996	131.249	33.086
+282130	Yufu-Tsurumi	Japan	Nankai Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed		867	131.39	33.282
+283001	Abu	Japan	Nankai Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	641	-6850	131.5167	34.4833
+283002	Sanbesan	Japan	Nankai Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1126	650	132.622	35.141
+283010	Izu-Tobu	Japan	Izu Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)		580	1989	139.095	34.903
+283020	Hakoneyama	Japan	Izu Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1438	2015	139.021	35.233
+283030	Fujisan	Japan	Izu Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3776	1708	138.728	35.361
+283031	Yokodake	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)		2480	1200	138.32	36.0875
+283040	Ontakesan	Japan	Nankai Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)		3067	2014	137.4806	35.8931
+283050	Hakusan	Japan	Nankai Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2702	1659	136.771	36.155
+283060	Norikuradake	Japan	Nankai Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3026	-50	137.554	36.106
+283069	Akandanayama	Japan	Nankai Volcanic Arc	Stratovolcano		Evidence Credible	2109		137.573	36.2
+283070	Yakedake	Japan	Nankai Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2455	1995	137.587	36.227
+283080	Midagahara	Japan	Nankai Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2621	1839	137.59	36.571
+283090	Niigata-Yakeyama	Japan	Northeast Japan Volcanic Arc	Lava dome	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2400	1998	138.036	36.921
+283100	Myokosan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2454	-750	138.114	36.891
+283110	Asamayama	Japan	Northeast Japan Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2568	2019	138.523	36.406
+283120	Kusatsu-Shiranesan	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2165	2018	138.528	36.618
+283121	Shiga	Japan	Northeast Japan Volcanic Arc	Shield(s)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	2041		138.519	36.688
+283122	Harunasan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)		1449	550	138.8508	36.4775
+283130	Akagisan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	1828		139.193	36.56
+283131	Hiuchigatake	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2356	1544	139.285	36.955
+283140	Nikko-Shiranesan	Japan	Northeast Japan Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2578	1952	139.376	36.799
+283141	Nantaisan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)		2486	-9540	139.4906	36.765
+283142	Omanago Group	Japan	Northeast Japan Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2341	-3050	139.4756	36.8067
+283143	Takaharayama	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1795	-4570	139.777	36.9
+283150	Nasudake	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)		1915	1963	139.9631	37.1247
+283151	Numazawa	Japan	Northeast Japan Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	835	-3400	139.566	37.444
+283160	Bandaisan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1816	1888	140.072	37.601
+283170	Adatarayama	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1728	1996	140.281	37.647
+283180	Azumayama	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1949	1977	140.244	37.735
+283190	Zaozan [Zaosan]	Japan	Northeast Japan Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)		1841	1940	140.4397	38.1439
+283191	Hijiori	Japan	Northeast Japan Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Evidence Credible	552		140.1617	38.5992
+283200	Naruko	Japan	Northeast Japan Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	470	837	140.734	38.729
+283210	Kurikomayama	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed		1950	140.788	38.961
+283220	Chokaisan	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)		2236	1974	140.0489	39.0994
+283230	Akita-Komagatake	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1637	1971	140.799	39.761
+283240	Iwatesan	Japan	Northeast Japan Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2038	1919	141.001	39.853
+283250	Hachimantai	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1613	-5350	140.854	39.958
+283260	Akita-Yakeyama	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1366	1997	140.757	39.964
+283262	Megata	Japan	Northeast Japan Volcanic Arc	Maar(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	160	-2050	139.725	39.95
+283270	Iwakisan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1624	1863	140.303	40.656
+283271	Towada	Japan	Northeast Japan Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1011	915	140.88	40.51
+283280	Hakkodasan	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1584	1550	140.877	40.659
+283290	Osorezan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	878	1787	141.12	41.279
+284010	Izu-Oshima	Japan	Izu Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	758	1990	139.394	34.724
+284011	Toshima	Japan	Izu Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Dated	508	-4550	139.279	34.52
+284020	Niijima	Japan	Izu Volcanic Arc	Lava dome(s)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	432	886	139.27	34.397
+284030	Kozushima	Japan	Izu Volcanic Arc	Lava dome(s)	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	572	838	139.153	34.219
+284040	Miyakejima	Japan	Izu Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	775	2010	139.526	34.094
+284041	Mikurajima	Japan	Izu Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Dated	851	-4100	139.602	33.874
+285010	Oshima-Oshima	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	732	1790	139.367	41.51
+285011	Esan	Japan	Northeast Japan Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	617	1874	141.166	41.805
+285020	Hokkaido-Komagatake	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1131	2000	140.677	42.063
+285030	Toya	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	733	2001	140.839	42.544
+285031	Niseko	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1308	-4900	140.659	42.875
+285032	Yoteizan	Japan	Northeast Japan Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1898	-1050	140.812	42.827
+285034	Kuttara	Japan	Northeast Japan Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	549	1820	141.16	42.491
+285040	Shikotsu	Japan	Northeast Japan Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1320	1981	141.38	42.688
+285050	Tokachidake	Japan	Kuril Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2077	2004	142.686	43.418
+285060	Taisetsuzan	Japan	Kuril Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2291	1739	142.854	43.664
+285061	Maruyama	Japan	Kuril Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1692	1898	143.031	43.418
+285070	Akan	Japan	Kuril Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)		1499	2026	144.0086	43.3864
+285080	Kussharo	Japan	Kuril Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	574	1320	144.427	43.615
+285081	Mashu	Japan	Kuril Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	857	1080	144.561	43.572
+285082	Rausudake	Japan	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1660	1800	145.122	44.076
+285083	Tenchozan	Japan	Kuril Volcanic Arc	Crater rows		Eruption Dated	1046		145.086	44.044
+285090	Shiretoko-Iozan	Japan	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1562	1936	145.161	44.133
+290010	Tomariyama [Golovnin]	Japan - administered by Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	535	1848	145.504	43.844
+290020	Raususan [Mendeleev]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	882	1880	145.733	43.979
+290021	Ruruidake [Smirnov]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)		1481		146.14	44.4536
+290030	Chachadake [Tiatia]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)		1772	1981	146.2531	44.3536
+290040	Berutarubesan [Berutarube]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1221		146.932	44.462
+290050	Etorofu-Atosanupuri [Atosanupuri]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)		1209	1932	147.1306	44.8078
+290060	Hitokappu Volcano Group [Bogatyr Ridge]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1610		147.403	44.857
+290070	Etorofu-Yakeyama [Grozny Group]	Japan - administered by Russia	Kuril Volcanic Arc	Complex	Subduction zone / Intermediate crust (15-25 km)		1147	2013	147.8722	45.0114
+290072	Odamoisan [Tebenkov]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)		1208		147.9169	45.0286
+290080	Sashiusudake [Baransky]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)		1128	1951	148.0142	45.1036
+290090	Chirippusan [Chirip]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1587	1860	147.92	45.338
+290100	Moyorodake [Medvezhia]	Japan - administered by Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1124	1999	148.838	45.389
+290111	Ivao Group	Russia	Kuril Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1426		149.6762	45.7593
+290120	Kolokol Group	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1328	1973	150.083	46.042
+290130	Kuril Arc at 46.3°N	Russia	Kuril Volcanic Arc	Composite	Subduction zone / Crustal thickness unknown	Evidence Uncertain	-100		150.8526	46.2944
+290150	Chirpoi	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	742	2016	150.871	46.532
+290161	Milna	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1504	1914	151.786	46.815
+290180	Zavaritzki Caldera	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	612	1957	151.9518	46.9178
+290190	Prevo Peak	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1360	1825	152.1167	47.0139
+290191	Uratman	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	678		152.25	47.12
+290200	Ketoi	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	1172	1960	152.475	47.35
+290210	Ushishur	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	357	1884	152.8139	47.5125
+290211	Srednii	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Evidence Credible	36		152.893	47.5861
+290220	Rasshua	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Oceanic crust (< 15 km)	Eruption Observed	956	1957	153.02	47.77
+290240	Sarychev Peak	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1496	2021	153.2	48.092
+290250	Raikoke	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	551	2019	153.25	48.292
+290260	Chirinkotan	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	724	2022	153.48	48.98
+290270	Ekarma	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1170	2010	153.93	48.958
+290290	Sinarka	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	911	1878	154.182	48.873
+290300	Kharimkotan	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1145	1933	154.508	49.12
+290310	Tao-Rusyr Caldera	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1272	1952	154.725	49.34
+290320	Nemo Peak	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	994	1938	154.8126	49.5641
+290331	Shirinki	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	693		154.9781	50.1973
+290340	Fuss Peak	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1742	1854	155.246	50.267
+290350	Karpinsky Group	Russia	Kuril Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Unrest / Holocene	1326		155.3847	50.1419
+290360	Chikurachki	Russia	Kuril Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1781	2023	155.461	50.324
+290370	Vernadsky Ridge	Russia	Kuril Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1183		155.9867	50.5819
+290380	Ebeko	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1103	2024	156.014	50.686
+290390	Alaid	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2285	2022	155.565	50.861
+300010	Kambalny	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2116	2017	156.875	51.306
+300020	Koshelev	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1822	1690	156.753	51.356
+300021	Yavinsky	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	646	-4050	156.629	51.533
+300022	Diky Greben	Russia	Kuril Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1040	350	156.978	51.452
+300023	Kurile Lake	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	81	-6440	157.12	51.45
+300030	Iliinsky	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1555	1901	157.203	51.498
+300040	Zheltovsky	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1926	1923	157.328	51.577
+300050	Ksudach	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1007	1907	157.5292	51.8042
+300052	Olkoviy-Ozernoy Volcanic Field	Russia	Kuril Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	681		157.53	52.02
+300053	Khodutka	Russia	Kuril Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2039	-300	157.711	52.062
+300058	Asacha	Russia	Kuril Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1910		157.827	52.355
+300059	Visokiy	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1227		157.9332	52.435
+300060	Mutnovsky	Russia	Kuril Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2288	2000	158.196	52.449
+300070	Gorely	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1799	2010	158.0358	52.5549
+300080	Opala	Russia	Kuril Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2439	1776	157.339	52.543
+300082	Tolmachev Dol	Russia	Kuril Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1021	300	157.58	52.63
+300083	Vilyuchinsky	Russia	Kuril Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2173	-8050	158.28	52.7
+300084	Barkhatnaya Sopka	Russia	Kuril Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	874	-3550	158.24	52.802
+300090	Koryaksky	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3430	2009	158.712	53.321
+300100	Avachinsky	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2717	2001	158.836	53.256
+300110	Dzenzursky	Russia	Eastern Kamchatka Volcanic Arc	Compound	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2285		158.922	53.637
+300120	Zhupanovsky	Russia	Eastern Kamchatka Volcanic Arc	Compound	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2899	2016	159.15	53.589
+300121	Veer	Russia	Eastern Kamchatka Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	520	390	158.4478	53.7525
+300122	Kostakan	Russia	Eastern Kamchatka Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1150	1350	158.052	53.833
+300123	Bakening	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2278	-550	158.07	53.905
+300124	Zavaritsky	Russia	Eastern Kamchatka Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1547	-800	158.3851	53.9065
+300125	Akademia Nauk	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1180	1996	159.45	53.98
+300130	Karymsky	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1513	2025	159.443	54.049
+300140	Maly Semyachik	Russia	Eastern Kamchatka Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1527	1952	159.674	54.135
+300150	Bolshoi Semiachik	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1720	-4450	160.02	54.32
+300160	Taunshits	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2301	-550	159.804	54.528
+300170	Uzon	Russia	Eastern Kamchatka Volcanic Arc	Caldera(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1617	200	159.9741	54.4885
+300180	Kikhpinych	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1515	1550	160.251	54.489
+300190	Krasheninnikov	Russia	Eastern Kamchatka Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1816	2026	160.27	54.596
+300200	Kronotsky	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3482	-3350	160.533	54.753
+300210	Gamchen	Russia	Eastern Kamchatka Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2539	-188	160.703	54.974
+300220	Komarov	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2065	950	160.725	55.033
+300221	Vysoky	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2129	-550	160.765	55.064
+300230	Kizimen	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2334	2013	160.32	55.131
+300240	Tolbachik	Russia	Eastern Kamchatka Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3611	2013	160.326	55.832
+300241	Udina	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2886		160.527	55.758
+300242	Zimina	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	3057		160.603	55.862
+300250	Bezymianny	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2882	2025	160.595	55.972
+300251	Kamen	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	4585		160.593	56.02
+300260	Klyuchevskoy	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4754	2025	160.642	56.056
+300261	Ushkovsky	Russia	Eastern Kamchatka Volcanic Arc	Compound	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3943	1890	160.509	56.113
+300270	Sheveluch	Russia	Eastern Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3283	2026	161.36	56.653
+300271	Piip	Russia	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Dated	-300	-5050	167.33	55.42
+300272	Khangar	Russia	Central Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1967	1500	157.407	54.761
+300273	Cherpuk Group	Russia	Central Kamchatka Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1868	-4550	157.47	55.55
+300280	Ichinsky	Russia	Central Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3596	1740	157.718	55.678
+300360	Bolshoi-Kekuknaysky	Russia	Central Kamchatka Volcanic Arc	Shield(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1401	-5310	157.917	56.483
+300450	Alney-Chashakondzha	Russia	Central Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2570	1600	159.647	56.656
+300511	Shisheika	Russia	Central Kamchatka Volcanic Arc	Lava dome	Subduction zone / Continental crust (> 25 km)	Eruption Dated	355	-2240	161.09	57.153
+300512	Terpuk	Russia	Central Kamchatka Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	765	-800	159.83	57.2
+300520	Sedanka Lava Field	Russia	Central Kamchatka Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1399	-7050	160.067	57.317
+300550	Gorny Institute	Russia	Central Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2125	1250	160.2	57.33
+300551	Kinenin	Russia	Central Kamchatka Volcanic Arc	Maar	Subduction zone / Continental crust (> 25 km)	Eruption Dated	583	850	160.97	57.35
+300552	Bliznetsy	Russia	Central Kamchatka Volcanic Arc	Lava cone	Subduction zone / Continental crust (> 25 km)	Eruption Dated	265	-1060	161.37	57.35
+300560	Titila	Russia	Central Kamchatka Volcanic Arc	Shield(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1523	-550	160.108	57.406
+300590	Elovsky	Russia	Central Kamchatka Volcanic Arc	Shield(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1381	-7550	160.53	57.55
+300650	Nylgimelkin	Russia	Central Kamchatka Volcanic Arc	Shield(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1764	-3550	160.65	57.97
+300671	Spokoiny	Russia	Central Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2171	-3450	160.82	58.13
+300680	Ostry	Russia	Central Kamchatka Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2552	-2050	160.82	58.18
+300700	Severny	Russia	Central Kamchatka Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1936	-1550	160.87	58.28
+311010	Buldir	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Uncertain	656		175.911	52.35
+311020	Kiska	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1220	1990	177.602	52.103
+311030	Segula	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1160		178.136	52.015
+311040	Davidof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Uncertain	328		178.33	51.97
+311050	Little Sitkin	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1174	1830	178.543	51.95
+311060	Semisopochnoi	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1221	2023	179.58	51.93
+311070	Gareloi	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1573	1989	-178.794	51.79
+311080	Tanaga	United States	Aleutian Ridge Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1806	1914	-178.146	51.885
+311090	Takawangha	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Dated	1449	1550	-178.006	51.873
+311100	Bobrof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Uncertain	738		-177.438	51.91
+311110	Kanaga	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1307	2023	-177.168	51.923
+311111	Moffett	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Dated	1196	-1600	-176.747	51.944
+311120	Great Sitkin	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1740	2026	-176.13	52.076
+311130	Kasatochi	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	314	2008	-175.508	52.177
+311140	Koniuji	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Dated	273	-1150	-175.13	52.22
+311160	Atka Volcanic Complex	United States	Aleutian Ridge Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1518	2025	-174.139	52.331
+311180	Seguam	United States	Aleutian Ridge Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1054	1993	-172.51	52.315
+311190	Amukta	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1066	1996	-171.252	52.5
+311200	Chagulak	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Uncertain	1028		-171.1383	52.5716
+311210	Yunaska	United States	Aleutian Ridge Volcanic Arc	Shield	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	550	1937	-170.6317	52.6394
+311220	Herbert	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1280		-170.111	52.742
+311230	Carlisle	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1620	1828	-170.054	52.894
+311240	Cleveland	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1730	2020	-169.944	52.825
+311241	Tana	United States	Aleutian Ridge Volcanic Arc	Stratovolcano(es)	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1170		-169.77	52.83
+311250	Uliaga	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	888		-169.77	53.065
+311260	Kagamil	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	893	1929	-169.72	52.974
+311270	Vsevidof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	2160	1878	-168.6875	53.1264
+311280	Recheschnoi	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Evidence Credible	1984		-168.539	53.157
+311290	Okmok	United States	Aleutian Ridge Volcanic Arc	Shield	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1073	2008	-168.13	53.43
+311300	Bogoslof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	150	2017	-168.03	53.93
+311310	Makushin	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1800	1995	-166.923	53.891
+311320	Akutan	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Intermediate crust (15-25 km)	Eruption Observed	1303	1992	-165.986	54.134
+311340	Westdahl	United States	Aleutian Ridge Volcanic Arc	Stratovolcano?	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1563	1992	-164.65	54.516
+311350	Fisher	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1112	1830	-164.43	54.65
+311360	Shishaldin	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2857	2023	-163.97	54.756
+311380	Roundtop	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1871	-7600	-163.589	54.8
+311390	Amak	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	547	1796	-163.1472	55.4184
+312010	Frosty	United States	Aleutian Ridge Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1728		-162.835	55.067
+312011	Dutton	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1465		-162.276	55.183
+312020	Emmons Lake Volcanic Center	United States	Aleutian Ridge Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1534		-162.0445	55.3519
+312030	Pavlof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2493	2022	-161.894	55.417
+312040	Pavlof Sister	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2142		-161.854	55.457
+312050	Dana	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1354	-1890	-161.214	55.641
+312055	Stepovak Bay Group	United States	Aleutian Ridge Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1633		-160.017	55.917
+312060	Kupreanof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	1895		-159.797	56.011
+312070	Veniaminof	United States	Aleutian Ridge Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2507	2021	-159.38	56.17
+312080	Black Peak	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1032	-1900	-158.785	56.552
+312090	Aniakchak	United States	Alaska Peninsula Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1341	1931	-158.17	56.88
+312100	Yantarni	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1345	-800	-157.185	57.019
+312110	Chiginagak	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2221	1998	-156.99	57.135
+312120	Kialagvik	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1677		-156.745	57.203
+312130	Ugashik-Peulik	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1474	1814	-156.368	57.751
+312131	Ukinrek Maars	United States	Alaska Peninsula Volcanic Arc	Maar(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	91	1977	-156.5203	57.8344
+312132	Alaska Peninsula Arc at 155.4°W	United States	Alaska Peninsula Volcanic Arc	Lava dome	Subduction zone / Continental crust (> 25 km)	Evidence Credible	402		-155.411	57.87
+312140	Martin	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1863	1953	-155.361	58.172
+312150	Mageik	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2165	-500	-155.253	58.195
+312160	Trident	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1864	1974	-155.1	58.236
+312170	Katmai	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2047	1912	-154.9533	58.279
+312180	Novarupta	United States	Alaska Peninsula Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	841	1912	-155.1588	58.2655
+312190	Griggs	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2317	-1790	-155.092	58.354
+312200	Snowy Mountain	United States	Alaska Peninsula Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2162	1710	-154.682	58.336
+312210	Denison	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	2287		-154.449	58.418
+312220	Steller	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2279		-154.3895	58.4298
+312230	Kukak	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Unrest / Holocene	2043		-154.355	58.453
+312250	Kaguyak	United States	Alaska Peninsula Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	901	-3850	-154.0245	58.6113
+312260	Fourpeaked	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2105	2006	-153.672	58.77
+312270	Douglas	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2140		-153.542	58.855
+313010	Augustine	United States	Alaska Peninsula Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1218	2006	-153.435	59.3626
+313020	Iliamna	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3053	1876	-153.09	60.032
+313030	Redoubt	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3108	2009	-152.742	60.485
+313040	Spurr	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3374	1992	-152.251	61.299
+313050	Hayes	United States	Alaska Peninsula Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3034	1200	-152.411	61.64
+315001	Buzzard Creek	United States	Alaska Peninsula Volcanic Arc	Tuff ring(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	830	-1050	-148.4327	64.0616
+315020	Wrangell	United States	Wrangell Volcanic Arc	Shield	Intraplate / Continental crust (> 25 km)	Eruption Observed	4278	1912	-144.017	62.006
+315030	Churchill	United States	Wrangell Volcanic Arc	Stratovolcano	Intraplate / Continental crust (> 25 km)	Eruption Dated	5005	847	-141.75	61.38
+315040	Edgecumbe	United States	Queen Charlotte Volcano Group	Volcanic field	Intraplate / Continental crust (> 25 km)	Eruption Dated	970	-2080	-135.75	57.05
+315050	Duncan Canal	United States	Queen Charlotte Volcano Group	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	15		-133.1	56.5
+315060	Tlevak Strait-Suemez Island	United States	Queen Charlotte Volcano Group	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	50		-133.3	55.25
+315070	Behm Canal-Rudyerd Bay	United States	Northern Cordilleran Volcanic Province	Volcanic field	Intraplate / Continental crust (> 25 km)	Evidence Uncertain	500		-131.0	55.35
+320010	Fort Selkirk	Canada	Northern Cordilleran Volcanic Province	Volcanic field	Intraplate / Continental crust (> 25 km)	Evidence Uncertain	1239		-137.38	62.93
+320020	Alligator Lake	Canada	Northern Cordilleran Volcanic Province	Volcanic field	Intraplate / Continental crust (> 25 km)	Evidence Credible	2217		-135.42	60.42
+320030	Atlin Volcanic Field	Canada	Northern Cordilleran Volcanic Province	Pyroclastic cone(s)	Intraplate / Continental crust (> 25 km)	Evidence Credible	1880		-133.358	59.708
+320031	Tuya Volcanic Field	Canada	Northern Cordilleran Volcanic Province	Volcanic field	Intraplate / Continental crust (> 25 km)	Evidence Credible	2123		-130.58	59.37
+320040	Heart Peaks	Canada	Northern Cordilleran Volcanic Province	Shield	Intraplate / Continental crust (> 25 km)	Evidence Uncertain	2012		-131.97	58.6
+320050	Level Mountain	Canada	Northern Cordilleran Volcanic Province	Shield	Intraplate / Continental crust (> 25 km)	Evidence Uncertain	2164		-131.35	58.42
+320060	Edziza	Canada	Northern Cordilleran Volcanic Province	Stratovolcano	Intraplate / Continental crust (> 25 km)	Eruption Dated	2786	950	-130.63	57.72
+320070	Spectrum Range	Canada	Northern Cordilleran Volcanic Province	Shield	Intraplate / Continental crust (> 25 km)	Evidence Credible	2430		-130.68	57.43
+320080	Hoodoo Mountain	Canada	Northern Cordilleran Volcanic Province	Pyroclastic cone(s)	Intraplate / Continental crust (> 25 km)	Eruption Dated	1850	-7050	-131.28	56.78
+320090	Iskut-Unuk River Cones	Canada	Northern Cordilleran Volcanic Province	Pyroclastic cone(s)	Intraplate / Continental crust (> 25 km)	Eruption Dated	1880	1800	-130.75	56.567
+320100	Tseax River Cone	Canada	Northern Cordilleran Volcanic Province	Pyroclastic cone	Intraplate / Continental crust (> 25 km)	Eruption Dated	612	1690	-128.8991	55.1109
+320110	Crow Lagoon	Canada	Northern Cordilleran Volcanic Province	Pyroclastic cone	Intraplate / Continental crust (> 25 km)	Evidence Credible	335		-130.23	54.7
+320120	Milbanke Sound Group	Canada	Queen Charlotte Volcano Group	Pyroclastic cone(s)	Intraplate / Continental crust (> 25 km)	Evidence Credible	233		-128.723	52.498
+320160	Silverthrone	Canada	Garibaldi Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2860		-126.1133	51.5179
+320170	Bridge River Cones	Canada	Garibaldi Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2500		-123.4	50.8
+320180	Meager	Canada	Garibaldi Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2680	-410	-123.5	50.63
+320190	Garibaldi Lake	Canada	Garibaldi Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2316		-123.0	49.933
+320200	Garibaldi	Canada	Garibaldi Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2678	-8060	-123.0	49.85
+320811	Cayley Volcanic Field	Canada	Garibaldi Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2375		-123.28	50.12
+321010	Baker	United States	Garibaldi Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3285	1880	-121.813	48.777
+321020	Glacier Peak	United States	Garibaldi Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3213	1700	-121.113	48.112
+321030	Rainier	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4392	1450	-121.76	46.853
+321040	Adams	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3742	950	-121.49	46.206
+321050	St. Helens	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2549	2008	-122.18	46.2
+321060	West Crater	United States	High Cascades Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1329	-5750	-122.08	45.88
+321070	Indian Heaven	United States	High Cascades Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1806	-6250	-121.82	45.93
+322010	Hood	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3426	1866	-121.695	45.374
+322020	Jefferson	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3199	950	-121.8	44.674
+322030	Blue Lake Crater	United States	High Cascades Volcanic Arc	Maar	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1136	680	-121.7686	44.4125
+322040	Sand Mountain Field	United States	High Cascades Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1664	-950	-121.93	44.38
+322060	Belknap	United States	High Cascades Volcanic Arc	Shield(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2094	475	-121.8423	44.285
+322070	Three Sisters	United States	High Cascades Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3159	439	-121.767	44.133
+322090	Bachelor	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2763	-5800	-121.688	43.979
+322100	Davis Lake	United States	High Cascades Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2163	-2790	-121.82	43.57
+322110	Newberry	United States	High Cascades Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2434	690	-121.229	43.722
+322150	Cinnamon Butte	United States	High Cascades Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	1958		-122.1111	43.2411
+322160	Crater Lake	United States	High Cascades Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2487	-2850	-122.107	42.942
+323010	Shasta	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4317	1250	-122.193	41.409
+323020	Medicine Lake	United States	High Cascades Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2412	1060	-121.554	41.611
+323080	Lassen Volcanic Center	United States	High Cascades Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3187	1917	-121.508	40.492
+323100	Clear Lake Volcanic Field	United States	California Coast Ranges Volcano Group	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1439		-122.77	38.97
+323200	Salton Buttes	United States	Gulf of California Rift Volcanic Province	Lava dome(s)	Rift zone / Continental crust (> 25 km)	Eruption Dated	-40	210	-115.616	33.197
+341003	San Luis, Isla	Mexico	Gulf of California Rift Volcanic Province	Tuff cone	Rift zone / Continental crust (> 25 km)	Evidence Credible	183	-1141	-114.4082	29.9728
+341004	Jaraguay Volcanic Field	Mexico	Gulf of California Rift Volcanic Province	Volcanic field	Rift zone / Continental crust (> 25 km)	Evidence Credible	960		-114.5	29.33
+341007	San Borja Volcanic Field	Mexico	Gulf of California Rift Volcanic Province	Volcanic field	Rift zone / Continental crust (> 25 km)	Evidence Credible	1360		-113.75	28.5
+341011	Tortuga, Isla	Mexico	Gulf of California Rift Volcanic Province	Shield	Rift zone / Continental crust (> 25 km)	Evidence Credible	224		-111.881	27.438
+341012	Comondu-La Purisima	Mexico	Gulf of California Rift Volcanic Province	Volcanic field	Rift zone / Continental crust (> 25 km)	Evidence Uncertain	780		-111.92	26.0
+341024	Sanganguey	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2340		-104.73	21.45
+341030	Ceboruco	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2280	1875	-104.508	21.125
+341031	Mascota Volcanic Field	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2525		-104.817	20.567
+341040	Colima	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3850	2019	-103.62	19.514
+341060	Michoacan-Guanajuato	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3860	1952	-101.75	19.85
+341061	Zitacuaro-Valle de Bravo	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3500	-3050	-100.25	19.4
+341062	Jocotitlan	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3911	1270	-99.7579	19.7383
+341070	Toluca, Nevado de	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4680	-1350	-99.758	19.108
+341080	Chichinautzin	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3938	399	-99.16	19.139
+341082	Iztaccihuatl	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5230		-98.642	19.179
+341090	Popocatepetl	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5393	2026	-98.622	19.023
+341091	Malinche, La	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4461	-1170	-98.032	19.231
+341092	Serdan-Oriental Volcanic Field	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3485	-3920	-97.47	19.27
+341093	Humeros, Los	Mexico	Trans-Mexican Volcanic Arc	Caldera(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3150	-4470	-97.45	19.68
+341095	Naolinco Volcanic Field	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2000	1145	-96.91	19.635
+341100	Orizaba, Pico de	Mexico	Trans-Mexican Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5564	1846	-97.27	19.03
+341110	San Martin	Mexico	Trans-Mexican Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1660	1796	-95.1989	18.5615
+341120	Chichon, El	Mexico	Chiapanecan Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1150	1982	-93.2297	17.3602
+341130	Tacana	Mexico-Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4064	1986	-92.109	15.132
+342020	Tajumulco	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	4203		-91.903	15.043
+342030	Santa Maria	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3745	2026	-91.552	14.757
+342040	Almolonga	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3173	1818	-91.519	14.797
+342060	Atitlan	Guatemala	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3535	1853	-91.186	14.583
+342070	Toliman	Guatemala	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	3158		-91.189	14.612
+342080	Acatenango	Guatemala	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3976	1972	-90.876	14.501
+342090	Fuego	Guatemala	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3799	2026	-90.8806	14.4748
+342100	Agua	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	3760		-90.743	14.465
+342110	Pacaya	Guatemala	Central America Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2569	2021	-90.601	14.382
+342111	Cuilapa-Barbarena	Guatemala	Central America Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1454		-90.4	14.33
+342120	Tecuamburro	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1845	-960	-90.407	14.156
+342121	Jumaytepeque	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	1802		-90.271	14.34
+342130	Moyuta	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1662		-90.1	14.03
+342140	Flores	Guatemala	Central America Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1600		-89.992	14.308
+342141	Tahual	Guatemala	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1716		-89.9	14.43
+342150	Santiago, Cerro	Guatemala	Central America Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1192		-89.87	14.33
+342160	Suchitan	Guatemala	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2042		-89.78	14.4
+342170	Chingo	Guatemala-El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1775		-89.73	14.12
+342180	Ixtepeque	Guatemala	Central America Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1292		-89.68	14.42
+343002	Singuil, Cerro	El Salvador	Central America Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	926		-89.631	14.054
+343010	Apaneca Range	El Salvador	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2028		-89.742	13.872
+343020	Santa Ana	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2381	2005	-89.63	13.853
+343030	Izalco	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1950	1966	-89.633	13.813
+343041	Coatepeque Caldera	El Salvador	Central America Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Evidence Credible	746		-89.55	13.87
+343050	San Salvador	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1893	1917	-89.294	13.734
+343051	Cinotepeque, Cerro	El Salvador	Central America Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	665		-89.25	14.02
+343060	Ilopango	El Salvador	Central America Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	450	1880	-89.053	13.672
+343070	San Vicente	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2149		-88.8375	13.5969
+343072	Taburete	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	1172		-88.532	13.435
+343080	Tecapa	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1593		-88.502	13.494
+343081	Usulutan	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1449		-88.471	13.419
+343082	Tigre, El	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1640		-88.43	13.47
+343090	Chinameca	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1300		-88.33	13.478
+343100	San Miguel	El Salvador	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2130	2023	-88.269	13.434
+343101	Aramuaca, Laguna	El Salvador	Central America Volcanic Arc	Maar	Subduction zone / Continental crust (> 25 km)	Evidence Credible	181		-88.105	13.428
+343130	Tigre, Isla del	Honduras	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	774		-87.639	13.274
+343140	Zacate Grande, Isla	Honduras	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	640		-87.63	13.33
+344010	Cosiguina	Nicaragua	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	872	1859	-87.57	12.98
+344020	San Cristobal	Nicaragua	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1745	2024	-87.004	12.702
+344040	Telica	Nicaragua	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1036	2025	-86.84	12.606
+344070	Negro, Cerro	Nicaragua	Central America Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	728	1999	-86.702	12.506
+344080	Las Pilas-El Hoyo Complex	Nicaragua	Central America Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1088	1954	-86.6786	12.4922
+344090	Momotombo	Nicaragua	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1270	2016	-86.539	12.423
+344091	Apoyeque	Nicaragua	Central America Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	518	-50	-86.342	12.242
+344092	Nejapa-Miraflores	Nicaragua	Central America Volcanic Arc	Fissure vent(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	360	1060	-86.32	12.12
+344100	Masaya	Nicaragua	Central America Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	594	2026	-86.1688	11.9844
+344101	Granada	Nicaragua	Central America Volcanic Arc	Fissure vent(s)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	250		-85.979	11.9
+344110	Mombacho	Nicaragua	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Unrest / Holocene	1344		-85.968	11.826
+344111	Zapatera	Nicaragua	Central America Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Evidence Credible	629		-85.82	11.73
+344120	Concepcion	Nicaragua	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1700	2024	-85.622	11.538
+345010	Orosi	Costa Rica	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	1659		-85.473	10.98
+345020	Rincon de la Vieja	Costa Rica	Central America Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1729	2024	-85.3364	10.8314
+345030	Miravalles	Costa Rica	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2028	1946	-85.153	10.748
+345031	Tenorio	Costa Rica	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1916		-85.015	10.673
+345033	Arenal	Costa Rica	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1670	2010	-84.703	10.463
+345034	Platanar	Costa Rica	Central America Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2267		-84.366	10.3
+345040	Poas	Costa Rica	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2697	2026	-84.233	10.2
+345050	Barva	Costa Rica	Central America Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2906	-6050	-84.1	10.135
+345060	Irazu	Costa Rica	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3436	1977	-83.852	9.979
+345070	Turrialba	Costa Rica	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3340	2022	-83.767	10.025
+346010	Baru	Panama	Central America Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3474	1550	-82.543	8.808
+351011	Romeral	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3769	-5390	-75.363	5.203
+351012	Bravo, Cerro	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3985	1720	-75.293	5.091
+351020	Ruiz, Nevado del	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5279	2026	-75.324	4.892
+351021	Santa Isabel	Colombia	Northern Andean Volcanic Arc	Shield	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4944	-850	-75.365	4.818
+351030	Tolima, Nevado del	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5215	1943	-75.33	4.658
+351040	Machin	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2749	1180	-75.389	4.487
+351050	Huila, Nevado del	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5364	2012	-76.03	2.93
+351060	Purace	Colombia	Northern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4650	2026	-76.3948	2.3095
+351061	Sotara	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	4400		-76.592	2.108
+351070	Dona Juana	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4137	1906	-76.936	1.5
+351080	Galeras	Colombia	Northern Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4276	2014	-77.37	1.22
+351090	Azufral	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4070	-930	-77.68	1.08
+351100	Cumbal	Colombia	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4764	1926	-77.87	0.95
+351110	Chiles-Cerro Negro	Colombia-Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	4698	1936	-77.938	0.817
+352001	Soche	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3955	-6650	-77.58	0.552
+352002	Chachimbiro	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4106	-3740	-78.287	0.468
+352003	Cuicocha	Ecuador	Northern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3246	650	-78.364	0.308
+352004	Imbabura	Ecuador	Northern Andean Volcanic Arc	Compound	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4609	-5550	-78.183	0.258
+352005	Mojanda	Ecuador	Northern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	4263		-78.27	0.13
+352006	Cayambe	Ecuador	Northern Andean Volcanic Arc	Compound	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5790	1786	-77.986	0.029
+352010	Reventador	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3562	2026	-77.656	-0.077
+352011	Pululahua	Ecuador	Northern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3360	290	-78.49	0.0464
+352020	Guagua Pichincha	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4784	2002	-78.598	-0.171
+352021	Atacazo	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4463	-320	-78.617	-0.353
+352022	Chacana	Ecuador	Northern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4643	1773	-78.25	-0.375
+352030	Antisana	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5753	1802	-78.141	-0.481
+352031	Aliso	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4267	-2450	-78.0	-0.53
+352040	Sumaco	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	3990	1895	-77.626	-0.538
+352041	Iliniza	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5162		-78.716	-0.662
+352050	Cotopaxi	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5911	2023	-78.436	-0.677
+352060	Quilotoa	Ecuador	Northern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3914	1280	-78.9044	-0.8592
+352071	Chimborazo	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	6261	550	-78.817	-1.469
+352080	Tungurahua	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5023	2016	-78.442	-1.467
+352081	Licto	Ecuador	Northern Andean Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	3322		-78.614	-1.786
+352090	Sangay	Ecuador	Northern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5286	2026	-78.341	-2.005
+354001	Auquihuato, Cerro	Peru	Central Andean Volcanic Arc	Pyroclastic cone	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	5001		-73.1914	-15.0726
+354003	Coropuna	Peru	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6377		-72.65	-15.52
+354004	Andahua-Orcopampa	Peru	Central Andean Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4713	1490	-72.33	-15.42
+354005	Huambo	Peru	Central Andean Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4554	-700	-72.08	-15.78
+354006	Sabancaya	Peru	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5960	2026	-71.857	-15.787
+354010	Misti, El	Peru	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5793	1985	-71.4056	-16.2991
+354020	Ubinas	Peru	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5608	2024	-70.8972	-16.345
+354030	Huaynaputina	Peru	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4679	1600	-70.8542	-16.6144
+354031	Ticsani	Peru	Central Andean Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	5382	1800	-70.5981	-16.7586
+354040	Tutupaca	Peru	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5801	1802	-70.372	-17.026
+354050	Yucamane	Peru	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5495	-1320	-70.196	-17.184
+354060	Casiri, Nevados	Peru	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5626		-69.7886	-17.4852
+355011	Taapaca	Chile	Central Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Eruption Dated	5860	-320	-69.5	-18.1
+355012	Parinacota	Chile-Bolivia	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	6336	290	-69.142	-18.166
+355020	Guallatiri	Chile	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	6071	1960	-69.092	-18.42
+355030	Isluga	Chile	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5550	1913	-68.83	-19.15
+355032	Tata Sabaya	Bolivia	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5430		-68.53	-19.13
+355040	Irruputuncu	Chile-Bolivia	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5163	1995	-68.55	-20.73
+355050	Olca-Paruma	Chile-Bolivia	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5705		-68.413	-20.939
+355090	Putana	Chile	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5884	1810	-67.853	-22.557
+355091	Sairecabur	Chile-Bolivia	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5961		-67.891	-22.719
+355092	Licancabur	Chile-Bolivia	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5916		-67.88	-22.83
+355093	Guayaques	Chile-Bolivia	Central Andean Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5598		-67.566	-22.895
+355094	Purico Complex	Chile	Central Andean Volcanic Arc	Shield(pyroclastic)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5703		-67.75	-23.0
+355095	Colachi	Chile	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5631		-67.645	-23.236
+355096	Acamarachi	Chile	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6023		-67.618	-23.292
+355098	Chiliques	Chile	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	5778		-67.7	-23.58
+355100	Lascar	Chile	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5592	2026	-67.73	-23.37
+355101	Cordon de Puntas Negras	Chile	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5852		-67.534	-23.743
+355102	Miniques	Chile	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	5910		-67.77	-23.82
+355103	Tujle, Cerro	Chile	Central Andean Volcanic Arc	Maar	Subduction zone / Continental crust (> 25 km)	Evidence Credible	3550		-67.95	-23.83
+355104	Caichinque	Chile	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	4458		-67.74	-23.949
+355105	Tilocalar	Chile	Central Andean Volcanic Arc	Lava cone(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	3109		-68.13	-23.97
+355107	Pular	Chile	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	6233		-68.054	-24.188
+355108	Negrillar, La	Chile	Central Andean Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	4220		-68.59	-24.319
+355109	Socompa	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	6031	-5250	-68.246	-24.396
+355110	Llullaillaco	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	6739	1877	-68.53	-24.72
+355112	Corrida de Cori Volcanic Field	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	5451		-68.367	-25.083
+355120	Lastarria	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5706		-68.507	-25.168
+355121	Cordon del Azufre	Chile-Argentina	Central Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5481		-68.521	-25.336
+355122	Bayo Gorbea, Cerro	Chile-Argentina	Central Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5413		-68.588	-25.414
+355123	Nevada, Sierra	Chile-Argentina	Central Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6173		-68.58	-26.48
+355124	Falso Azufre	Chile-Argentina	Central Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	5906		-68.37	-26.8
+355125	Incahuasi, Nevado de	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	6638		-68.296	-27.033
+355130	Ojos del Salado, Nevados	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	6879	750	-68.541	-27.109
+355131	Solo, El	Chile-Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6205		-68.713	-27.105
+355160	Aracar	Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6095		-67.783	-24.29
+355161	Central Andean Arc at 25.1°S	Argentina	Central Andean Volcanic Arc	Pyroclastic cone	Subduction zone / Continental crust (> 25 km)	Evidence Credible	4652		-68.266	-25.078
+355190	Condor, El	Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6373		-68.361	-26.632
+355200	Peinado	Argentina	Central Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5741		-68.116	-26.623
+355210	Blanco, Cerro	Argentina	Central Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	4670	-2300	-67.746	-26.7657
+355220	Tipas	Argentina	Central Andean Volcanic Arc	Complex	Subduction zone / Continental crust (> 25 km)	Evidence Credible	6658		-68.561	-27.196
+357010	Tupungatito	Chile-Argentina	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5660	1987	-69.797	-33.425
+357020	San Jose	Chile-Argentina	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	6070	1960	-69.895	-33.789
+357021	Maipo	Chile-Argentina	Southern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	5323	1912	-69.832	-34.164
+357022	Palomo	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	4860		-70.295	-34.608
+357023	Atuel, Caldera del	Argentina	Southern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Evidence Credible	5189		-69.921	-34.592
+357024	Risco Plateado	Argentina	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	4999		-69.981	-34.917
+357030	Tinguiririca	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4280	1917	-70.352	-34.814
+357040	Planchon-Peteroa	Chile	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3977	2025	-70.568	-35.223
+357041	Infiernillo	Argentina	Southern Andean Volcanic Arc	Volcanic field	Intraplate / Continental crust (> 25 km)	Eruption Dated	3007	-6890	-69.9	-35.123
+357042	Calabozos	Chile	Southern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Evidence Credible	3508		-70.496	-35.558
+357050	Descabezado Grande	Chile	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3953	1933	-70.75	-35.58
+357060	Azul, Cerro	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3788	1967	-70.761	-35.653
+357061	Maule, Laguna del	Chile	Southern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2162	-50	-70.492	-36.058
+357062	San Pedro-Pellado	Chile	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	3621		-70.849	-35.989
+357063	Longavi, Nevado de	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3175	-4890	-71.1641	-36.1959
+357064	Blancas, Lomas	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2268		-71.009	-36.286
+357065	Resago, Volcan	Chile	Southern Andean Volcanic Arc	Pyroclastic cone	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1890		-70.9033	-36.4606
+357066	Payun Matru	Argentina	Southern Andean Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3715	-5050	-69.241	-36.422
+357070	Chillan, Nevados de	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3180	2022	-71.378	-36.868
+357072	Tromen Volcanic Plateau	Argentina	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	4114	1822	-70.033	-37.144
+357080	Antuco	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2979	1869	-71.349	-37.406
+357090	Copahue	Chile-Argentina	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2953	2024	-71.183	-37.856
+357091	Callaqui	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3099	1980	-71.4464	-37.9276
+357093	Tolhuaca	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Credible	2739	-4000	-71.645	-38.31
+357100	Lonquimay	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2832	1990	-71.586	-38.379
+357102	Blanca, Laguna	Argentina	Southern Andean Volcanic Arc	Volcanic field	Intraplate / Continental crust (> 25 km)	Evidence Credible	1700		-70.37	-39.02
+357110	Llaima	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3125	2009	-71.729	-38.692
+357111	Sollipulli	Chile	Southern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2282	1240	-71.52	-38.97
+357112	Caburgua-Huelemolle	Chile	Southern Andean Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1652	-5050	-71.75	-39.25
+357120	Villarrica	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2847	2025	-71.93	-39.42
+357121	Quetrupillan	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2360	255	-71.722	-39.496
+357122	Lanin	Chile-Argentina	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	3776	560	-71.502	-39.637
+357123	Huanquihue Group	Argentina	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2189	1750	-71.58	-39.887
+357130	Mocho-Choshuenco	Chile	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2422	1937	-72.027	-39.927
+357140	Carran-Los Venados	Chile	Southern Andean Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1114	1979	-72.07	-40.35
+357150	Puyehue-Cordon Caulle	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2236	2012	-72.117	-40.59
+357153	Antillanca Volcanic Complex	Chile	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1979	-230	-72.15	-40.783
+357160	Puntiagudo-Cordon Cenizos	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2493	1850	-72.264	-40.969
+358010	Osorno	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2659	1869	-72.496	-41.105
+358011	Tronador	Chile-Argentina	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	3478		-71.885	-41.157
+358012	Cayutue-La Vigueria	Chile	Southern Andean Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Eruption Dated	506	-190	-72.27	-41.3
+358020	Calbuco	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1974	2015	-72.618	-41.33
+358022	Yate	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2187	1090	-72.396	-41.755
+358023	Hornopiren	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1572	340	-72.431	-41.874
+358024	Apagado	Chile	Southern Andean Volcanic Arc	Pyroclastic cone	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1210	-590	-72.58	-41.88
+358025	Crater Basalt Volcanic Field	Argentina	Southern Andean Volcanic Arc	Volcanic field	Intraplate / Continental crust (> 25 km)	Evidence Credible	1344		-70.194	-42.018
+358030	Huequi	Chile	Southern Andean Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1318	1920	-72.578	-42.377
+358040	Michinmahuida	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	2452	1835	-72.445	-42.799
+358041	Chaiten	Chile	Southern Andean Volcanic Arc	Caldera	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1122	2011	-72.6514	-42.8349
+358049	Yanteles	Chile	Southern Andean Volcanic Arc	Stratovolcano(es)	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1790	-6650	-72.782	-43.469
+358050	Corcovado	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	1826	-4920	-72.794	-43.189
+358052	Melimoyu	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2400	200	-72.88	-44.08
+358053	Puyuhuapi	Chile	Southern Andean Volcanic Arc	Pyroclastic cone(s)	Subduction zone / Continental crust (> 25 km)	Evidence Credible	524		-72.53	-44.3
+358054	Mentolat	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1603	1710	-73.0767	-44.6931
+358055	Cay	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Evidence Uncertain	2090		-72.984	-45.059
+358056	Maca	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2960	1560	-73.17	-45.1
+358057	Hudson, Cerro	Chile	Southern Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1905	2011	-72.97	-45.9
+358060	Lautaro	Chile	Austral Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	3542	1979	-73.504	-49.019
+358062	Aguilera	Chile	Austral Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Dated	2546	-1253	-73.75	-50.33
+358063	Reclus	Chile	Austral Andean Volcanic Arc	Pyroclastic cone	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1403	1908	-73.5802	-50.9395
+358064	Meullin	Chile	Southern Andean Volcanic Arc	Volcanic field	Subduction zone / Continental crust (> 25 km)	Evidence Credible	1080		-73.05	-45.22
+358070	Burney, Monte	Chile	Austral Andean Volcanic Arc	Stratovolcano	Subduction zone / Continental crust (> 25 km)	Eruption Observed	1758	1910	-73.4	-52.33
+358090	Fueguino	Chile	Austral Andean Volcanic Arc	Lava dome(s)	Subduction zone / Continental crust (> 25 km)	Eruption Observed	157	1820	-70.262	-54.97

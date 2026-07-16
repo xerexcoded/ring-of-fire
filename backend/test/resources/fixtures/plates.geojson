@@ -1,0 +1,1 @@
+{"type":"FeatureCollection","features":[{"type":"Feature","id":"plate-1","properties":{"TYPE":"convergent","Name":"Dateline arc"},"geometry":{"type":"MultiLineString","coordinates":[[[179.8,-25],[-179.7,-24]],[[160,50],[170,52]]]}}]}

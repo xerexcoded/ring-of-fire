@@ -1,0 +1,47 @@
+{
+	admin localhost:2019
+	email {$ACME_EMAIL:ops@example.com}
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+(compressed) {
+	encode zstd gzip
+	header -Server
+	log {
+		output stdout
+		format json
+	}
+}
+
+{$WEB_ORIGIN:http://www.localhost}, http://localhost {
+	import compressed
+	reverse_proxy web:3000
+}
+
+{$API_ORIGIN:http://api.localhost} {
+	import compressed
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+	reverse_proxy backend:8080
+}
+
+{$ANALYTICS_ORIGIN:http://analytics.localhost} {
+	import compressed
+	# Metabase owns its frame and content-security policies. Do not add
+	# X-Frame-Options here: www and analytics are separate origins.
+	reverse_proxy metabase:3000 {
+		flush_interval -1
+		# Metabase v0.62.4.3 positions dashboard cards with inline style
+		# attributes, but its generated CSP omits the allowance those grid
+		# transforms require. Relax styles only; scripts remain nonce-bound.
+		header_down Content-Security-Policy "style-src-attr 'self'" "style-src-attr 'self' 'unsafe-inline'"
+		# Browsers ignore unsafe-inline when the same style directive contains
+		# a nonce, so replace Metabase's dynamic style nonce while leaving the
+		# independent script nonce untouched.
+		header_down Content-Security-Policy "style-src 'self' 'nonce-[^']+'" "style-src 'self' 'unsafe-inline'"
+	}
+}

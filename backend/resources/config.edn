@@ -1,0 +1,20 @@
+{:http/server {:port #long #or [#env PORT 8080]
+               :join? false}
+
+ :db/pool {:jdbc-url #or [#env DATABASE_URL
+                          "jdbc:postgresql://localhost:5432/ring_data"]
+           :username #or [#env DATABASE_USER "ring_writer"]
+           :password #or [#env DATABASE_PASSWORD "ring_writer_dev"]
+           :maximum-pool-size #long #or [#env DATABASE_POOL_SIZE 10]}
+
+ :security/guest-token
+ {:secret #or [#env METABASE_EMBEDDING_SECRET
+               "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"]
+  :ttl-seconds #long #or [#env METABASE_TOKEN_TTL_SECONDS 3600]
+  :allowed-origins #csv #or [#env ALLOWED_ORIGINS
+                             "http://localhost:3000,http://localhost"]}
+
+ :app/router {:db #ig/ref :db/pool
+              :token-service #ig/ref :security/guest-token}
+
+ :app/system {:server #ig/ref :http/server}}
