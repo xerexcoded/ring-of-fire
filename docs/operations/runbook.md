@@ -23,14 +23,15 @@ Compose topology. Commands run from the repository root unless noted.
    last-good data. `infra/cron/restless-pacific.example` is an alternative for
    hosts that deliberately disable the scheduler; never enable both routinely.
 
-The production GitHub environment must require approval and define:
+The repository-level GitHub Actions configuration must define:
 
-- secrets: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PATH`, `DEPLOY_SSH_KEY`, and a
-  separately verified `DEPLOY_KNOWN_HOSTS` entry for the VPS;
-- variables: `PRODUCTION_URL`, `NEXT_PUBLIC_API_BASE_URL` (including `/api/v1`),
-  and `NEXT_PUBLIC_METABASE_URL`.
+- secrets: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_SSH_KEY`, and a separately
+  verified `DEPLOY_KNOWN_HOSTS` entry for Xenix;
+- a dedicated deploy key restricted in Xenix SSH configuration to
+  `deploy <40-character commit SHA>`.
 
-Log the VPS into GHCR with a package-read token before its first deployment.
+The Xenix deployment builds the checked-out revision locally, using the
+root-only server environment file. It does not need a GHCR package credential.
 
 When serving the app below a URL prefix, set `NEXT_PUBLIC_BASE_PATH` and
 `NEXT_PUBLIC_SITE_URL` before building the web image. `basePath` is compiled
@@ -49,18 +50,16 @@ openssl rand -hex 32
 
 ## Deploy and rollback
 
-After CI succeeds on `main`, the publish workflow builds amd64 images tagged
-`sha-<full commit>`. After protected-environment approval, deployment checks out
-that same commit, validates Compose, pulls pinned images, waits for health,
-seeds/reconciles data, and provisions Metabase. Manual dispatch is reserved for
-an already-verified revision or operational rollback.
+After CI succeeds on `main`, GitHub Actions sends the tested full commit SHA to
+Xenix. Its forced SSH command checks out that same revision, validates the
+low-memory Compose model, builds the backend and web images, waits for health,
+seeds/reconciles data, and provisions Metabase. A manual dispatch sends the
+selected workflow revision through the same restricted command.
 
 To roll back, dispatch the workflow from a known-good commit or run on the host:
 
 ```sh
-export BACKEND_IMAGE=ghcr.io/OWNER/restless-pacific-backend:sha-GOOD_SHA
-export WEB_IMAGE=ghcr.io/OWNER/restless-pacific-web:sha-GOOD_SHA
-docker compose up -d --no-build --wait backend web caddy
+sudo /etc/ring-of-fire/deploy --revision GOOD_SHA
 ```
 
 Database migrations must be backwards-compatible with the immediately previous
@@ -191,8 +190,9 @@ delete Postgres WAL/data files or the only backup copy manually.
 - Rotating `METABASE_ENCRYPTION_SECRET` requires Metabase’s documented key
   procedure; do not replace it blindly or encrypted connection details may be
   unreadable.
-- Rotate deployment SSH and GHCR credentials through their providers and verify
-  the protected environment approval remains enabled.
+- Rotate the restricted deployment SSH key through Xenix SSH configuration and
+  the repository secrets together; verify that its forced command remains in
+  place.
 
 ## Post-deploy smoke test
 

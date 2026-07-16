@@ -140,8 +140,8 @@ scroll gestures.
 
 ## Deployment
 
-CI builds immutable backend and web images. A protected GitHub `production`
-environment supplies manual approval before the deploy job connects to the VPS.
-The host checks out the corresponding commit, pulls the `sha-*` images, validates
-Compose, runs migrations/provisioning, and waits for service health. Rollback is
-the same operation with the previous image tag.
+After CI succeeds on `main`, GitHub Actions sends the corresponding commit SHA
+to Xenix over a forced-command SSH key. The host checks out that exact revision,
+validates the low-memory Compose model, rebuilds the backend and web images,
+runs migrations/provisioning, and waits for service health. Rollback is
+the same operation with a known-good previous commit SHA.

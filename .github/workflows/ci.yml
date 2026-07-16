@@ -95,9 +95,9 @@ jobs:
       - name: Unit tests
         working-directory: web
         run: npm test
-      - name: Install Playwright Chromium
+      - name: Install Playwright browsers
         working-directory: web
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium webkit
       - name: Browser and accessibility tests
         working-directory: web
         run: npm run test:e2e

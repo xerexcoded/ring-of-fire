@@ -199,10 +199,11 @@ The intended confidence ladder is:
 
 ## Deployment and operations
 
-The same topology targets an 8 GB single VPS. CI builds backend and web images
-tagged with the commit SHA. The production deployment job is protected by a
-GitHub environment approval and starts those immutable images with Compose.
-Caddy obtains TLS for `www`, `api`, and `analytics` hostnames.
+The same topology targets a single VPS. After CI succeeds on `main`, GitHub
+Actions connects to Xenix with a restricted deploy key and sends the exact
+tested commit SHA. Xenix checks out that revision and runs its low-memory
+Compose deployment through native Caddy; no approval gate or container registry
+credential is involved.
 
 For a path-based deployment, set `NEXT_PUBLIC_BASE_PATH` (for example,
 `/trivia/ringoffire`) and `NEXT_PUBLIC_SITE_URL` at image build time. Set the
