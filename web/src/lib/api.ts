@@ -15,8 +15,9 @@ import type {
   TsunamiProperties,
   VolcanoProperties,
 } from "@/lib/types";
+import { withBasePath } from "@/lib/paths";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? withBasePath("/api/v1");
 
 export type AtlasFilters = {
   bbox?: [number, number, number, number];

@@ -2,6 +2,7 @@
 
 import { AlertTriangle, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { withBasePath } from "@/lib/paths";
 
 type ParameterValue = string | string[] | null;
 type Parameters = Record<string, ParameterValue>;
@@ -78,7 +79,7 @@ export function MetabaseEmbed({ dashboardId, parameters, onParametersChange, onS
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
-    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "/api/v1";
+    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? withBasePath("/api/v1");
     const instanceUrl = (process.env.NEXT_PUBLIC_METABASE_URL ?? "http://analytics.localhost").replace(/\/$/, "");
     const guestEmbedProviderUri = `${apiBase.replace(/\/$/, "")}/metabase/guest-token`;
     const controller = new AbortController();

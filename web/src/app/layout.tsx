@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Newsreader } from "next/font/google";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { withBasePath } from "@/lib/paths";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   },
   description:
     "A sourced, interactive atlas of volcanoes, earthquakes, plate boundaries, and tsunamis around the Pacific.",
-  icons: { icon: "/restless-pacific-mark.svg" },
+  icons: { icon: withBasePath("/restless-pacific-mark.svg") },
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   openGraph: {
     title: "Restless Pacific",

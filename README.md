@@ -204,6 +204,12 @@ tagged with the commit SHA. The production deployment job is protected by a
 GitHub environment approval and starts those immutable images with Compose.
 Caddy obtains TLS for `www`, `api`, and `analytics` hostnames.
 
+For a path-based deployment, set `NEXT_PUBLIC_BASE_PATH` (for example,
+`/trivia/ringoffire`) and `NEXT_PUBLIC_SITE_URL` at image build time. Set the
+public API and Metabase URLs to paths beneath the same prefix. The edge proxy
+must preserve the prefix when forwarding to Next.js and strip it when
+forwarding to the API or Metabase.
+
 Daily `age`-encrypted backups cover both databases. Keep the age private key
 off the VPS and replicate the encrypted backup directory off-host. Health
 checks, restoration drills, secret rotation, and rollback procedures are in the

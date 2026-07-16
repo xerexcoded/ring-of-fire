@@ -32,6 +32,13 @@ The production GitHub environment must require approval and define:
 
 Log the VPS into GHCR with a package-read token before its first deployment.
 
+When serving the app below a URL prefix, set `NEXT_PUBLIC_BASE_PATH` and
+`NEXT_PUBLIC_SITE_URL` before building the web image. `basePath` is compiled
+into the Next.js client bundles, so changing the prefix requires a rebuild.
+Keep the prefix on requests proxied to Next.js; strip only the application
+prefix before proxying the API and the analytics prefix before proxying
+Metabase.
+
 Generate the production guest-embedding key in the exact format required by
 Metabase v62—64 hexadecimal characters representing 256 bits—and store it only
 as `METABASE_EMBEDDING_SECRET` on the server:

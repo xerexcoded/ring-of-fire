@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowDown, ExternalLink } from "lucide-react";
 import { SourceStatusTable } from "@/components/source-status";
+import { withBasePath } from "@/lib/paths";
 
 export const metadata: Metadata = {
   title: "Sourcebook",
@@ -92,7 +93,7 @@ export default function SourcebookPage() {
         <div className="sourcebook-demo-media">
           <Image
             className="sourcebook-demo-motion"
-            src="/restless-pacific-demo.gif"
+            src={withBasePath("/restless-pacific-demo.gif")}
             width={800}
             height={450}
             unoptimized
@@ -100,7 +101,7 @@ export default function SourcebookPage() {
           />
           <Image
             className="sourcebook-demo-static"
-            src="/restless-pacific-demo-poster.webp"
+            src={withBasePath("/restless-pacific-demo-poster.webp")}
             width={800}
             height={450}
             alt="The Restless Pacific opening map and the headline A ring that isn’t a ring."
