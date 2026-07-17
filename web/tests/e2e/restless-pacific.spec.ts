@@ -71,7 +71,7 @@ test("history and sourcebook expose uncertainty and provenance", async ({ page }
   await expect(page.getByRole("heading", { level: 1, name: /History, written in ash and water/i })).toBeVisible();
   await expect(page.getByText(/Uncertainty/).first()).toBeVisible();
   await page.goto("/sourcebook");
-  await expect(page.getByRole("heading", { level: 1, name: /Show your work/i })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /Showing the Ring/i })).toBeVisible();
   await expect(page.getByText("GET /api/v1/sources/status")).toBeVisible();
 });
 
