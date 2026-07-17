@@ -26,7 +26,7 @@ export default function SourcebookPage() {
   return (
     <article className="sourcebook-page">
       <header className="sourcebook-hero">
-        <div className="display-title-group"><p className="eyebrow">Sources · Methods · Architecture</p><h1>Show your <em>work.</em></h1></div>
+        <div className="display-title-group"><p className="eyebrow">Sources · Methods · Architecture</p><h1>Showing the <em>Ring.</em></h1></div>
         <div className="sourcebook-hero-copy">
           <p>Every claim should be traceable to a dataset, a version, a refresh, and an honest statement of what it cannot tell us.</p>
           <a href="#datasets">Inspect the source registry <ArrowDown /></a>

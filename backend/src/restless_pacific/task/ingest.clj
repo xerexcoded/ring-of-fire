@@ -62,7 +62,8 @@
         summary (jdbc/execute-one!
                  datasource
                  ["SELECT
-                     (SELECT count(*) FROM core.volcanic_region WHERE source_version='5.3.6') region_count,
+                     (SELECT count(*) FROM core.volcanic_region
+                       WHERE source_version='5.3.6' AND prof_region) region_count,
                      (SELECT count(*) FROM core.ring_membership
                        WHERE definition_key='smithsonian-prof' AND dataset_version='5.3.6'
                          AND included) membership_volcano_count,
