@@ -144,6 +144,11 @@ Only these views are visible to `metabase_reader`:
 | `analytics.eruptions` | One row per eruption | Eruptions by decade and VEI distribution; default 1960+ for trends |
 | `analytics.earthquakes` | One active event per row | Magnitude versus depth and recent activity |
 | `analytics.tsunamis` | One event per row | Cause, observation, and impact summaries |
+| `analytics.plate_boundaries` | One boundary record per row | Boundary inventory and geodesic length by type |
+
+`analytics.plate_boundaries.length_km` is derived from the source linework as a
+geography measurement. It provides inventory context only; neither a boundary
+count nor its length attributes an earthquake to that boundary.
 
 Early historical observations are incomplete. Saved trend questions default to
 1960 onward and say so visibly; the underlying views preserve older records for
@@ -157,4 +162,3 @@ explicit historical analysis.
 - Upstream revisions update the same stable event key and retain source time.
 - Confidence describes source/evidence quality; it is not a hazard probability.
 - Counts always identify the dataset version and active filters.
-

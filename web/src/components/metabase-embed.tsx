@@ -4,13 +4,9 @@ import { AlertTriangle, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { withBasePath } from "@/lib/paths";
 
-type ParameterValue = string | string[] | null;
-type Parameters = Record<string, ParameterValue>;
-type EmbedStatus = "loading" | "ready" | "offline";
+export type EmbedStatus = "loading" | "ready" | "offline";
 
-type MetabaseDashboardElement = HTMLElement & {
-  parameters?: Parameters;
-};
+type MetabaseDashboardElement = HTMLElement;
 
 declare global {
   interface Window {
@@ -60,20 +56,15 @@ function loadEmbedScript(instanceUrl: string) {
 }
 
 type MetabaseEmbedProps = {
-  dashboardId: number;
-  parameters: Parameters;
-  onParametersChange?: (parameters: Parameters) => void;
+  resourceKey: string;
   onStatusChange?: (status: EmbedStatus) => void;
 };
 
-export function MetabaseEmbed({ dashboardId, parameters, onParametersChange, onStatusChange }: MetabaseEmbedProps) {
+export function MetabaseEmbed({ resourceKey, onStatusChange }: MetabaseEmbedProps) {
   const mountRef = useRef<HTMLDivElement>(null);
-  const elementRef = useRef<MetabaseDashboardElement | null>(null);
-  const onChangeRef = useRef(onParametersChange);
   const [status, setStatus] = useState<EmbedStatus>("loading");
   const [attempt, setAttempt] = useState(0);
 
-  useEffect(() => { onChangeRef.current = onParametersChange; }, [onParametersChange]);
   useEffect(() => { onStatusChange?.(status); }, [onStatusChange, status]);
 
   useEffect(() => {
@@ -89,19 +80,27 @@ export function MetabaseEmbed({ dashboardId, parameters, onParametersChange, onS
 
     async function initialize() {
       try {
-        if (!Number.isInteger(dashboardId) || dashboardId <= 0) {
+        const resourceResponse = await fetch(
+          `${apiBase.replace(/\/$/, "")}/metabase/resources/${encodeURIComponent(resourceKey)}`,
+          { signal: controller.signal, credentials: "include", headers: { Accept: "application/json" } },
+        );
+        if (!resourceResponse.ok) throw new Error(`Resource endpoint returned ${resourceResponse.status}`);
+        const resource = await resourceResponse.json() as { entityType?: string; entityId?: number };
+        if (resource.entityType !== "dashboard" || !Number.isInteger(resource.entityId) || Number(resource.entityId) <= 0) {
           throw new Error("Metabase dashboard resource is not provisioned");
         }
+
         const tokenResponse = await fetch(guestEmbedProviderUri, {
           method: "POST",
           credentials: "include",
           signal: controller.signal,
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ entityType: "dashboard", entityId: dashboardId }),
+          body: JSON.stringify({ entityType: "dashboard", entityId: Number(resource.entityId) }),
         });
         if (!tokenResponse.ok) throw new Error(`Guest token endpoint returned ${tokenResponse.status}`);
         const tokenBody = await tokenResponse.json() as { jwt?: string };
         if (!tokenBody.jwt) throw new Error("Guest token endpoint returned no JWT");
+
         window.metabaseConfig = { isGuest: true, instanceUrl, guestEmbedProviderUri };
         await loadEmbedScript(instanceUrl);
         if (!active || !mount) return;
@@ -110,14 +109,7 @@ export function MetabaseEmbed({ dashboardId, parameters, onParametersChange, onS
         element.setAttribute("token", tokenBody.jwt);
         element.setAttribute("with-title", "true");
         element.setAttribute("auto-refresh-interval", "300");
-        element.parameters = parameters;
-        const handleParametersChange = (event: Event) => {
-          const detail = (event as CustomEvent<{ parameters?: Parameters }>).detail;
-          if (detail?.parameters) onChangeRef.current?.(detail.parameters);
-        };
-        element.addEventListener("parameters-change", handleParametersChange);
         mount.replaceChildren(element);
-        elementRef.current = element;
         setStatus("ready");
         renewalTimer = scheduleEmbedRenewal(() => setAttempt((value) => value + 1));
       } catch {
@@ -130,28 +122,51 @@ export function MetabaseEmbed({ dashboardId, parameters, onParametersChange, onS
       active = false;
       controller.abort();
       if (renewalTimer !== null) clearTimeout(renewalTimer);
-      elementRef.current = null;
       mount.replaceChildren();
     };
-    // `attempt` intentionally remounts the provider after an explicit retry.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [attempt, dashboardId]);
-
-  useEffect(() => {
-    if (elementRef.current) elementRef.current.parameters = parameters;
-  }, [parameters]);
+  }, [attempt, resourceKey]);
 
   return (
-    <div className="metabase-embed-shell" data-status={status}>
+    <div className="metabase-embed-shell" data-resource-key={resourceKey} data-status={status}>
       <div ref={mountRef} className="metabase-mount" />
       {status === "loading" && <div className="embed-loading" role="status"><span />Connecting to the analytical store…</div>}
       {status === "offline" && (
         <div className="embed-offline" role="status">
           <AlertTriangle aria-hidden="true" />
-          <div><strong>Data Lab is temporarily unavailable</strong><p>The atlas and sourcebook remain usable. The analytics service may still be starting.</p></div>
-          <button type="button" onClick={() => setAttempt((value) => value + 1)}><RotateCcw /> Retry embed</button>
+          <div><strong>This workspace is temporarily unavailable</strong><p>The other analytical sections remain usable. Metabase may still be starting or provisioning this dashboard.</p></div>
+          <button type="button" onClick={() => setAttempt((value) => value + 1)}><RotateCcw /> Retry workspace</button>
         </div>
       )}
+    </div>
+  );
+}
+
+export function LazyMetabaseEmbed({ resourceKey }: { resourceKey: string }) {
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [status, setStatus] = useState<EmbedStatus>("loading");
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || typeof IntersectionObserver === "undefined") {
+      setShouldLoad(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setShouldLoad(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: "600px 0px" });
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={sentinelRef} className="lazy-metabase-dashboard" data-loaded={shouldLoad} data-status={shouldLoad ? status : "deferred"}>
+      {shouldLoad
+        ? <MetabaseEmbed resourceKey={resourceKey} onStatusChange={setStatus} />
+        : <div className="embed-deferred" role="status"><span />Workspace loads as you approach</div>}
     </div>
   );
 }

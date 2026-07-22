@@ -56,13 +56,15 @@ fact and its citation.
 
 ## 2:55–3:40 — Metabase Data Lab
 
-Open `/data`, change a controlled region filter, and show two saved questions
-plus the composite dashboard.
+Open `/data`, use the section index to move from Overview to Volcanoes, and
+change the native Region filter. Scroll far enough to show that the next
+workspace loads only as it approaches the viewport.
 
-> These are Metabase OSS Modular Guest embeds. A Clojure endpoint signs a
-> short-lived JWT only for resources written to an allow-list by the bootstrap
-> task. The browser never receives the embedding secret. Metabase connects to
-> one analytics schema with SELECT-only permissions.
+> These are four Metabase OSS Modular Guest dashboards containing sixteen saved
+> questions. A Clojure endpoint signs a short-lived JWT only after a stable
+> resource key resolves to an allow-listed dashboard. The browser never
+> receives the embedding secret. Metabase connects to five views through one
+> SELECT-only role.
 
 Mention that trends default to 1960 onward because earlier reporting is less
 complete.

@@ -28,7 +28,7 @@ make test-full-stack # PostGIS roles + real guest embed on desktop/mobile
 | Spatial queries | normal and dateline bbox, result cap, GiST-backed intersection, nearest-boundary geodesic distance and non-causal label |
 | HTTP contract | RFC 7946 structure, filter validation, partial pagination, 404, `application/problem+json`, source/version/freshness fields |
 | Guest JWT | allow-listed resource, unknown/disabled ID, HS256, exact resource claim, expiry ≤ 3600 s, invalid origin, disallowed parameter, secret length floor |
-| Metabase bootstrap | clean setup, second-run idempotence, stable resource keys, read-only connection, six questions, dashboard and controlled filters |
+| Metabase bootstrap | clean setup, second-run idempotence, stable resource keys, read-only connection, sixteen questions, four dashboards, native filters, full 24-column layouts, stale-resource disablement |
 
 Parser fixtures remain small and explicit. The 688 volcano acceptance fixture
 may be a checked snapshot/count manifest, but a ten-profile demo seed must never
@@ -44,8 +44,8 @@ fixture must hash to
 | Reduced motion | no route/camera interpolation; static equivalent and chapter buttons remain usable |
 | Atlas | search, layer toggles, bbox filters, detail sheet, deep link, table equivalent |
 | Profiles/history | all named routes render; partial dates, citation, confidence, and caveats visible |
-| Data Lab | guest question/dashboard load, parameters synchronize, token renewal remounts once |
-| Metabase outage | retryable fallback while navigation, story, source context, and table remain usable |
+| Data Lab | four lazy guest dashboards, sixteen positioned cards, native filters, active section navigation, token renewal remounts once |
+| Metabase outage | retryable per-workspace fallback while the other analytical sections and site routes remain usable |
 | Keyboard/a11y | skip link, landmarks, visible focus, dialog focus trap/return, table controls, axe scan |
 | Responsive | narrow mobile, tablet, desktop screenshots; no overflow or map/embed layout shift |
 

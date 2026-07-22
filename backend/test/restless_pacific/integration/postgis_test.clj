@@ -50,8 +50,15 @@
             :maximum-pool-size 1})]
       (try
         (is (some? (jdbc/execute-one! datasource ["SELECT count(*) FROM analytics.volcanoes"])))
+        (let [boundary (jdbc/execute-one!
+                        datasource
+                        ["SELECT boundary_type, length_km FROM analytics.plate_boundaries ORDER BY boundary_id LIMIT 1"])]
+          (is (string? (:plate_boundaries/boundary_type boundary)))
+          (is (pos? (:plate_boundaries/length_km boundary))))
         (is (thrown? org.postgresql.util.PSQLException
                      (jdbc/execute-one! datasource ["SELECT count(*) FROM core.volcano"])))
+        (is (thrown? org.postgresql.util.PSQLException
+                     (jdbc/execute-one! datasource ["SELECT count(*) FROM ops.source_dataset"])))
         (is (thrown? org.postgresql.util.PSQLException
                      (jdbc/execute-one! datasource
                                         ["INSERT INTO analytics.volcanoes (volcano_number) VALUES (1)"])))

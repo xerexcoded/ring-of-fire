@@ -52,7 +52,7 @@ export default function SourcebookPage() {
 
       <section className="architecture-section" aria-labelledby="architecture-title">
         <div className="section-index">03 · System architecture</div>
-        <div className="architecture-copy"><h2 id="architecture-title">One store.<br />Two ways to read it.</h2><p>The cinematic map and the analytical dashboard serve different jobs. Both resolve to the same provenance-aware PostGIS data.</p></div>
+        <div className="architecture-copy"><h2 id="architecture-title">One store.<br />Two ways to read it.</h2><p>The cinematic map and four analytical workspaces serve different jobs. Every view resolves to the same provenance-aware PostGIS data.</p></div>
         <div className="architecture-flow" role="img" aria-label="GVP, USGS, and NOAA flow through Clojure ingestion into PostGIS. A Clojure GeoJSON API feeds Next.js maps while a read-only connection feeds Metabase guest embeds in the Next.js application.">
           <div className="architecture-sources"><span>Smithsonian GVP</span><span>USGS events</span><span>USGS boundaries</span><span>NOAA tsunamis</span></div>
           <i aria-hidden="true">→</i>
@@ -81,11 +81,19 @@ export default function SourcebookPage() {
       </section>
 
       <section id="tutorial" className="portfolio-collateral">
-        <p className="eyebrow">Build notes</p>
-        <h2>Embedding Metabase OSS in Next.js with a Clojure JWT service.</h2>
+        <p className="eyebrow">Metabase layer</p>
         <div>
-          <p>The implementation keeps the embedding secret server-side, allow-lists provisioned resources, initializes the web component through a guest token provider, and remounts the embed with a fresh JWT before the 60-minute token expires.</p>
-          <ol><li>Provision a read-only analytics role.</li><li>Bootstrap questions, dashboard, filters, and guest publication.</li><li>Set <code>window.metabaseConfig</code> before loading <code>embed.js</code>.</li><li>Control filters through the element’s <code>parameters</code> property and <code>parameters-change</code> event.</li></ol>
+          <h2>Four workspaces. One read-only boundary.</h2>
+          <dl className="metabase-inventory">
+            <div><dt>05</dt><dd>analytical views</dd></div>
+            <div><dt>16</dt><dd>saved questions</dd></div>
+            <div><dt>04</dt><dd>guest dashboards</dd></div>
+            <div><dt>01</dt><dd>SELECT-only role</dd></div>
+          </dl>
+        </div>
+        <div>
+          <p>The implementation keeps the embedding secret server-side, resolves stable resource keys at the moment each workspace approaches the viewport, and signs only dashboards present in the database allow-list.</p>
+          <ol><li>Expose five bounded views to <code>metabase_reader</code>.</li><li>Reconcile 16 questions, four dashboards, and native filters.</li><li>Resolve a stable key to the current numeric dashboard ID.</li><li>Load the guest component lazily and renew its JWT before expiry.</li></ol>
         </div>
       </section>
 

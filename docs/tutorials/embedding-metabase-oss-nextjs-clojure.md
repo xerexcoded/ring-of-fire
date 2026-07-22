@@ -53,9 +53,9 @@ CREATE TABLE ops.metabase_resource (
 ```
 
 Restless Pacific’s `clojure -M:bootstrap` task creates or reconciles the
-Metabase collection, questions, dashboard, controlled filters, and guest
-publication. Because the Metabase API is unversioned, that task is tested only
-against the pinned image and stores the resulting IDs in this table.
+Metabase collection, sixteen questions, four dashboards, native filters, and
+guest publication. Because the Metabase API is unversioned, that task is tested
+only against the pinned image and stores the resulting IDs in this table.
 
 ## 3. Sign a short-lived token in Clojure
 
@@ -114,31 +114,38 @@ defense-in-depth check.
 ## 5. Load `embed.js` in a client-only wrapper
 
 Metabase defines custom HTML elements at runtime, so load its script only in a
-Client Component. Reserve the final embed height to avoid layout shift. The
-component lifecycle is:
+Client Component. Reserve the final embed height to avoid layout shift. For a
+multi-workspace explorer, defer the lifecycle until the section approaches the
+viewport:
 
-1. fetch `/metabase/guest-token` with `cache: "no-store"`;
-2. load `${metabaseUrl}/app/embed.js` once;
-3. mount `<metabase-dashboard>` or `<metabase-question>` with the JWT;
-4. pass the v62 controlled `parameters` attribute/property;
-5. listen for the supported parameter change event and reconcile filter state;
-6. request a new token before expiry and remount the element.
+1. resolve `/metabase/resources/{resourceKey}` to an enabled dashboard ID;
+2. fetch `/metabase/guest-token` with that numeric ID;
+3. load `${metabaseUrl}/app/embed.js` once for the page;
+4. mount `<metabase-dashboard>` with the JWT and native editable filters;
+5. request a new token before expiry and remount the element.
 
 A framework-neutral sketch:
 
 ```tsx
 "use client";
 
+const resource = await fetch(
+  `${apiBase}/metabase/resources/${encodeURIComponent(resourceKey)}`,
+  { cache: "no-store" },
+).then((response) => response.json());
+
 const token = await fetch(`${apiBase}/metabase/guest-token`, {
   method: "POST",
   cache: "no-store",
   headers: { "content-type": "application/json" },
-  body: JSON.stringify({ entityType: "dashboard", entityId, customContext }),
+  body: JSON.stringify({
+    entityType: resource.entityType,
+    entityId: resource.entityId,
+  }),
 }).then((response) => response.json());
 
 const embed = document.createElement("metabase-dashboard");
 embed.setAttribute("token", token.jwt);
-embed.setAttribute("parameters", JSON.stringify(controlledParameters));
 host.replaceChildren(embed);
 ```
 
@@ -148,16 +155,16 @@ unmount.
 
 ## 6. Design for OSS constraints and outages
 
-Guest embeds support questions, dashboards, signed access, and controlled
+Guest embeds support questions, dashboards, signed access, and native editable
 filters. They do not provide drill-through, query building, advanced theming,
 row/column security, removal of downloads, or removal of the “Powered by
 Metabase” treatment. Treat those as product constraints, not bugs to hide with
 unsupported CSS.
 
 The atlas remains a native MapLibre experience because it needs combined layers
-and cinematic styling. If Metabase is down, show a retry state plus the chart’s
-source/freshness and a usable text/table equivalent; do not let an analytics
-outage blank the rest of the story.
+and cinematic styling. If one Metabase dashboard is down, show a retry state in
+that workspace; do not let an analytics outage blank the other workspaces or
+the rest of the story.
 
 ## 7. Verify the integration
 

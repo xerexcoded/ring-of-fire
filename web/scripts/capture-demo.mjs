@@ -48,20 +48,31 @@ try {
   await capture("03-atlas-fuji");
 
   await page.goto(`${baseUrl}/data`, { waitUntil: "domcontentloaded" });
-  const embed = page.locator("metabase-dashboard");
-  await embed.evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 74));
-  const frame = page.frameLocator("metabase-dashboard iframe");
-  await frame.getByText("Ring membership by GVP region", { exact: true }).waitFor({ timeout: 30_000 });
-  await page.getByLabel("Region").selectOption("Taupo Volcanic Arc");
-  await frame.getByText("Taupo Volcanic Arc", { exact: true }).first().waitFor();
+  await page.locator("#overview").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 112));
+  const overviewFrame = page.locator("#overview metabase-dashboard iframe").contentFrame();
+  await overviewFrame.getByText("Pacific observation density", { exact: true }).waitFor({ timeout: 30_000 });
   await settle();
   await capture("04-data-lab");
 
   await page.goto(`${baseUrl}/sourcebook`, { waitUntil: "domcontentloaded" });
-  await page.locator("#datasets").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 74));
-  await page.getByRole("heading", { name: /Freshness is part of the fact/i }).waitFor();
+  await page.locator("#tutorial").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 74));
+  await page.getByRole("heading", { name: /Four workspaces\. One read-only boundary/i }).waitFor();
   await settle();
   await capture("05-sourcebook");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`${baseUrl}/data`, { waitUntil: "domcontentloaded" });
+  await page.locator("#overview").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 142));
+  const mobileOverviewFrame = page.locator("#overview metabase-dashboard iframe").contentFrame();
+  await mobileOverviewFrame.getByText("Pacific observation density", { exact: true }).waitFor({ timeout: 30_000 });
+  await settle();
+  await capture("06-data-lab-mobile");
+
+  await page.goto(`${baseUrl}/sourcebook`, { waitUntil: "domcontentloaded" });
+  await page.locator("#tutorial").evaluate((element) => window.scrollTo(0, element.getBoundingClientRect().top + window.scrollY - 88));
+  await page.getByRole("heading", { name: /Four workspaces\. One read-only boundary/i }).waitFor();
+  await settle();
+  await capture("07-sourcebook-mobile");
 } finally {
   await browser.close();
 }

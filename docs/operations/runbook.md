@@ -200,8 +200,9 @@ delete Postgres WAL/data files or the only backup copy manually.
 2. Atlas searches a seeded volcano and toggles every layer.
 3. Volcano deep link displays source and partial-date history.
 4. Sourcebook versions match `/api/v1/sources/status`.
-5. Data Lab loads one question and the dashboard; filters synchronize.
+5. Data Lab resolves four stable dashboard keys; each lazy workspace loads four
+   positioned charts and its native filters respond.
 6. Unknown Metabase ID is rejected and the secret is absent from browser code.
-7. `metabase_reader` can query `analytics.volcanoes` and is denied
-   `core.volcano`.
+7. `metabase_reader` can query `analytics.volcanoes` and
+   `analytics.plate_boundaries`, and is denied `core.volcano` and `ops`.
 8. One encrypted backup completes and can be listed with the offline key.

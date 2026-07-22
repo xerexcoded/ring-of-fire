@@ -1,67 +1,104 @@
 "use client";
 
-import { BarChart3, CircleDot, ExternalLink, LineChart, ScatterChart } from "lucide-react";
-import { useState } from "react";
-import { MetabaseEmbed } from "@/components/metabase-embed";
+import { useEffect, useState } from "react";
+import { LazyMetabaseEmbed } from "@/components/metabase-embed";
 
-const questions = [
-  { number: "01", title: "Membership by region", detail: "Current Smithsonian PROF membership, versioned independently from the editorial route.", form: "bar", icon: BarChart3 },
-  { number: "02", title: "Volcanoes by form", detail: "Primary volcano type by region, with unknown classifications preserved.", form: "bar", icon: BarChart3 },
-  { number: "03", title: "Eruptions by decade", detail: "Recorded eruptions from 1960 onward by default to reduce early-recording bias.", form: "line", icon: LineChart },
-  { number: "04", title: "VEI distribution", detail: "Known VEI values alongside a visible missing-data count—not an imputed distribution.", form: "dots", icon: CircleDot },
-  { number: "05", title: "Magnitude × depth", detail: "Recent USGS earthquakes; magnitude is not a prediction of local impact.", form: "scatter", icon: ScatterChart },
-  { number: "06", title: "Tsunami causes & impacts", detail: "Historical sources grouped by cause, with incomplete impact fields left nullable.", form: "bar", icon: BarChart3 },
+export const dataLabSections = [
+  {
+    id: "overview",
+    number: "01",
+    label: "Overview",
+    eyebrow: "Coverage and completeness",
+    title: "What is in the analytical store",
+    description: "Compare record volume, temporal reach, geographic density, and known-value coverage across all five read-only views.",
+    caveat: "Density shows observation coverage, not hazard intensity.",
+    resourceKey: "ring-of-fire-data-lab",
+  },
+  {
+    id: "volcanoes",
+    number: "02",
+    label: "Volcanoes",
+    eyebrow: "Volcanoes and eruptions",
+    title: "Compare the reviewed volcanic record",
+    description: "Filter 41 Smithsonian PROF regions, compare volcano types, and examine confirmed eruption and VEI distributions.",
+    caveat: "Historical trends default to 1960; missing VEI remains unknown.",
+    resourceKey: "volcano-eruption-data-lab",
+  },
+  {
+    id: "seismicity",
+    number: "03",
+    label: "Seismicity",
+    eyebrow: "Earthquakes and plate context",
+    title: "Inspect recent seismic observations",
+    description: "Change the lookback window and magnitude threshold, then compare location density, depth, timing, and boundary inventory.",
+    caveat: "Nearby boundaries provide spatial context, never causal attribution.",
+    resourceKey: "earthquake-plate-data-lab",
+  },
+  {
+    id: "tsunamis",
+    number: "04",
+    label: "Tsunamis",
+    eyebrow: "Tsunamis and impacts",
+    title: "Explore the historical impact record",
+    description: "Filter by start year or cause and compare event density, historical frequency, water height, and recorded impacts.",
+    caveat: "Impact totals and water heights are incomplete and observation-dependent.",
+    resourceKey: "tsunami-impact-data-lab",
+  },
 ] as const;
 
-export function DataLab({ dashboardId }: { dashboardId: number }) {
-  const [region, setRegion] = useState("All");
-  const [fromYear, setFromYear] = useState("1960");
-  const parameters = {
-    region: region === "All" ? null : [region],
-    start_year: fromYear,
-  };
+export function DataLab() {
+  const [activeSection, setActiveSection] = useState(dataLabSections[0].id);
+
+  useEffect(() => {
+    const sections = dataLabSections
+      .map(({ id }) => document.getElementById(id))
+      .filter((section): section is HTMLElement => Boolean(section));
+    if (typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible?.target.id) setActiveSection(visible.target.id as typeof activeSection);
+    }, { rootMargin: "-20% 0px -58%", threshold: [0.05, 0.2, 0.5] });
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
-      <section className="data-ledger" aria-labelledby="questions-title">
-        <div className="data-ledger-head">
-          <div className="section-title-group"><p className="eyebrow">Six saved questions</p><h2 id="questions-title">What the data can answer.</h2></div>
-          <p>Every chart retains its query, source version, and limitations inside the Metabase collection provisioned by Clojure.</p>
-        </div>
+      <nav className="data-section-nav" aria-label="Data Lab sections">
+        <span>Explore</span>
         <ol>
-          {questions.map(({ number, title, detail, form, icon: Icon }) => (
-            <li key={number}>
-              <span>{number}</span>
-              <Icon aria-hidden="true" />
-              <div><h3>{title}</h3><p>{detail}</p></div>
-              <div className={`mini-chart mini-${form}`} aria-hidden="true">
-                {Array.from({ length: form === "scatter" ? 10 : 6 }, (_, index) => <i key={index} style={{ "--i": index } as React.CSSProperties} />)}
-              </div>
+          {dataLabSections.map(({ id, number, label }) => (
+            <li key={id}>
+              <a href={`#${id}`} aria-current={activeSection === id ? "location" : undefined}>
+                <b>{number}</b>{label}
+              </a>
             </li>
           ))}
         </ol>
-      </section>
+      </nav>
 
-      <section className="dashboard-section" aria-labelledby="dashboard-title">
-        <div className="dashboard-head">
-          <div className="section-title-group"><p className="eyebrow">Composite dashboard · Live analytics</p><h2 id="dashboard-title">The Pacific, counted carefully.</h2></div>
-          <div className="dashboard-filters" aria-label="Dashboard filters">
-            <label>Region<select value={region} onChange={(event) => setRegion(event.target.value)}><option>All</option><option>Taupo Volcanic Arc</option><option>Tofua Volcanic Arc</option><option>Luzon Volcanic Arc</option><option>Northeast Japan Volcanic Arc</option><option>Alaska Peninsula Volcanic Arc</option><option>High Cascades Volcanic Arc</option><option>Trans-Mexican Volcanic Arc</option><option>Central America Volcanic Arc</option><option>Northern Andean Volcanic Arc</option><option>Southern Andean Volcanic Arc</option></select></label>
-            <label>Historical trends from<select value={fromYear} onChange={(event) => setFromYear(event.target.value)}><option>1960</option><option>1980</option><option>2000</option><option>2020</option></select></label>
-          </div>
-        </div>
-        <div className="metabase-context">
-          <span>Metabase OSS · Modular Guest embed</span>
-          <p>Filters above are controlled by this page and synchronized with the embedded dashboard. The component renews its JWT through the Clojure service; no secret enters the browser.</p>
-          <a href="https://www.metabase.com/docs/latest/embedding/guest-embedding" target="_blank" rel="noreferrer">How guest embedding works <ExternalLink /></a>
-        </div>
-        <MetabaseEmbed dashboardId={dashboardId} parameters={parameters} onParametersChange={(values) => {
-          const nextRegion = values.region;
-          const nextYear = values.start_year;
-          if (Array.isArray(nextRegion)) setRegion(nextRegion[0] ?? "All");
-          if (typeof nextYear === "string") setFromYear(nextYear);
-        }} />
-      </section>
+      <div className="data-workspaces">
+        {dataLabSections.map(({ id, number, eyebrow, title, description, caveat, resourceKey }) => (
+          <section id={id} className="data-workspace" aria-labelledby={`${id}-title`} key={id}>
+            <header className="data-workspace-head">
+              <div className="workspace-index">{number}</div>
+              <div>
+                <p className="eyebrow">{eyebrow}</p>
+                <h2 id={`${id}-title`}>{title}</h2>
+              </div>
+              <div className="workspace-context">
+                <p>{description}</p>
+                <small>{caveat}</small>
+              </div>
+            </header>
+            <LazyMetabaseEmbed resourceKey={resourceKey} />
+          </section>
+        ))}
+      </div>
     </>
   );
 }

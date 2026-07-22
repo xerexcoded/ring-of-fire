@@ -20,14 +20,14 @@ make provisioning behavior unpredictable and difficult to demonstrate.
 - Pin `metabase/metabase:v0.62.4.3`.
 - Use Modular Guest embedding for published questions and dashboards.
 - Keep the custom Pacific map and detail interactions in Next.js/MapLibre.
-- Load Metabase `embed.js` only in the browser and synchronize controlled
-  filters with the component `parameters` contract and change events.
+- Load Metabase `embed.js` only in the browser, resolve stable resource keys at
+  runtime, and use native editable filters inside each guest dashboard.
 - Sign JWTs in Clojure with a maximum 60-minute lifetime. Accept the
   official-style `{ entityType, entityId, customContext? }` request but issue a
   token only when the resource is enabled in `metabase_resource`.
 - Use Metabase v62's required 256-bit embedding-key representation: exactly 64
   hexadecimal characters, generated independently for production.
-- Provision the read-only database, collection, questions, dashboard, filters,
+- Provision the read-only database, collection, questions, dashboards, filters,
   and guest publication through an idempotent Clojure task tested against the
   pinned image.
 - Accept OSS constraints: no drill-through, query builder, advanced theming,
@@ -39,7 +39,7 @@ make provisioning behavior unpredictable and difficult to demonstrate.
 Anyone can run the full example without a commercial license, and the tutorial
 shows the exact trust boundary around guest embedding. Metabase charts use the
 supported dark preset but cannot perfectly match the editorial interface. The
-Data Lab must design controlled filters up front rather than rely on
+Data Lab must design native editable filters up front rather than rely on
 drill-through. A Metabase upgrade is a deliberate change with a bootstrap
 integration test, not a tag bump to `latest`.
 

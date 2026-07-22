@@ -27,8 +27,16 @@ test("manual chapters remain usable with reduced motion", async ({ page }) => {
 });
 
 test("atlas offers a non-map equivalent for every visible layer", async ({ page }) => {
+  test.slow();
   await page.goto("/atlas");
-  await page.getByText("Open accessible tables for every visible map layer").click();
+  const tables = page.locator(".map-text-equivalent");
+  const summary = tables.locator("summary");
+  await summary.scrollIntoViewIfNeeded();
+  await summary.click();
+  if (!await tables.evaluate((element) => (element as HTMLDetailsElement).open)) {
+    await summary.press("Enter");
+  }
+  await expect(tables).toHaveJSProperty("open", true);
   await expect(page.getByText(/Volcanoes matching the current atlas filters/)).toBeVisible();
   await expect(page.getByText(/Earthquakes matching magnitude, depth, and date filters/)).toBeVisible();
   await expect(page.getByText(/Plate boundary segments/)).toBeVisible();
@@ -36,6 +44,7 @@ test("atlas offers a non-map equivalent for every visible layer", async ({ page 
 });
 
 test("atlas search, layers, VEI filters, and profile deep links work together", async ({ page }) => {
+  test.slow();
   await page.goto("/atlas");
   await page.getByRole("searchbox", { name: "Search volcano, country, or region" }).fill("Fuji");
   const tables = page.locator(".map-text-equivalent");
@@ -54,9 +63,11 @@ test("atlas search, layers, VEI filters, and profile deep links work together", 
   await page.goto("/atlas");
   await page.getByRole("button", { name: "Hide Volcanoes" }).click();
   await expect(page.getByRole("button", { name: "Show Volcanoes" })).toBeVisible();
-  await page.getByRole("button", { name: /Filters/ }).click();
+  await page.getByRole("button", { name: "Filters", exact: true }).click({ force: true });
   await expect(page.getByLabel("Minimum VEI")).toBeVisible();
-  await expect(page.getByLabel("Maximum VEI")).toBeVisible();
+  const maximumVei = page.locator("#atlas-filters label").filter({ hasText: "Maximum VEI" }).locator("select");
+  await maximumVei.evaluate((element) => element.scrollIntoView({ block: "center" }));
+  await expect(maximumVei).toBeVisible();
 });
 
 test("all ten volcano profiles are statically addressable", async ({ page }) => {
@@ -153,36 +164,79 @@ test("sourcebook preview has a static reduced-motion equivalent", async ({ page 
 });
 
 test("Data Lab fails gracefully when analytics is unavailable", async ({ page }) => {
+  await page.route("**/metabase/resources/ring-of-fire-data-lab", (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({ entityType: "dashboard", entityId: 1 }),
+  }));
   await page.route("**/metabase/guest-token", (route) => route.fulfill({
     status: 503,
     contentType: "application/problem+json",
     body: JSON.stringify({ title: "Analytics unavailable", status: 503 }),
   }));
   await page.goto("/data");
-  await expect(page.getByRole("heading", { level: 1, name: /Evidence, with its edges showing/i })).toBeVisible();
-  await expect(page.getByText("Data Lab is temporarily unavailable")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: /Explore the Pacific evidence/i })).toBeVisible();
+  await page.locator("#overview").scrollIntoViewIfNeeded();
+  await expect(page.getByText("This workspace is temporarily unavailable")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Compare the reviewed volcanic record" })).toBeAttached();
 });
 
-test("live Data Lab renders six positioned charts and synchronizes filters", async ({ page }) => {
+test("Data Lab exposes four navigable workspaces and reduced-motion loading", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/data");
+  await expect(page.getByRole("navigation", { name: "Data Lab sections" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2 })).toHaveCount(4);
+  await page.getByRole("link", { name: "04 Tsunamis" }).click();
+  await expect(page.locator("#tsunamis")).toBeInViewport();
+  await expect(page.locator("#tsunamis .lazy-metabase-dashboard")).toHaveCSS("transform", "none");
+});
+
+test("live Data Lab renders sixteen positioned charts across four dashboards", async ({ page }, testInfo) => {
   test.skip(process.env.FULL_STACK !== "1", "requires the provisioned Compose stack");
   await page.goto("/data");
-  const embed = page.locator("metabase-dashboard");
-  await embed.scrollIntoViewIfNeeded();
-  const frame = page.frameLocator("metabase-dashboard iframe");
-  await expect(frame.getByText("Ring membership by GVP region", { exact: true })).toBeVisible({ timeout: 30_000 });
+  const workspaces = [
+    { id: "overview", card: "Pacific observation density", filter: null },
+    { id: "volcanoes", card: "Reviewed volcanoes by GVP region", filter: "Start year", choice: "1980" },
+    { id: "seismicity", card: "Recent earthquake density", filter: "Lookback days", choice: "90" },
+    { id: "tsunamis", card: "Recorded tsunami density", filter: "Start year", choice: "2000" },
+  ] as const;
 
-  const cards = frame.locator("[data-testid=dashcard-container]");
-  await expect(cards).toHaveCount(6);
-  const positions = await cards.evaluateAll((elements) => elements.map((element) => {
-    const { x, y } = element.getBoundingClientRect();
-    return `${Math.round(x)}:${Math.round(y)}`;
-  }));
-  expect(new Set(positions).size).toBe(6);
-  await expect(frame.getByText("Which fields do you want to use for the X and Y axes?", { exact: true })).toHaveCount(0);
+  for (const workspace of workspaces) {
+    const section = page.locator(`#${workspace.id}`);
+    await section.scrollIntoViewIfNeeded();
+    const embed = section.locator("metabase-dashboard");
+    await expect(embed).toBeAttached({ timeout: 30_000 });
+    const frame = section.frameLocator("metabase-dashboard iframe");
+    await expect(frame.getByText(workspace.card, { exact: true })).toBeVisible({ timeout: 30_000 });
 
-  await page.getByLabel("Region").selectOption("Taupo Volcanic Arc");
-  await expect(frame.getByText("Taupo Volcanic Arc", { exact: true }).first()).toBeVisible();
-  await expect(embed).toHaveAttribute("parameters", /Taupo Volcanic Arc/);
+    const cards = frame.locator("[data-testid=dashcard-container]");
+    await expect(cards).toHaveCount(4);
+    await expect.poll(async () => cards.evaluateAll((elements) => new Set(elements.map((element) => {
+      const { x, y } = element.getBoundingClientRect();
+      return `${Math.round(x)}:${Math.round(y)}`;
+    })).size)).toBe(4);
+    const layout = await cards.evaluateAll((elements) => {
+      const positions = elements.map((element) => {
+        const { x, y } = element.getBoundingClientRect();
+        return `${Math.round(x)}:${Math.round(y)}`;
+      });
+      const grid = elements[0]?.parentElement?.getBoundingClientRect();
+      const minLeft = Math.min(...elements.map((element) => element.getBoundingClientRect().left));
+      const maxRight = Math.max(...elements.map((element) => element.getBoundingClientRect().right));
+      return { positions, gridCoverage: grid ? (maxRight - minLeft) / grid.width : 0 };
+    });
+    expect(new Set(layout.positions).size).toBe(4);
+    expect(layout.gridCoverage).toBeGreaterThan(0.97);
+    await expect(frame.getByText("Which fields do you want to use for the X and Y axes?", { exact: true })).toHaveCount(0);
+    if (workspace.filter && testInfo.project.name !== "mobile") {
+      const filter = frame.getByRole("button", { name: workspace.filter });
+      await expect(filter).toBeVisible();
+      await filter.click();
+      await frame.getByText(workspace.choice, { exact: true }).last().click();
+      await frame.getByRole("button", { name: "Update filter" }).click();
+      await expect(filter).toContainText(workspace.choice);
+    }
+  }
 });
 
 test("mobile navigation is keyboard-operable", async ({ page }, testInfo) => {

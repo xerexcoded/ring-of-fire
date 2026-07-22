@@ -81,7 +81,8 @@ make down            # stop while retaining databases
 - `/volcanoes/[slug]` contains ten sourced volcano profiles.
 - `/history` distinguishes recorded measurements from narrative interpretation
   across seven consequential events.
-- `/data` hosts six allow-listed Metabase questions and a composite dashboard.
+- `/data` lazily loads four allow-listed Metabase dashboards containing sixteen
+  saved questions across coverage, volcanism, seismicity, and tsunami impacts.
 - `/sourcebook` makes dataset versions, freshness, uncertainty, licenses,
   architecture, and known gaps part of the product rather than a footnote.
 
@@ -175,8 +176,13 @@ versioned in the meantime.
 
 The stack pins `metabase/metabase:v0.62.4.3`. It uses OSS Modular Guest embeds,
 not the paid React SDK. The Clojure bootstrap creates or reconciles the database
-connection, collection, six questions, dashboard, filters, and guest
-publication, then records their numeric IDs in `ops.metabase_resource`.
+connection, collection, sixteen questions, four dashboards, native filters,
+and guest publication, then records their numeric IDs in
+`ops.metabase_resource`.
+
+The browser resolves stable resource keys only as each workspace approaches the
+viewport. Numeric Metabase IDs stay behind the resource-resolution endpoint,
+and an unavailable workspace can be retried without blanking the other three.
 
 The frontend asks the Clojure API for a JWT using an official-style
 `{ entityType, entityId, customContext? }` body. The API signs only resources in
