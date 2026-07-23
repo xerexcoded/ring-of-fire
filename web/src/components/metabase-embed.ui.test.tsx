@@ -2,7 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { DataLab } from "@/components/data-lab";
-import { LazyMetabaseEmbed, MetabaseEmbed } from "@/components/metabase-embed";
+import { LazyMetabaseEmbed, METABASE_THEME_PRESET, MetabaseEmbed } from "@/components/metabase-embed";
 
 type ObserverRecord = {
   callback: IntersectionObserverCallback;
@@ -67,6 +67,7 @@ describe("Metabase workspace embeds", () => {
     await waitFor(() => expect(document.querySelector("metabase-dashboard")).toBeInTheDocument());
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(String(fetchMock.mock.calls[0][0])).toContain("/metabase/resources/ring-of-fire-data-lab");
+    expect(window.metabaseConfig?.theme).toEqual({ preset: METABASE_THEME_PRESET });
   });
 
   it("resolves the stable resource key again when retrying", async () => {

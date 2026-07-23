@@ -208,6 +208,7 @@ test("live Data Lab renders sixteen positioned charts across four dashboards", a
     await expect(embed).toBeAttached({ timeout: 30_000 });
     const frame = section.frameLocator("metabase-dashboard iframe");
     await expect(frame.getByText(workspace.card, { exact: true })).toBeVisible({ timeout: 30_000 });
+    await expect(frame.locator("html")).toHaveAttribute("data-mantine-color-scheme", "dark");
 
     const cards = frame.locator("[data-testid=dashcard-container]");
     await expect(cards).toHaveCount(4);
@@ -215,18 +216,20 @@ test("live Data Lab renders sixteen positioned charts across four dashboards", a
       const { x, y } = element.getBoundingClientRect();
       return `${Math.round(x)}:${Math.round(y)}`;
     })).size)).toBe(4);
+    await expect.poll(async () => cards.evaluateAll((elements) => {
+      const grid = elements[0]?.parentElement?.getBoundingClientRect();
+      const minLeft = Math.min(...elements.map((element) => element.getBoundingClientRect().left));
+      const maxRight = Math.max(...elements.map((element) => element.getBoundingClientRect().right));
+      return grid ? (maxRight - minLeft) / grid.width : 0;
+    })).toBeGreaterThan(0.97);
     const layout = await cards.evaluateAll((elements) => {
       const positions = elements.map((element) => {
         const { x, y } = element.getBoundingClientRect();
         return `${Math.round(x)}:${Math.round(y)}`;
       });
-      const grid = elements[0]?.parentElement?.getBoundingClientRect();
-      const minLeft = Math.min(...elements.map((element) => element.getBoundingClientRect().left));
-      const maxRight = Math.max(...elements.map((element) => element.getBoundingClientRect().right));
-      return { positions, gridCoverage: grid ? (maxRight - minLeft) / grid.width : 0 };
+      return { positions };
     });
     expect(new Set(layout.positions).size).toBe(4);
-    expect(layout.gridCoverage).toBeGreaterThan(0.97);
     await expect(frame.getByText("Which fields do you want to use for the X and Y axes?", { exact: true })).toHaveCount(0);
     if (workspace.filter && testInfo.project.name !== "mobile") {
       const filter = frame.getByRole("button", { name: workspace.filter });

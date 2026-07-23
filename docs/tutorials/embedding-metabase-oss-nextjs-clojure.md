@@ -144,6 +144,13 @@ const token = await fetch(`${apiBase}/metabase/guest-token`, {
   }),
 }).then((response) => response.json());
 
+window.metabaseConfig = {
+  isGuest: true,
+  instanceUrl: "https://analytics.example.com",
+  guestEmbedProviderUri: `${apiBase}/metabase/guest-token`,
+  theme: { preset: "dark" },
+};
+
 const embed = document.createElement("metabase-dashboard");
 embed.setAttribute("token", token.jwt);
 host.replaceChildren(embed);
@@ -156,7 +163,8 @@ unmount.
 ## 6. Design for OSS constraints and outages
 
 Guest embeds support questions, dashboards, signed access, and native editable
-filters. They do not provide drill-through, query building, advanced theming,
+filters. OSS embeds can use Metabase's built-in light or dark preset, but they
+do not provide drill-through, query building, granular custom theming,
 row/column security, removal of downloads, or removal of the “Powered by
 Metabase” treatment. Treat those as product constraints, not bugs to hide with
 unsupported CSS.

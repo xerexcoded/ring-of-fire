@@ -14,12 +14,16 @@ declare global {
       isGuest: boolean;
       instanceUrl: string;
       guestEmbedProviderUri: string;
+      theme: {
+        preset: "dark" | "light";
+      };
     };
   }
 }
 
 let embedScriptPromise: Promise<void> | null = null;
 export const EMBED_RENEWAL_MS = 55 * 60 * 1000;
+export const METABASE_THEME_PRESET = "dark" as const;
 
 export function scheduleEmbedRenewal(callback: () => void) {
   return setTimeout(callback, EMBED_RENEWAL_MS);
@@ -101,7 +105,12 @@ export function MetabaseEmbed({ resourceKey, onStatusChange }: MetabaseEmbedProp
         const tokenBody = await tokenResponse.json() as { jwt?: string };
         if (!tokenBody.jwt) throw new Error("Guest token endpoint returned no JWT");
 
-        window.metabaseConfig = { isGuest: true, instanceUrl, guestEmbedProviderUri };
+        window.metabaseConfig = {
+          isGuest: true,
+          instanceUrl,
+          guestEmbedProviderUri,
+          theme: { preset: METABASE_THEME_PRESET },
+        };
         await loadEmbedScript(instanceUrl);
         if (!active || !mount) return;
 
