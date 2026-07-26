@@ -34,16 +34,52 @@
       (is (re-find #"\{\{start_year\}\}" (:query question)))
       (is (= 1960 (get-in question [:template-tags :start_year :default]))))))
 
-(deftest charts-pin-required-axes-and-map-density
+(deftest charts-pin-required-axes-and-binned-map-density
   (let [by-key (into {} (map (juxt :key identity)) bootstrap/question-specs)]
     (is (= {:graph.dimensions ["decade"] :graph.metrics ["eruptions"]}
            (:visualization-settings (by-key "eruptions-by-decade"))))
     (is (= {:graph.dimensions ["vei"] :graph.metrics ["eruptions"]}
            (:visualization-settings (by-key "vei-distribution"))))
-    (doseq [key ["pacific-observation-density" "earthquake-density" "tsunami-density"]]
-      (is (= "grid" (get-in by-key [key :visualization-settings :map.type])))
-      (is (= "latitude" (get-in by-key [key :visualization-settings :map.latitude_column])))
-      (is (= "longitude" (get-in by-key [key :visualization-settings :map.longitude_column]))))))
+    (doseq [[key expected-parameters]
+            {"pacific-observation-density" []
+             "earthquake-density" ["lookback_days" "min_magnitude"]
+             "tsunami-density" ["start_year" "cause"]}]
+      (let [question (by-key key)
+            settings (:visualization-settings question)
+            query (:query question)]
+        (is (= {:map.type "grid"
+                :map.pin_type "grid"
+                :map.latitude_column "latitude_bin"
+                :map.longitude_column "longitude_bin"
+                :map.metric_column "observations"
+                :map.center_latitude 5
+                :map.center_longitude 180
+                :map.zoom 2}
+               settings))
+        (is (nil? (:map.region settings)))
+        (is (= expected-parameters (:parameters question)))
+        (is (re-find #"floor\(latitude\)::integer AS latitude_bin" query))
+        (is (re-find #"floor\(longitude\)::integer AS longitude_bin" query))
+        (is (re-find #"count\(\*\) AS observations" query))
+        (is (re-find #"GROUP BY 1, 2" query))
+        (is (re-find #"ORDER BY observations DESC, latitude_bin, longitude_bin" query))
+        (is (re-find #"LIMIT 5000" query))
+        (is (re-find #"Each 1° cell" (:description question)))))))
+
+(deftest map-question-reconciliation-persists-density-description
+  (let [requests (atom [])
+        spec (some #(when (= "earthquake-density" (:key %)) %) bootstrap/question-specs)]
+    (with-redefs [bootstrap/request!
+                  (fn [_ method path body]
+                    (swap! requests conj [method path body])
+                    (cond
+                      (= [:put "/api/card/42"] [method path]) {:id 42}
+                      :else (throw (ex-info "Unexpected test request" {:method method :path path}))))]
+      (bootstrap/ensure-question! {:test true} 5 7
+                                  [{:id 42 :name "Recent earthquake density"}]
+                                  spec)
+      (is (= (:description spec) (get-in @requests [0 2 :description])))
+      (is (= "observations" (get-in @requests [0 2 :visualization_settings :map.metric_column]))))))
 
 (deftest volcano-and-eruption-questions-use-reviewed-prof-membership
   (let [by-key (into {} (map (juxt :key identity)) bootstrap/question-specs)]

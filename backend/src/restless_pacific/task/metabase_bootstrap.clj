@@ -162,11 +162,16 @@
     :name "Pacific observation density"
     :display "map"
     :parameters []
-    :query "WITH recent_earthquakes AS (\n  SELECT latitude, longitude\n  FROM analytics.earthquakes\n  WHERE occurred_at >= now() - interval '30 days'\n  ORDER BY occurred_at DESC\n  LIMIT 5000\n), observations AS (\n  SELECT latitude, longitude, 'Reviewed volcano' AS record_type\n  FROM analytics.volcanoes\n  WHERE in_smithsonian_prof\n  UNION ALL\n  SELECT latitude, longitude, 'Recent earthquake' AS record_type\n  FROM recent_earthquakes\n  UNION ALL\n  SELECT latitude, longitude, 'Recorded tsunami' AS record_type\n  FROM analytics.tsunamis\n  WHERE event_year >= 1960 AND latitude IS NOT NULL AND longitude IS NOT NULL\n)\nSELECT latitude, longitude, record_type\nFROM observations\nWHERE latitude IS NOT NULL AND longitude IS NOT NULL"
+    :description "Each 1° cell shows the number of available observations, not hazard intensity."
+    :query "WITH recent_earthquakes AS (\n  SELECT latitude, longitude\n  FROM analytics.earthquakes\n  WHERE occurred_at >= now() - interval '30 days'\n  ORDER BY occurred_at DESC\n  LIMIT 5000\n), observations AS (\n  SELECT latitude, longitude\n  FROM analytics.volcanoes\n  WHERE in_smithsonian_prof\n  UNION ALL\n  SELECT latitude, longitude\n  FROM recent_earthquakes\n  UNION ALL\n  SELECT latitude, longitude\n  FROM analytics.tsunamis\n  WHERE event_year >= 1960 AND latitude IS NOT NULL AND longitude IS NOT NULL\n), valid_observations AS (\n  SELECT latitude, longitude\n  FROM observations\n  WHERE latitude IS NOT NULL AND longitude IS NOT NULL\n)\nSELECT floor(latitude)::integer AS latitude_bin,\n       floor(longitude)::integer AS longitude_bin,\n       count(*) AS observations\nFROM valid_observations\nGROUP BY 1, 2\nORDER BY observations DESC, latitude_bin, longitude_bin"
     :visualization-settings {:map.type "grid"
-                             :map.region "world"
-                             :map.latitude_column "latitude"
-                             :map.longitude_column "longitude"}
+                             :map.pin_type "grid"
+                             :map.latitude_column "latitude_bin"
+                             :map.longitude_column "longitude_bin"
+                             :map.metric_column "observations"
+                             :map.center_latitude 5
+                             :map.center_longitude 180
+                             :map.zoom 2}
     :template-tags {}}
    {:key "analytical-records-by-dataset"
     :name "Analytical records by dataset"
@@ -237,11 +242,16 @@
     :name "Recent earthquake density"
     :display "map"
     :parameters ["lookback_days" "min_magnitude"]
-    :query "SELECT latitude, longitude, magnitude, depth_km, place, occurred_at\nFROM analytics.earthquakes\nWHERE occurred_at >= now() - ({{lookback_days}} * interval '1 day')\n  AND magnitude >= {{min_magnitude}}\nORDER BY occurred_at DESC\nLIMIT 5000"
+    :description "Each 1° cell shows the number of filtered earthquake observations, not hazard intensity."
+    :query "WITH filtered_earthquakes AS (\n  SELECT latitude, longitude\n  FROM analytics.earthquakes\n  WHERE occurred_at >= now() - ({{lookback_days}} * interval '1 day')\n    AND magnitude >= {{min_magnitude}}\n  ORDER BY occurred_at DESC\n  LIMIT 5000\n)\nSELECT floor(latitude)::integer AS latitude_bin,\n       floor(longitude)::integer AS longitude_bin,\n       count(*) AS observations\nFROM filtered_earthquakes\nWHERE latitude IS NOT NULL AND longitude IS NOT NULL\nGROUP BY 1, 2\nORDER BY observations DESC, latitude_bin, longitude_bin"
     :visualization-settings {:map.type "grid"
-                             :map.region "world"
-                             :map.latitude_column "latitude"
-                             :map.longitude_column "longitude"}
+                             :map.pin_type "grid"
+                             :map.latitude_column "latitude_bin"
+                             :map.longitude_column "longitude_bin"
+                             :map.metric_column "observations"
+                             :map.center_latitude 5
+                             :map.center_longitude 180
+                             :map.zoom 2}
     :template-tags (merge lookback-template-tag min-magnitude-template-tag)}
    {:key "earthquake-magnitude-depth"
     :name "Earthquake magnitude versus depth"
@@ -272,11 +282,16 @@
     :name "Recorded tsunami density"
     :display "map"
     :parameters ["start_year" "cause"]
-    :query "SELECT latitude, longitude, event_year, cause, country, location_name, maximum_water_height_m, deaths\nFROM analytics.tsunamis\nWHERE event_year >= {{start_year}}\n  AND latitude IS NOT NULL AND longitude IS NOT NULL\n[[AND cause = {{cause}}]]\nORDER BY event_year DESC\nLIMIT 5000"
+    :description "Each 1° cell shows the number of filtered tsunami records, not hazard intensity."
+    :query "WITH filtered_tsunamis AS (\n  SELECT latitude, longitude\n  FROM analytics.tsunamis\n  WHERE event_year >= {{start_year}}\n    AND latitude IS NOT NULL AND longitude IS NOT NULL\n  [[AND cause = {{cause}}]]\n  ORDER BY event_year DESC\n  LIMIT 5000\n)\nSELECT floor(latitude)::integer AS latitude_bin,\n       floor(longitude)::integer AS longitude_bin,\n       count(*) AS observations\nFROM filtered_tsunamis\nGROUP BY 1, 2\nORDER BY observations DESC, latitude_bin, longitude_bin"
     :visualization-settings {:map.type "grid"
-                             :map.region "world"
-                             :map.latitude_column "latitude"
-                             :map.longitude_column "longitude"}
+                             :map.pin_type "grid"
+                             :map.latitude_column "latitude_bin"
+                             :map.longitude_column "longitude_bin"
+                             :map.metric_column "observations"
+                             :map.center_latitude 5
+                             :map.center_longitude 180
+                             :map.zoom 2}
     :template-tags (merge start-year-template-tag cause-template-tag)}
    {:key "tsunami-causes-impacts"
     :name "Tsunami events by decade and cause"
@@ -370,8 +385,9 @@
 
 (defn ensure-question! [client database-id collection-id existing spec]
   (let [payload {:name (:name spec)
-                 :description (str "Provisioned by the version-pinned Restless Pacific bootstrap task. "
-                                   "Resource key: " (:key spec) ".")
+                 :description (or (:description spec)
+                                  (str "Provisioned by the version-pinned Restless Pacific bootstrap task. "
+                                       "Resource key: " (:key spec) "."))
                  :collection_id collection-id
                  :display (:display spec)
                  :dataset_query {:database database-id
