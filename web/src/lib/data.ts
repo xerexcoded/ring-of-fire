@@ -1,6 +1,11 @@
 import type {
   BoundaryProperties,
+  DefinitionComparison,
+  DefinitionComparisonResponse,
+  DefinitionRule,
+  DefinitionVolcanoProperties,
   EarthquakeProperties,
+  Feature,
   FeatureCollection,
   HistoryMoment,
   LineGeometry,
@@ -367,6 +372,162 @@ export const fallbackTsunamis: FeatureCollection<PointGeometry, TsunamiPropertie
     properties: { eventId: item.eventId, place: item.place, year: item.year, cause: item.cause, maxWaterHeightM: item.height, deaths: item.deaths, confidence: "uncertain" as const, source: noaaSource },
   })),
 };
+
+type DefinitionDemoVolcano = {
+  volcanoNumber: number;
+  slug: string;
+  name: string;
+  country: string;
+  region: string;
+  position: [number, number];
+  tectonicSetting: string;
+  lastKnownEruption: number | null;
+  smithsonianIncluded: boolean;
+  nearestBoundaryName: string | null;
+  nearestBoundaryDistanceKm: number | null;
+};
+
+const definitionDemoVolcanoes: DefinitionDemoVolcano[] = [
+  ...volcanoProfiles.map((volcano, index) => ({
+    volcanoNumber: volcano.volcanoNumber,
+    slug: volcano.slug,
+    name: volcano.name,
+    country: volcano.country,
+    region: volcano.region,
+    position: volcano.position,
+    tectonicSetting: volcano.tectonicSetting,
+    lastKnownEruption: typeof volcano.lastKnownEruption === "number"
+      ? volcano.lastKnownEruption
+      : Number.parseInt(volcano.lastKnownEruption ?? "", 10) || null,
+    smithsonianIncluded: true,
+    nearestBoundaryName: "Pacific convergent margin",
+    nearestBoundaryDistanceKm: 72 + index * 9,
+  })),
+  {
+    volcanoNumber: 241020,
+    slug: "auckland-volcanic-field-241020",
+    name: "Auckland Volcanic Field",
+    country: "New Zealand",
+    region: "Western North Island Volcanic Province",
+    position: [174.81, -36.89],
+    tectonicSetting: "Intraplate / Continental crust (> 25 km)",
+    lastKnownEruption: 1446,
+    smithsonianIncluded: true,
+    nearestBoundaryName: "Hikurangi–Kermadec margin",
+    nearestBoundaryDistanceKm: 191,
+  },
+  {
+    volcanoNumber: 262000,
+    slug: "krakatau-262000",
+    name: "Krakatau",
+    country: "Indonesia",
+    region: "Sunda Volcanic Arc",
+    position: [105.423, -6.102],
+    tectonicSetting: "Subduction zone / Continental crust (> 25 km)",
+    lastKnownEruption: 2022,
+    smithsonianIncluded: false,
+    nearestBoundaryName: "Sunda convergent margin",
+    nearestBoundaryDistanceKm: 157,
+  },
+  {
+    volcanoNumber: 332010,
+    slug: "kilauea-332010",
+    name: "Kīlauea",
+    country: "United States",
+    region: "Hawaiian Islands",
+    position: [-155.292, 19.421],
+    tectonicSetting: "Intraplate / Oceanic crust (< 15 km)",
+    lastKnownEruption: 2026,
+    smithsonianIncluded: false,
+    nearestBoundaryName: null,
+    nearestBoundaryDistanceKm: null,
+  },
+];
+
+function definitionComparisonKey(
+  smithsonianIncluded: boolean,
+  ruleIncluded: boolean,
+): DefinitionComparison {
+  if (smithsonianIncluded && ruleIncluded) return "both";
+  if (smithsonianIncluded) return "smithsonian-only";
+  if (ruleIncluded) return "rule-only";
+  return "neither";
+}
+
+export function fallbackDefinitionComparison(rule: DefinitionRule): DefinitionComparisonResponse {
+  const features: Array<Feature<PointGeometry, DefinitionVolcanoProperties>> =
+    definitionDemoVolcanoes.map((volcano) => {
+      const tectonicMatches = rule.tectonic === "all"
+        || volcano.tectonicSetting.toLocaleLowerCase().includes("subduction");
+      const proximityMatches = rule.maxDistanceKm === null
+        || (volcano.nearestBoundaryDistanceKm !== null
+          && volcano.nearestBoundaryDistanceKm <= rule.maxDistanceKm);
+      const eruptionMatches = rule.eruptedSince === null
+        || (volcano.lastKnownEruption !== null
+          && volcano.lastKnownEruption >= rule.eruptedSince);
+      const ruleIncluded = tectonicMatches && proximityMatches && eruptionMatches;
+
+      return {
+        type: "Feature",
+        id: volcano.volcanoNumber,
+        geometry: { type: "Point", coordinates: volcano.position },
+        properties: {
+          volcanoNumber: volcano.volcanoNumber,
+          slug: volcano.slug,
+          name: volcano.name,
+          country: volcano.country,
+          region: volcano.region,
+          volcanoType: null,
+          tectonicSetting: volcano.tectonicSetting,
+          lastKnownEruption: volcano.lastKnownEruption,
+          smithsonianIncluded: volcano.smithsonianIncluded,
+          ruleIncluded,
+          comparison: definitionComparisonKey(volcano.smithsonianIncluded, ruleIncluded),
+          ruleEvidence: { tectonicMatches, proximityMatches, eruptionMatches },
+          nearestConvergentBoundary: volcano.nearestBoundaryName
+            && volcano.nearestBoundaryDistanceKm !== null
+            ? {
+                name: volcano.nearestBoundaryName,
+                type: "convergent",
+                distanceKm: volcano.nearestBoundaryDistanceKm,
+                interpretation: "Demonstration proximity only; it does not establish causal attribution.",
+              }
+            : null,
+          source: gvpSource,
+        },
+      };
+    });
+  const comparisonCounts = features.reduce<Record<DefinitionComparison, number>>(
+    (counts, feature) => {
+      counts[feature.properties.comparison] += 1;
+      return counts;
+    },
+    { both: 0, "smithsonian-only": 0, "rule-only": 0, neither: 0 },
+  );
+
+  return {
+    type: "FeatureCollection",
+    features,
+    meta: {
+      count: features.length,
+      baselineCount: features.filter(({ properties }) => properties.smithsonianIncluded).length,
+      candidateCount: features.filter(({ properties }) => properties.ruleIncluded).length,
+      comparisonCounts,
+      baseline: {
+        key: "smithsonian-prof",
+        label: "Smithsonian PROF",
+        version: "5.3.6",
+        citationUrl: "https://volcano.si.edu/faq/Pacific_Ring_of_Fire.cfm",
+      },
+      rule,
+      fingerprint: "fallback:demonstration-subset",
+      source: gvpSource,
+      generatedAt: fixtureRefreshedAt,
+      notice: "The live comparison API is unavailable. Showing a small, sourced demonstration subset.",
+      isFallback: true,
+    },
+  };
+}
 
 export const historyMoments: HistoryMoment[] = [
   {

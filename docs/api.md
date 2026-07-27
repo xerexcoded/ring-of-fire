@@ -68,6 +68,33 @@ MultiLineString as supplied after normalization.
 Additional filters: `startYear`, `endYear`, `cause`, and `confidence`.
 Nullable impact properties are omitted or JSON null; unknown is not zero.
 
+## Definition comparison
+
+`GET /api/v1/definitions/compare` evaluates every volcano in the pinned
+1,215-record Holocene catalog against the reviewed Smithsonian PROF membership
+and the transparent Restless Pacific rule.
+
+| Parameter | Allowed values | Default |
+|---|---|---|
+| `tectonic` | `subduction`, `all` | `subduction` |
+| `maxDistanceKm` | number from 25 through 500 | disabled |
+| `eruptedSince` | `1800`, `1960` | disabled |
+
+```sh
+curl 'http://api.localhost/api/v1/definitions/compare?tectonic=subduction&maxDistanceKm=200&eruptedSince=1960'
+```
+
+The GeoJSON response classifies every feature as `both`, `smithsonian-only`,
+`rule-only`, or `neither`. Properties include both inclusion booleans,
+per-predicate evidence, the nearest convergent boundary as non-causal spatial
+context, and source provenance. Metadata includes baseline and candidate
+counts, the normalized rule, all four comparison counts, and a SHA-256
+fingerprint over the version, rule, and sorted candidate IDs.
+
+This endpoint is an educational comparison tool. It does not claim a new
+scientific boundary and does not produce hazard, risk, forecast, or causal
+output.
+
 ## Volcano detail
 
 `GET /api/v1/volcanoes/{volcanoNumber}` returns profile facts, coordinates,

@@ -99,9 +99,14 @@ export function JourneyExperience() {
           <p>
             The Smithsonian Global Volcanism Program currently identifies 688 Holocene volcanoes across 41 regions in its Pacific Ring of Fire grouping. It also cautions that the phrase is popular—not one connected geologic structure.
           </p>
-          <a className="text-link" href="https://volcano.si.edu/faq/Pacific_Ring_of_Fire.cfm" target="_blank" rel="noreferrer">
-            Read the Smithsonian definition <ArrowUpRight aria-hidden="true" />
-          </a>
+          <div className="definition-actions">
+            <a className="text-link" href="https://volcano.si.edu/faq/Pacific_Ring_of_Fire.cfm" target="_blank" rel="noreferrer">
+              Read the Smithsonian definition <ArrowUpRight aria-hidden="true" />
+            </a>
+            <Link className="text-link" href="/ringmaker">
+              Change the rule in Ringmaker <ArrowUpRight aria-hidden="true" />
+            </Link>
+          </div>
         </div>
         <dl className="definition-terms">
           <div><dt>Subduction</dt><dd>One tectonic plate descends beneath another, moving water-bearing rock into hotter, higher-pressure conditions.</dd></div>

@@ -119,3 +119,15 @@
       (is (= :review-required
              (:status (membership/catalog-review-decision
                        {:version "5.3.6" :records (rest detailed-records)})))))))
+
+(deftest pinned-holocene-catalog-contains-the-reviewed-set
+  (let [records (prof-fixture/load-holocene-records)
+        validation (prof-fixture/validate-holocene! records)
+        records-by-id (into {} (map (juxt :volcano-number identity)) records)]
+    (is (= 1215 (:catalog-volcano-count validation)))
+    (is (= "e23e13216b7af4f682c0ae04ff153c0744b20e8bf204b746a916d1f08281e690"
+           (:catalog-id-sha256 validation)))
+    (is (= "Indonesia" (:country (get records-by-id 262000)))
+        "The deterministic universe includes Krakatau outside the reviewed PROF set.")
+    (is (= "Izu Volcanic Arc" (:subregion (get records-by-id 283030)))
+        "Reviewed region reconstruction remains available in the global catalog.")))

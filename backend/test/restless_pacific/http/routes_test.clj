@@ -51,6 +51,34 @@
     (is (= 400 (:status body)))
     (is (= "/api/v1/atlas/volcanoes" (:instance body)))))
 
+(deftest definition-comparison-is-a-versioned-geojson-contract
+  (with-redefs [repo/definition-comparison
+                (fn [_ options]
+                  {:type "FeatureCollection"
+                   :features []
+                   :meta {:count 1215
+                          :baselineCount 688
+                          :candidateCount 900
+                          :rule {:tectonic (:tectonic options)
+                                 :maxDistanceKm (:max-distance-km options)
+                                 :eruptedSince (:erupted-since options)}
+                          :fingerprint "sha256:test"}})]
+    (let [handler (routes/handler {:db :db :token-config token-config})
+          response (handler {:request-method :get
+                             :uri "/api/v1/definitions/compare"
+                             :query-string "tectonic=all&maxDistanceKm=150&eruptedSince=1960"
+                             :headers {}})
+          body (json/parse-string (:body response) true)]
+      (is (= 200 (:status response)))
+      (is (= "application/geo+json; charset=utf-8"
+             (get-in response [:headers "Content-Type"])))
+      (is (= 1215 (get-in body [:meta :count])))
+      (is (= {:tectonic "all"
+              :maxDistanceKm 150.0
+              :eruptedSince 1960}
+             (get-in body [:meta :rule])))
+      (is (some? (get-in body [:meta :generatedAt]))))))
+
 (deftest resolves-enabled-metabase-resource-key-to-public-numeric-id
   (with-redefs [repo/metabase-resource-by-key
                 (fn [_ key]

@@ -9,6 +9,7 @@ import { EmberMark } from "@/components/ember-mark";
 const links = [
   ["/", "Journey"],
   ["/atlas", "Atlas"],
+  ["/ringmaker", "Ringmaker"],
   ["/history", "History"],
   ["/data", "Data Lab"],
   ["/sourcebook", "Sourcebook"],

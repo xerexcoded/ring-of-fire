@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ArrowDown, ExternalLink } from "lucide-react";
+import Link from "next/link";
 import { SourceStatusTable } from "@/components/source-status";
 import { withBasePath } from "@/lib/paths";
 
@@ -14,6 +15,7 @@ const endpoints = [
   "GET /api/v1/atlas/earthquakes",
   "GET /api/v1/atlas/boundaries",
   "GET /api/v1/atlas/tsunamis",
+  "GET /api/v1/definitions/compare",
   "GET /api/v1/volcanoes/{volcanoNumber}",
   "GET /api/v1/search?q=…",
   "GET /api/v1/sources/status",
@@ -41,6 +43,10 @@ export default function SourcebookPage() {
             <div><span>A</span><h3>Smithsonian PROF membership</h3><p>Versioned records reproduce the published GVP definition: 688 Holocene volcanoes in 41 regions for the pinned 5.3.6 fixture. A changed version triggers explicit review.</p></div>
             <div><span>B</span><h3>Editorial Pacific journey</h3><p>Six chapters begin in New Zealand and move clockwise. This sequence has no scientific start or end and can include contextual cases, such as Indonesia, without changing the GVP count.</p></div>
           </div>
+          <Link className="sourcebook-ringmaker-link" href="/ringmaker">
+            Compare the reviewed definition against the reproducible Restless Pacific rule
+            <ExternalLink aria-hidden="true" />
+          </Link>
         </div>
       </section>
 

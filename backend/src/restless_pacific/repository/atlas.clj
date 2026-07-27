@@ -2,7 +2,10 @@
   (:require [cheshire.core :as json]
             [clojure.string :as str]
             [next.jdbc :as jdbc]
-            [next.jdbc.result-set :as rs]))
+            [next.jdbc.result-set :as rs])
+  (:import (java.math BigInteger)
+           (java.nio.charset StandardCharsets)
+           (java.security MessageDigest)))
 
 (def query-options {:builder-fn rs/as-unqualified-lower-maps})
 
@@ -52,6 +55,11 @@
   {:type "Feature"
    :geometry {:type "Point" :coordinates coordinates}
    :properties properties})
+
+(defn- sha256 [value]
+  (let [digest (.digest (MessageDigest/getInstance "SHA-256")
+                        (.getBytes (str value) StandardCharsets/UTF_8))]
+    (format "%064x" (BigInteger. 1 digest))))
 
 (defn volcanoes [db {:keys [bbox limit offset region type confidence min-vei max-vei]}]
   (let [base {:clauses ["COALESCE(rm.included, false)"] :params []}
@@ -250,6 +258,141 @@
                            :sourceVersion (:source_version eruption)})
                         eruptions)
        :source (source-map row)})))
+
+(defn definition-comparison
+  [db {:keys [tectonic max-distance-km erupted-since]}]
+  (let [predicates (cond-> []
+                     (= "subduction" tectonic)
+                     (conj "lower(COALESCE(v.tectonic_setting, '')) LIKE '%subduction%'")
+                     max-distance-km
+                     (conj "nearest.distance_km <= ?")
+                     erupted-since
+                     (conj "v.last_eruption_year >= ?"))
+        params (cond-> []
+                 max-distance-km (conj max-distance-km)
+                 erupted-since (conj erupted-since))
+        candidate-sql (if (seq predicates)
+                        (str/join " AND " predicates)
+                        "TRUE")
+        sql
+        (str
+         "WITH compared AS (
+            SELECT v.volcano_number, v.name, v.slug, v.country,
+                   v.primary_volcano_type, v.tectonic_setting,
+                   v.last_eruption_year, r.name region,
+                   ST_X(v.geom) longitude, ST_Y(v.geom) latitude,
+                   COALESCE(rm.included, false) baseline_included,
+                   (" candidate-sql ") candidate_included,
+                   nearest.name nearest_boundary_name,
+                   nearest.boundary_type nearest_boundary_type,
+                   nearest.distance_km nearest_boundary_distance_km,
+                   v.source_version, s.source_key, s.authority, s.source_url,
+                   s.current_published_at, s.last_successful_run_at
+            FROM core.volcano v
+            LEFT JOIN core.volcanic_region r ON r.id=v.volcanic_region_id
+            LEFT JOIN ops.source_dataset s ON s.id=v.source_dataset_id
+            LEFT JOIN LATERAL (
+              SELECT membership.included
+              FROM core.ring_membership membership
+              WHERE membership.volcano_number=v.volcano_number
+                AND membership.definition_key='smithsonian-prof'
+              ORDER BY membership.reviewed_at DESC NULLS LAST,
+                       membership.dataset_version DESC
+              LIMIT 1
+            ) rm ON true
+            LEFT JOIN LATERAL (
+              SELECT b.name, b.boundary_type,
+                     round((ST_Distance(v.geom::geography, b.geom::geography)
+                            / 1000.0)::numeric, 1) distance_km
+              FROM core.plate_boundary b
+              WHERE lower(b.boundary_type)='convergent'
+              ORDER BY v.geom <-> b.geom
+              LIMIT 1
+            ) nearest ON true
+          )
+          SELECT * FROM compared
+          ORDER BY baseline_included DESC, candidate_included DESC, name")
+        rows (query! db (into [sql] params))
+        comparison-key
+        (fn [row]
+          (cond
+            (and (:baseline_included row) (:candidate_included row)) "both"
+            (:baseline_included row) "smithsonian-only"
+            (:candidate_included row) "rule-only"
+            :else "neither"))
+        counts (merge {"both" 0
+                       "smithsonian-only" 0
+                       "rule-only" 0
+                       "neither" 0}
+                      (frequencies (map comparison-key rows)))
+        baseline-count (count (filter :baseline_included rows))
+        candidate-rows (filter :candidate_included rows)
+        candidate-count (count candidate-rows)
+        source (some-> rows first source-map)
+        candidate-ids (sort (map :volcano_number candidate-rows))
+        receipt-text
+        (str (:version source) "|"
+             tectonic "|"
+             (or max-distance-km "none") "|"
+             (or erupted-since "all") "|"
+             (str/join "," candidate-ids))
+        features
+        (mapv
+         (fn [row]
+           (let [distance (:nearest_boundary_distance_km row)
+                 last-eruption (:last_eruption_year row)
+                 tectonic-setting (:tectonic_setting row)]
+             (point-feature
+              [(:longitude row) (:latitude row)]
+              {:volcanoNumber (:volcano_number row)
+               :slug (:slug row)
+               :name (:name row)
+               :country (:country row)
+               :region (:region row)
+               :volcanoType (:primary_volcano_type row)
+               :tectonicSetting tectonic-setting
+               :lastKnownEruption last-eruption
+               :smithsonianIncluded (:baseline_included row)
+               :ruleIncluded (:candidate_included row)
+               :comparison (comparison-key row)
+               :ruleEvidence
+               {:tectonicMatches
+                (or (= "all" tectonic)
+                    (str/includes? (str/lower-case (or tectonic-setting ""))
+                                   "subduction"))
+                :proximityMatches
+                (or (nil? max-distance-km)
+                    (and distance (<= (double distance) max-distance-km)))
+                :eruptionMatches
+                (or (nil? erupted-since)
+                    (and last-eruption (>= last-eruption erupted-since)))}
+               :nearestConvergentBoundary
+               (when (:nearest_boundary_name row)
+                 {:name (:nearest_boundary_name row)
+                  :type (:nearest_boundary_type row)
+                  :distanceKm distance
+                  :interpretation
+                  "Spatial proximity is derived context; it does not establish causal attribution."})
+               :source (source-map row)})))
+         rows)]
+    {:type "FeatureCollection"
+     :features features
+     :meta {:count (count rows)
+            :baselineCount baseline-count
+            :candidateCount candidate-count
+            :comparisonCounts counts
+            :baseline {:key "smithsonian-prof"
+                       :label "Smithsonian PROF"
+                       :version "5.3.6"
+                       :citationUrl
+                       "https://volcano.si.edu/faq/Pacific_Ring_of_Fire.cfm"}
+            :rule {:tectonic tectonic
+                   :maxDistanceKm max-distance-km
+                   :eruptedSince erupted-since}
+            :fingerprint (str "sha256:" (sha256 receipt-text))
+            :source source
+            :notice
+            "The Restless Pacific rule is a transparent spatial experiment, not a scientific boundary, hazard model, or causal claim."}}))
 
 (defn search [db q]
   (mapv (fn [row]

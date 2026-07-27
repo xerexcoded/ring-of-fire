@@ -84,6 +84,24 @@
      :min-vei min-vei
      :max-vei max-vei}))
 
+(defn definition-options [query]
+  (let [tectonic (or (some-> (get query "tectonic") str/trim not-empty)
+                     "subduction")
+        max-distance-km (double-param query :maxDistanceKm)
+        erupted-since (int-param query :eruptedSince)]
+    (when-not (#{"all" "subduction"} tectonic)
+      (problem/fail! 400 "Invalid query parameter"
+                     "tectonic must be all or subduction."))
+    (when (and max-distance-km (not (<= 25 max-distance-km 500)))
+      (problem/fail! 400 "Invalid query parameter"
+                     "maxDistanceKm must be between 25 and 500."))
+    (when (and erupted-since (not (#{1800 1960} erupted-since)))
+      (problem/fail! 400 "Invalid query parameter"
+                     "eruptedSince must be 1800 or 1960."))
+    {:tectonic tectonic
+     :max-distance-km max-distance-km
+     :erupted-since erupted-since}))
+
 (defn search-query [query]
   (let [value (some-> (get query "q") str/trim)]
     (when-not (and value (<= 2 (count value) 100))

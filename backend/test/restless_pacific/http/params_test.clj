@@ -31,3 +31,21 @@
 (deftest search-query-has-useful-bounds
   (is (= "Fuji" (params/search-query {"q" " Fuji "})))
   (is (thrown? clojure.lang.ExceptionInfo (params/search-query {"q" "x"}))))
+
+(deftest definition-options-allow-only-bounded-transparent-rules
+  (is (= {:tectonic "subduction"
+          :max-distance-km nil
+          :erupted-since nil}
+         (params/definition-options {})))
+  (is (= {:tectonic "all"
+          :max-distance-km 175.0
+          :erupted-since 1960}
+         (params/definition-options {"tectonic" "all"
+                                     "maxDistanceKm" "175"
+                                     "eruptedSince" "1960"})))
+  (doseq [query [{"tectonic" "popular"}
+                 {"maxDistanceKm" "10"}
+                 {"maxDistanceKm" "501"}
+                 {"eruptedSince" "1900"}]]
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (params/definition-options query)))))

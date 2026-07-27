@@ -5,6 +5,7 @@
             [clojure.string :as str]
             [next.jdbc :as jdbc]
             [next.jdbc.result-set :as rs]
+            [restless-pacific.ingest.activate :as activate]
             [restless-pacific.ingest.membership :as membership]
             [restless-pacific.ingest.parse :as parse]
             [restless-pacific.ingest.pipeline :as pipeline]))
@@ -30,6 +31,7 @@
              {} row)]
     {:volcano-number (:volcano_number row)
      :name (:name row)
+     :slug (str (parse/slug (:name row)) "-" (:volcano_number row))
      :country (:country row)
      :subregion (:volcanic_region row)
      :volcano-type (:volcano_type row)
@@ -40,16 +42,21 @@
      :longitude (:longitude row)
      :latitude (:latitude row)}))
 
-(defn load-records []
-  (let [definition (membership/load-definition)
-        resource (or (io/resource (:catalog-resource definition))
+(defn- load-resource-records [resource-name]
+  (let [resource (or (io/resource resource-name)
                      (throw (ex-info "Pinned PROF catalog resource is missing."
-                                     {:resource (:catalog-resource definition)})))
+                                     {:resource resource-name})))
         [headers & rows]
         (with-open [reader (io/reader resource)]
           (doall (csv/read-csv reader :separator \tab)))
         headers (mapv keyword headers)]
     (mapv #(parse-row (zipmap headers %)) rows)))
+
+(defn load-records []
+  (load-resource-records (:catalog-resource (membership/load-definition))))
+
+(defn load-holocene-records []
+  (load-resource-records (:holocene-catalog-resource (membership/load-definition))))
 
 (defn canonical-id-text [records]
   (apply str (map #(str (:volcano-number %) "\n")
@@ -83,59 +90,55 @@
      :region-count (count counts)
      :included-id-sha256 hash}))
 
+(defn validate-holocene! [records]
+  (let [definition (membership/load-definition)
+        ids (map :volcano-number records)
+        hash (pipeline/sha256 (canonical-id-text records))
+        reviewed-ids (set (map :volcano-number (load-records)))
+        actual-ids (set ids)]
+    (when-not (= (:expected-holocene-count definition)
+                 (count records)
+                 (count actual-ids))
+      (throw (ex-info "Pinned Holocene catalog must contain 1,215 unique volcano numbers."
+                      {:rows (count records) :unique-ids (count actual-ids)})))
+    (when-not (= (:holocene-id-sha256 definition) hash)
+      (throw (ex-info "Pinned Holocene catalog ID checksum failed."
+                      {:actual hash :expected (:holocene-id-sha256 definition)})))
+    (when-not (every? actual-ids reviewed-ids)
+      (throw (ex-info "Pinned Holocene catalog is missing reviewed PROF members."
+                      {:missing (sort (remove actual-ids reviewed-ids))})))
+    (doseq [{:keys [volcano-number name longitude latitude]} records]
+      (when-not (and volcano-number name)
+        (throw (ex-info "Pinned Holocene row is missing identity."
+                        {:volcano-number volcano-number})))
+      (parse/coordinates! [longitude latitude]))
+    {:catalog-volcano-count (count records)
+     :catalog-id-sha256 hash}))
+
 (defn activate!
-  "Idempotently installs the reviewed offline v5.3.6 catalog and its exact
-  membership in one transaction. Rich showcase slugs/descriptions from the SQL
-  seed are preserved."
+  "Idempotently installs the global offline v5.3.6 catalog and the exact
+  reviewed PROF membership in one transaction. Rich showcase
+  slugs/descriptions from the SQL seed are preserved."
   [datasource]
   (let [definition (membership/load-definition)
-        records (load-records)
-        validation (validate! records)]
+        reviewed-records (load-records)
+        holocene-records (load-holocene-records)
+        validation (validate! reviewed-records)
+        catalog-validation (validate-holocene! holocene-records)]
     (jdbc/with-transaction [tx datasource {:isolation :serializable}]
       (let [source-id (:id (jdbc/execute-one!
                             tx ["SELECT id FROM ops.source_dataset WHERE source_key='gvp'"]
                             query-options))]
         (when-not source-id
           (throw (ex-info "GVP source_dataset must exist before fixture activation." {})))
-        (doseq [record records]
-          (jdbc/execute-one!
-           tx
-           ["INSERT INTO core.volcano
-               (volcano_number, name, slug, country, volcanic_region_id,
-                primary_volcano_type, tectonic_setting, evidence_category,
-                elevation_m, last_eruption_year, geom,
-                source_dataset_id, source_version, source_updated_at)
-             VALUES (?, ?, ?, ?,
-                     (SELECT id FROM core.volcanic_region WHERE name=?),
-                     ?, ?, ?, ?, ?, ST_SetSRID(ST_MakePoint(?, ?),4326),
-                     ?, ?, ?::timestamptz)
-             ON CONFLICT (volcano_number) DO UPDATE
-             SET name=EXCLUDED.name,
-                 country=EXCLUDED.country,
-                 volcanic_region_id=EXCLUDED.volcanic_region_id,
-                 primary_volcano_type=EXCLUDED.primary_volcano_type,
-                 tectonic_setting=COALESCE(EXCLUDED.tectonic_setting, core.volcano.tectonic_setting),
-                 evidence_category=COALESCE(EXCLUDED.evidence_category, core.volcano.evidence_category),
-                 elevation_m=COALESCE(EXCLUDED.elevation_m, core.volcano.elevation_m),
-                 last_eruption_year=COALESCE(EXCLUDED.last_eruption_year, core.volcano.last_eruption_year),
-                 geom=EXCLUDED.geom,
-                 source_dataset_id=EXCLUDED.source_dataset_id,
-                 source_version=EXCLUDED.source_version,
-                 source_updated_at=EXCLUDED.source_updated_at,
-                 updated_at=now()"
-            (:volcano-number record) (:name record)
-            (str (parse/slug (:name record)) "-" (:volcano-number record))
-            (:country record) (:subregion record) (:volcano-type record)
-            (:tectonic-setting record) (:evidence-category record)
-            (:elevation-m record) (:last-eruption-year record)
-            (:longitude record) (:latitude record) source-id (:version definition)
-            (:published-at definition)]))
+        (activate/gvp-volcanoes!
+         tx source-id (:version definition) holocene-records)
         (jdbc/execute-one!
          tx
          ["DELETE FROM core.ring_membership
            WHERE definition_key=? AND dataset_version=?"
           (:definition-key definition) (:version definition)])
-        (doseq [record records]
+        (doseq [record reviewed-records]
           (jdbc/execute-one!
            tx
            ["INSERT INTO core.ring_membership
@@ -157,21 +160,32 @@
                updated_at=now()
            WHERE id=?"
           (:version definition) (:published-at definition)
-          (:expected-volcano-count definition) (:expected-region-count definition)
+          (:expected-holocene-count definition) (:expected-region-count definition)
           (json/generate-string
            {:membershipFixture (:catalog-resource definition)
+            :holoceneCatalogFixture (:holocene-catalog-resource definition)
+            :holoceneVolcanoCount (:expected-holocene-count definition)
+            :profVolcanoCount (:expected-volcano-count definition)
+            :profRegionCount (:expected-region-count definition)
+            :holoceneIdSha256 (:holocene-id-sha256 definition)
             :includedIdSha256 (:included-id-sha256 definition)})
           source-id])
         (let [actual
               (jdbc/execute-one!
                tx
-               ["SELECT count(*) count, count(DISTINCT v.volcanic_region_id) region_count
+               ["SELECT
+                   (SELECT count(*) FROM core.volcano
+                     WHERE source_version=?) catalog_count,
+                   count(*) count,
+                   count(DISTINCT v.volcanic_region_id) region_count
                  FROM core.ring_membership rm
                  JOIN core.volcano v USING (volcano_number)
                  WHERE rm.definition_key=? AND rm.dataset_version=? AND rm.included"
+                (:version definition)
                 (:definition-key definition) (:version definition)]
                query-options)]
-          (when-not (= [688 41] [(:count actual) (:region_count actual)])
+          (when-not (= [1215 688 41]
+                       [(:catalog_count actual) (:count actual) (:region_count actual)])
             (throw (ex-info "Transactional PROF activation count assertion failed."
                             {:actual actual}))))))
-    validation))
+    (merge validation catalog-validation)))

@@ -43,6 +43,15 @@
         (problem/fail! 404 "Volcano not found"
                        (str "No volcano exists with volcanoNumber " number "."))))))
 
+(defn- definition-handler [db]
+  (fn [request]
+    (let [options (params/definition-options (:query-params request))
+          comparison (repo/definition-comparison db options)]
+      {:status 200
+       :headers {"Content-Type" "application/geo+json; charset=utf-8"
+                 "Cache-Control" "public, max-age=300, stale-while-revalidate=3600"}
+       :body (assoc-in comparison [:meta :generatedAt] (str (Instant/now)))})))
+
 (defn- search-handler [db]
   (fn [request]
     (let [q (params/search-query (:query-params request))]
@@ -120,6 +129,7 @@
        ["/atlas/earthquakes" {:get (atlas-handler db "usgs-earthquakes" repo/earthquakes)}]
        ["/atlas/boundaries" {:get (atlas-handler db "usgs-plates" repo/boundaries)}]
        ["/atlas/tsunamis" {:get (atlas-handler db "noaa-tsunami" repo/tsunamis)}]
+       ["/definitions/compare" {:get (definition-handler db)}]
        ["/volcanoes/:volcanoNumber" {:get (volcano-handler db)}]
        ["/search" {:get (search-handler db)}]
        ["/sources/status" {:get (sources-handler db)}]

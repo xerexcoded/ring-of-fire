@@ -150,3 +150,60 @@ export type SourceStatusResponse = {
   datasets: SourceStatus[];
   disclaimer: string;
 };
+
+export type DefinitionComparison = "both" | "smithsonian-only" | "rule-only" | "neither";
+
+export type DefinitionRule = {
+  tectonic: "all" | "subduction";
+  maxDistanceKm: number | null;
+  eruptedSince: 1800 | 1960 | null;
+};
+
+export type DefinitionVolcanoProperties = {
+  volcanoNumber: number;
+  slug: string;
+  name: string;
+  country: string | null;
+  region: string | null;
+  volcanoType: string | null;
+  tectonicSetting: string | null;
+  lastKnownEruption: number | null;
+  smithsonianIncluded: boolean;
+  ruleIncluded: boolean;
+  comparison: DefinitionComparison;
+  ruleEvidence: {
+    tectonicMatches: boolean;
+    proximityMatches: boolean;
+    eruptionMatches: boolean;
+  };
+  nearestConvergentBoundary: {
+    name: string;
+    type: string;
+    distanceKm: number;
+    interpretation: string;
+  } | null;
+  source: SourceRef;
+};
+
+export type DefinitionComparisonResponse = {
+  type: "FeatureCollection";
+  features: Array<Feature<PointGeometry, DefinitionVolcanoProperties>>;
+  meta: {
+    count: number;
+    baselineCount: number;
+    candidateCount: number;
+    comparisonCounts: Record<DefinitionComparison, number>;
+    baseline: {
+      key: "smithsonian-prof";
+      label: string;
+      version: string;
+      citationUrl: string;
+    };
+    rule: DefinitionRule;
+    fingerprint: string;
+    source: SourceRef;
+    generatedAt: string;
+    notice: string;
+    isFallback?: boolean;
+  };
+};

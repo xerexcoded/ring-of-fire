@@ -570,6 +570,7 @@ main {
 
 .definition-copy .eyebrow,
 .definition-copy .text-link { color: #a32f12; }
+.definition-actions { display: flex; flex-wrap: wrap; gap: .9rem 1.5rem; }
 
 .definition-terms {
   position: relative;
@@ -1517,6 +1518,17 @@ main {
 .definition-comparison span { color: var(--ember); font-family: var(--font-newsreader), serif; font-size: 2rem; }
 .definition-comparison h3 { margin: 1rem 0 .6rem; font-family: var(--font-newsreader), serif; font-size: 1.55rem; font-weight: 400; }
 .definition-comparison p { margin: 0; color: var(--mineral-dim); font-size: .8rem; line-height: 1.7; }
+.sourcebook-ringmaker-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 2.3rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid var(--ember);
+  color: var(--ember-pale);
+  font-size: .7rem;
+}
+.sourcebook-ringmaker-link svg { width: .8rem; }
 .sourcebook-datasets { grid-template-columns: minmax(9rem, .28fr) minmax(0, 1fr); background: var(--mineral); color: var(--ink); }
 .sourcebook-datasets > div:nth-child(2) > p { max-width: 39rem; color: #666761; }
 .source-status-wrap { grid-column: 2; margin-top: 3rem; }
@@ -1594,6 +1606,481 @@ main {
 .scientific-disclaimer { display: grid; grid-template-columns: .3fr 1fr; gap: 4vw; padding: 2rem 5vw; border-top: 1px solid var(--ember); background: #160b08; color: var(--ember-pale); }
 .scientific-disclaimer strong { font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; }
 .scientific-disclaimer p { max-width: 68rem; margin: 0; font-size: .72rem; line-height: 1.6; }
+
+/* Ringmaker */
+.ringmaker-page { background: var(--ink); }
+.ringmaker-stage {
+  position: relative;
+  isolation: isolate;
+  min-height: max(54rem, 100svh);
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: var(--ocean);
+}
+.ringmaker-map-stage,
+.ringmaker-map,
+.ringmaker-map .map-canvas { position: absolute; inset: 0; }
+.ringmaker-map .map-canvas {
+  filter: saturate(.7) brightness(.66) contrast(1.1);
+  transition: opacity 320ms ease;
+}
+.ringmaker-map[data-ready="false"] .map-canvas { opacity: .35; }
+.ringmaker-stage-shade {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5,8,10,.93) 0%, rgba(5,8,10,.6) 28%, rgba(5,8,10,.07) 58%),
+    linear-gradient(0deg, rgba(5,8,10,.82) 0%, transparent 30%),
+    linear-gradient(180deg, rgba(5,8,10,.6), transparent 20%);
+  pointer-events: none;
+}
+.ringmaker-map .map-loading {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  color: var(--mineral-dim);
+  font-size: .65rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.ringmaker-map .map-loading span {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--line);
+  border-top-color: var(--ember);
+  border-radius: 50%;
+  animation: map-spin .8s linear infinite;
+}
+.ringmaker-hero-copy {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--header-height) + clamp(2.5rem, 7vh, 5rem));
+  left: 4vw;
+  width: min(35rem, 42vw);
+}
+.ringmaker-hero-copy h1 {
+  margin: .7rem 0 0;
+  font-family: var(--font-newsreader), serif;
+  font-size: clamp(4.4rem, 8vw, 8.6rem);
+  font-weight: 320;
+  line-height: .78;
+  letter-spacing: -.075em;
+}
+.ringmaker-hero-copy h1 em { color: var(--ember-pale); font-weight: inherit; }
+.ringmaker-hero-copy > p:not(.eyebrow) {
+  max-width: 28rem;
+  margin: 1.45rem 0 0;
+  color: #d2d0c9;
+  font-size: .86rem;
+  line-height: 1.68;
+}
+.ringmaker-hero-copy > a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 1.35rem;
+  padding-bottom: .3rem;
+  border-bottom: 1px solid var(--ember);
+  color: var(--ember-pale);
+  font-size: .68rem;
+}
+.ringmaker-hero-copy > a svg { width: .8rem; }
+.ringmaker-controls {
+  position: absolute;
+  z-index: 5;
+  right: 3vw;
+  bottom: 4.2rem;
+  left: auto;
+  width: min(26rem, 38vw);
+  padding: 1.2rem;
+  border: 1px solid rgba(241,239,232,.22);
+  background: rgba(5,8,10,.86);
+  box-shadow: 0 1.5rem 5rem rgba(0,0,0,.3);
+  backdrop-filter: blur(18px);
+}
+.ringmaker-control-head,
+.ringmaker-checkbox-line,
+.ringmaker-select-rule,
+.ringmaker-controls label > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.ringmaker-control-head { margin-bottom: 1rem; }
+.ringmaker-control-head span,
+.ringmaker-controls legend,
+.ringmaker-select-rule {
+  color: var(--mineral-dim);
+  font-size: .58rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.ringmaker-control-head strong {
+  display: block;
+  font-family: var(--font-newsreader), serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+}
+.ringmaker-control-head button,
+.ringmaker-receipt-actions button,
+.ringmaker-receipt-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: .42rem;
+  border: 0;
+  background: transparent;
+  color: var(--ember-pale);
+  font-size: .62rem;
+  cursor: pointer;
+}
+.ringmaker-control-head button svg,
+.ringmaker-receipt-actions svg { width: .75rem; }
+.ringmaker-controls fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: .8rem 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.ringmaker-controls legend { margin-bottom: .6rem; padding: 0; }
+.ringmaker-segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+}
+.ringmaker-segmented button {
+  min-height: 2.25rem;
+  padding: .4rem .55rem;
+  border: 0;
+  background: transparent;
+  color: var(--mineral-dim);
+  font-size: .64rem;
+  cursor: pointer;
+}
+.ringmaker-segmented button + button { border-left: 1px solid var(--line); }
+.ringmaker-segmented button[aria-pressed="true"] {
+  background: var(--mineral);
+  color: var(--ink);
+}
+.ringmaker-distance-rule > legend { float: left; margin-top: .3rem; }
+.ringmaker-checkbox-line { justify-content: flex-end; min-height: 1.3rem; }
+.ringmaker-checkbox-line label {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  color: var(--mineral);
+  font-size: .62rem;
+}
+.ringmaker-checkbox-line input { accent-color: var(--ember); }
+.ringmaker-distance-rule > label {
+  display: block;
+  clear: both;
+  padding-top: .65rem;
+  color: var(--mineral-dim);
+  font-size: .6rem;
+}
+.ringmaker-distance-rule b {
+  color: var(--mineral);
+  font-size: .62rem;
+  font-weight: 500;
+}
+.ringmaker-distance-rule input[type="range"] {
+  width: 100%;
+  margin: .55rem 0 0;
+  accent-color: var(--ember);
+}
+.ringmaker-select-rule {
+  padding: .75rem 0;
+  border-top: 1px solid var(--line);
+}
+.ringmaker-select-rule select,
+.ringmaker-table-filters select,
+.ringmaker-table-filters input {
+  min-height: 2.2rem;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--ink-soft);
+  color: var(--mineral);
+}
+.ringmaker-select-rule select { max-width: 12rem; padding: .35rem 1.8rem .35rem .55rem; font-size: .62rem; }
+.ringmaker-controls > p {
+  margin: .65rem 0 0;
+  color: #8f938f;
+  font-size: .57rem;
+  line-height: 1.55;
+}
+.ringmaker-counts {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--header-height) + 2rem);
+  right: 3vw;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  align-items: end;
+  gap: 1rem;
+  padding: .8rem 1rem;
+  border-top: 1px solid var(--line);
+  background: rgba(5,8,10,.58);
+  backdrop-filter: blur(12px);
+}
+.ringmaker-counts div { min-width: 6rem; }
+.ringmaker-counts div:last-of-type { min-width: 7.5rem; }
+.ringmaker-counts span {
+  display: block;
+  color: var(--mineral-dim);
+  font-size: .55rem;
+  letter-spacing: .08em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.ringmaker-counts strong {
+  display: block;
+  margin-top: .15rem;
+  font-family: var(--font-newsreader), serif;
+  font-size: 2rem;
+  font-weight: 380;
+  line-height: 1;
+}
+.ringmaker-counts i { align-self: center; color: var(--ember); font-family: var(--font-newsreader), serif; font-size: 1.4rem; font-style: normal; }
+.ringmaker-counts small {
+  grid-column: 1 / -1;
+  color: var(--ember-pale);
+  font-size: .57rem;
+  text-align: right;
+}
+.ringmaker-legend {
+  position: absolute;
+  z-index: 4;
+  right: auto;
+  bottom: 1rem;
+  left: 4vw;
+  display: flex;
+  gap: 1rem;
+  padding: .55rem .75rem;
+  background: rgba(5,8,10,.72);
+  color: var(--mineral-dim);
+  font-size: .57rem;
+  backdrop-filter: blur(12px);
+}
+.ringmaker-legend span { display: flex; align-items: center; gap: .4rem; }
+.ringmaker-legend i { width: .48rem; height: .48rem; border-radius: 50%; }
+.ringmaker-legend i[data-comparison="both"] { background: var(--mineral); }
+.ringmaker-legend i[data-comparison="smithsonian-only"] { background: var(--ember); }
+.ringmaker-legend i[data-comparison="rule-only"] { background: #76d7e5; }
+.ringmaker-legend i[data-comparison="neither"] { background: #59656a; opacity: .6; }
+.ringmaker-fallback {
+  position: absolute;
+  z-index: 4;
+  right: auto;
+  bottom: 3.6rem;
+  left: 4vw;
+  padding: .42rem .62rem;
+  border: 1px solid rgba(255,90,47,.36);
+  background: rgba(5,8,10,.72);
+  color: var(--ember-pale);
+  font-size: .57rem;
+}
+.ringmaker-inspector {
+  position: absolute;
+  z-index: 6;
+  top: calc(var(--header-height) + 8rem);
+  right: 3vw;
+  width: min(22rem, 34vw);
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  background: rgba(5,8,10,.95);
+  box-shadow: 0 1.5rem 5rem rgba(0,0,0,.42);
+  backdrop-filter: blur(20px);
+}
+.ringmaker-inspector > button {
+  position: absolute;
+  top: .8rem;
+  right: .8rem;
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--mineral);
+  cursor: pointer;
+}
+.ringmaker-inspector > button svg { width: .8rem; }
+.ringmaker-inspector > span { color: var(--ember); font-size: .57rem; letter-spacing: .08em; text-transform: uppercase; }
+.ringmaker-inspector h2 {
+  max-width: 8ch;
+  margin: .75rem 0 .3rem;
+  font-family: var(--font-newsreader), serif;
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-weight: 350;
+  line-height: .86;
+  letter-spacing: -.045em;
+}
+.ringmaker-inspector > p { margin: 0 0 1.1rem; color: var(--mineral-dim); font-size: .66rem; }
+.ringmaker-inspector dl { margin: 0; }
+.ringmaker-inspector dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem 0;
+  border-top: 1px solid var(--line);
+  font-size: .63rem;
+}
+.ringmaker-inspector dt { color: var(--mineral-dim); }
+.ringmaker-inspector dd { max-width: 55%; margin: 0; text-align: right; }
+.ringmaker-inspector-links { display: flex; gap: 1.2rem; margin-top: 1.1rem; }
+.ringmaker-inspector-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  color: var(--ember-pale);
+  font-size: .62rem;
+}
+.ringmaker-inspector-links svg { width: .7rem; }
+.ringmaker-reading {
+  display: grid;
+  grid-template-columns: minmax(18rem, .65fr) minmax(0, 1fr);
+  gap: clamp(4rem, 10vw, 10rem);
+  padding: clamp(7rem, 12vw, 12rem) 5vw;
+  border-bottom: 1px solid var(--line);
+}
+.ringmaker-reading-copy h2,
+.ringmaker-receipt h2,
+.ringmaker-table-head h2,
+.ringmaker-final-cta h2 {
+  margin: .8rem 0 0;
+  font-family: var(--font-newsreader), serif;
+  font-size: clamp(4rem, 7.5vw, 8rem);
+  font-weight: 330;
+  line-height: .82;
+  letter-spacing: -.065em;
+}
+.ringmaker-reading-copy > p:last-child {
+  max-width: 31rem;
+  margin: 2rem 0 0;
+  color: var(--mineral-dim);
+  font-size: .9rem;
+  line-height: 1.75;
+}
+.ringmaker-reading-copy strong { color: var(--mineral); font-weight: 500; }
+.ringmaker-disagreement-list { border-top: 1px solid var(--line); }
+.ringmaker-disagreement-list button {
+  display: grid;
+  grid-template-columns: 2rem 1.2fr .8fr auto;
+  gap: 1rem;
+  align-items: baseline;
+  width: 100%;
+  padding: 1rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--mineral);
+  text-align: left;
+  cursor: pointer;
+}
+.ringmaker-disagreement-list button > span { color: var(--ember); font-family: var(--font-newsreader), serif; }
+.ringmaker-disagreement-list strong { font-family: var(--font-newsreader), serif; font-size: 1.15rem; font-weight: 400; }
+.ringmaker-disagreement-list small { color: var(--mineral-dim); font-size: .62rem; }
+.ringmaker-disagreement-list em { color: var(--ember-pale); font-size: .6rem; font-style: normal; }
+.ringmaker-receipt {
+  display: grid;
+  grid-template-columns: .65fr 1fr;
+  gap: 8vw;
+  padding: clamp(6rem, 10vw, 10rem) 5vw;
+  background: var(--mineral);
+  color: var(--ink);
+}
+.ringmaker-receipt > div:first-child > p:last-child {
+  max-width: 30rem;
+  color: #61635e;
+  font-size: .82rem;
+}
+.ringmaker-receipt .eyebrow { color: #8f2d15; }
+.ringmaker-receipt dl { margin: 0; border-top: 1px solid rgba(5,8,10,.2); }
+.ringmaker-receipt dl div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 1rem;
+  padding: .85rem 0;
+  border-bottom: 1px solid rgba(5,8,10,.2);
+  font-size: .7rem;
+}
+.ringmaker-receipt dt { color: #6a6c67; }
+.ringmaker-receipt dd { margin: 0; overflow-wrap: anywhere; }
+.ringmaker-receipt code { font-size: .62rem; }
+.ringmaker-receipt-actions {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: -4vw;
+}
+.ringmaker-receipt-actions button,
+.ringmaker-receipt-actions a { padding: .55rem 0; color: #8f2d15; }
+.ringmaker-table-section {
+  padding: clamp(6rem, 10vw, 10rem) 5vw;
+  border-bottom: 1px solid var(--line);
+}
+.ringmaker-table-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 4rem;
+}
+.ringmaker-table-head h2 { font-size: clamp(3.8rem, 6.5vw, 7rem); }
+.ringmaker-table-filters { display: flex; gap: 1rem; }
+.ringmaker-table-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  color: var(--mineral-dim);
+  font-size: .57rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.ringmaker-table-filters select,
+.ringmaker-table-filters input { padding: .45rem .65rem; font-size: .67rem; letter-spacing: 0; text-transform: none; }
+.ringmaker-table-scroll { margin-top: 3rem; overflow: auto; border-top: 1px solid var(--line); }
+.ringmaker-table-section table { width: 100%; border-collapse: collapse; font-size: .68rem; }
+.ringmaker-table-section caption { padding: .9rem 0; color: var(--mineral-dim); text-align: left; }
+.ringmaker-table-section th,
+.ringmaker-table-section td {
+  padding: .8rem .9rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+.ringmaker-table-section thead th { color: var(--mineral-dim); font-size: .56rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; }
+.ringmaker-table-section tbody th { min-width: 15rem; }
+.ringmaker-table-section tbody th button { display: block; padding: 0; border: 0; background: transparent; color: var(--ember-pale); cursor: pointer; }
+.ringmaker-table-section tbody th small { display: block; color: var(--mineral-dim); font-size: .57rem; font-weight: 400; }
+.ringmaker-final-cta {
+  min-height: 32rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 5vw;
+  text-align: center;
+}
+.ringmaker-final-cta h2 { font-size: clamp(4.2rem, 9vw, 9rem); }
+.ringmaker-final-cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: 2rem;
+  padding-bottom: .35rem;
+  border-bottom: 1px solid var(--ember);
+  color: var(--ember-pale);
+  font-size: .7rem;
+}
+.ringmaker-final-cta svg { width: .8rem; }
 
 .sr-only {
   position: absolute !important;
@@ -1775,6 +2262,85 @@ main {
   .sourcebook-demo-preview { grid-template-columns: 1fr; }
   .sourcebook-links a { min-height: 11rem; border-right: 0; border-bottom: 1px solid var(--line); }
   .scientific-disclaimer { grid-template-columns: 1fr; padding-inline: 1.2rem; }
+
+  .ringmaker-stage { min-height: 68rem; overflow: hidden; }
+  .ringmaker-map-stage { bottom: auto; height: 42rem; }
+  .ringmaker-stage-shade {
+    bottom: auto;
+    height: 42rem;
+    background:
+      linear-gradient(0deg, rgba(5,8,10,.96) 0%, rgba(5,8,10,.15) 62%),
+      linear-gradient(90deg, rgba(5,8,10,.75), transparent 85%);
+  }
+  .ringmaker-hero-copy {
+    top: calc(var(--header-height) + 2.2rem);
+    right: 1.2rem;
+    left: 1.2rem;
+    width: auto;
+  }
+  .ringmaker-hero-copy h1 { font-size: clamp(4rem, 18vw, 6rem); }
+  .ringmaker-hero-copy > p:not(.eyebrow) { max-width: 20rem; font-size: .75rem; }
+  .ringmaker-hero-copy > a { display: none; }
+  .ringmaker-counts {
+    top: 29rem;
+    right: 1.2rem;
+    left: 1.2rem;
+    justify-content: end;
+  }
+  .ringmaker-counts div { min-width: 4.5rem; }
+  .ringmaker-counts strong { font-size: 1.6rem; }
+  .ringmaker-legend {
+    top: 39.1rem;
+    right: 1.2rem;
+    bottom: auto;
+    left: 1.2rem;
+    flex-wrap: wrap;
+    gap: .7rem;
+    overflow: visible;
+    white-space: normal;
+  }
+  .ringmaker-fallback { top: 36.3rem; right: 1.2rem; bottom: auto; left: auto; }
+  .ringmaker-controls {
+    top: 43.8rem;
+    right: 1.2rem;
+    bottom: auto;
+    left: 1.2rem;
+    width: auto;
+  }
+  .ringmaker-inspector {
+    position: fixed;
+    z-index: 70;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    max-height: 76svh;
+    overflow-y: auto;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+  }
+  .ringmaker-reading,
+  .ringmaker-receipt { grid-template-columns: 1fr; gap: 4rem; padding-inline: 1.2rem; }
+  .ringmaker-reading-copy h2,
+  .ringmaker-receipt h2,
+  .ringmaker-table-head h2,
+  .ringmaker-final-cta h2 { font-size: clamp(3.7rem, 16vw, 5.6rem); }
+  .ringmaker-disagreement-list button {
+    grid-template-columns: 2rem 1fr auto;
+    gap: .65rem;
+  }
+  .ringmaker-disagreement-list small { grid-column: 2; }
+  .ringmaker-disagreement-list em { grid-row: 1; grid-column: 3; }
+  .ringmaker-receipt-actions { grid-column: 1; flex-wrap: wrap; margin-top: 0; }
+  .ringmaker-receipt dl div { grid-template-columns: 7rem 1fr; }
+  .ringmaker-table-section { padding-inline: 1.2rem; }
+  .ringmaker-table-head { display: block; }
+  .ringmaker-table-filters { margin-top: 2rem; flex-direction: column; }
+  .ringmaker-table-filters select,
+  .ringmaker-table-filters input { width: 100%; }
+  .ringmaker-table-scroll { margin-top: 2rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

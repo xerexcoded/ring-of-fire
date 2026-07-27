@@ -13,6 +13,7 @@ export function SiteFooter() {
         <div>
           <span>Explore</span>
           <Link href="/atlas">Open atlas</Link>
+          <Link href="/ringmaker">Build a definition</Link>
           <Link href="/history">Seven moments</Link>
           <Link href="/data">Metabase Data Lab</Link>
         </div>

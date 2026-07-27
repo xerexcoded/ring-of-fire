@@ -35,6 +35,24 @@
                                  :crosses-dateline? false}
                           :limit 1000 :offset 0})))
               "The offline seed exposes every reviewed Smithsonian PROF member."))
+        (let [comparison (repo/definition-comparison
+                          datasource
+                          {:tectonic "all"
+                           :max-distance-km nil
+                           :erupted-since nil})
+              krakatau (some #(when (= 262000
+                                      (get-in % [:properties :volcanoNumber]))
+                               %)
+                             (:features comparison))]
+          (is (= 1215 (get-in comparison [:meta :count])))
+          (is (= 688 (get-in comparison [:meta :baselineCount])))
+          (is (= 1215 (get-in comparison [:meta :candidateCount])))
+          (is (= 527
+                 (get-in comparison
+                         [:meta :comparisonCounts "rule-only"])))
+          (is (= "rule-only" (get-in krakatau [:properties :comparison])))
+          (is (re-matches #"sha256:[0-9a-f]{64}"
+                          (get-in comparison [:meta :fingerprint]))))
         (finally
           (hikari/close-datasource datasource))))
     (is true "Set TEST_DATABASE_URL to run PostGIS integration assertions.")))

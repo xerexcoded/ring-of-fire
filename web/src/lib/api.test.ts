@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildAtlasQuery } from "@/lib/api";
+import { buildAtlasQuery, buildDefinitionQuery } from "@/lib/api";
 
 describe("buildAtlasQuery", () => {
   it("maps UI filter names to the bounded public API contract", () => {
@@ -30,5 +30,27 @@ describe("buildAtlasQuery", () => {
       confidence: "authoritative",
       limit: "1000",
     });
+  });
+});
+
+describe("buildDefinitionQuery", () => {
+  it("serializes only the explicit bounded comparison rules", () => {
+    expect(Object.fromEntries(new URLSearchParams(buildDefinitionQuery({
+      tectonic: "subduction",
+      maxDistanceKm: 175,
+      eruptedSince: 1960,
+    }).slice(1)))).toEqual({
+      tectonic: "subduction",
+      maxDistanceKm: "175",
+      eruptedSince: "1960",
+    });
+  });
+
+  it("omits disabled optional rules", () => {
+    expect(buildDefinitionQuery({
+      tectonic: "all",
+      maxDistanceKm: null,
+      eruptedSince: null,
+    })).toBe("?tectonic=all");
   });
 });

@@ -5,6 +5,9 @@
  :expected-volcano-count 688
  :expected-region-count 41
  :catalog-resource "fixtures/gvp-prof-5.3.6.tsv"
+ :holocene-catalog-resource "fixtures/gvp-holocene-5.3.6.tsv"
+ :expected-holocene-count 1215
+ :holocene-id-sha256 "e23e13216b7af4f682c0ae04ff153c0744b20e8bf204b746a916d1f08281e690"
  :included-ids-resource "fixtures/gvp-prof-5.3.6.ids"
  :included-id-sha256 "efccd415cc6851623f20851af5abd872717e014486e2194453139ab78adf4525"
  :selection-mode :reviewed-volcano-membership

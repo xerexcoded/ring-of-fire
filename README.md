@@ -48,6 +48,7 @@ the seeded last-good data. No clicks in Metabase setup are needed.
 |---|---|
 | Guided Journey | <http://www.localhost> |
 | Atlas | <http://www.localhost/atlas> |
+| Ringmaker | <http://www.localhost/ringmaker> |
 | Data Lab | <http://www.localhost/data> |
 | Sourcebook | <http://www.localhost/sourcebook> |
 | API health | <http://api.localhost/healthz> |
@@ -78,6 +79,9 @@ make down            # stop while retaining databases
   static reduced-motion mode.
 - `/atlas` combines volcano, earthquake, plate-boundary, and tsunami evidence
   in a searchable MapLibre map with a keyboard-accessible table equivalent.
+- `/ringmaker` compares the reviewed Smithsonian PROF membership with a
+  shareable Restless Pacific rule, explains every disagreement, and produces a
+  reproducible definition receipt.
 - `/volcanoes/[slug]` contains ten sourced volcano profiles.
 - `/history` distinguishes recorded measurements from narrative interpretation
   across seven consequential events.
@@ -135,6 +139,7 @@ GET  /api/v1/atlas/volcanoes
 GET  /api/v1/atlas/earthquakes
 GET  /api/v1/atlas/boundaries
 GET  /api/v1/atlas/tsunamis
+GET  /api/v1/definitions/compare
 GET  /api/v1/volcanoes/{volcanoNumber}
 GET  /api/v1/search?q=...
 GET  /api/v1/sources/status
@@ -163,8 +168,10 @@ label; the pipeline never invents January 1 for a year-only record. GVP's zero
 month/day sentinels become `NULL`, and eruption rows whose parent is absent from
 the activated volcano catalog are retained as auditable ingestion rejections.
 
-The pinned GVP 5.3.6 acceptance fixture asserts the current project definition
-of 688 volcanoes across 41 PROF regions. A changed upstream count is an explicit
+The pinned GVP 5.3.6 fixtures install all 1,215 official Holocene volcano
+records, then activate the reviewed project definition of 688 volcanoes across
+41 PROF regions as a separate versioned relationship. Both sorted ID sets have
+committed SHA-256 fingerprints. A changed upstream count is an explicit
 membership review, not an automatic silent edit.
 
 NOAA does not expose a stable TSV download at the metadata-page URL. Live NOAA

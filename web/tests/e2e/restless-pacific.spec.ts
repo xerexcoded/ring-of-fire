@@ -84,6 +84,64 @@ test("history and sourcebook expose uncertainty and provenance", async ({ page }
   await page.goto("/sourcebook");
   await expect(page.getByRole("heading", { level: 1, name: /Showing the Ring/i })).toBeVisible();
   await expect(page.getByText("GET /api/v1/sources/status")).toBeVisible();
+  await expect(page.getByText("GET /api/v1/definitions/compare")).toBeVisible();
+});
+
+test("Ringmaker turns definition rules into shareable, inspectable evidence", async ({ page }) => {
+  await page.route("**/api/v1/definitions/compare**", (route) => route.fulfill({
+    status: 503,
+    contentType: "application/problem+json",
+    body: JSON.stringify({ title: "Comparison unavailable", status: 503 }),
+  }));
+  await page.goto("/ringmaker");
+
+  await expect(page.getByRole("heading", {
+    level: 1,
+    name: /Draw the ring.*Watch it break/i,
+  })).toBeVisible();
+  await expect(page.getByText("Demonstration subset · live API unavailable")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Definition receipt." })).toBeVisible();
+  await expect(page.locator(".ringmaker-table-section").getByRole(
+    "button",
+    { name: "Krakatau", exact: true },
+  )).toBeVisible();
+
+  await page.getByRole("button", { name: "Any setting" }).click();
+  await expect(page).toHaveURL(/tectonic=all/);
+  await page.getByRole("checkbox", { name: "Apply" }).check();
+  await expect(page).toHaveURL(/maxDistanceKm=200/);
+
+  const receipt = page.locator(".ringmaker-receipt");
+  await expect(receipt).toContainText("fallback:demonstration-subset");
+});
+
+test("Ringmaker has no serious accessibility violations", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ringmaker");
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations.filter(({ impact }) =>
+    impact === "critical" || impact === "serious",
+  )).toEqual([]);
+});
+
+test("Ringmaker desktop controls stay clear of the narrative", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "desktop-layout regression");
+  await page.setViewportSize({ width: 1440, height: 768 });
+  await page.goto("/ringmaker");
+
+  const [narrative, controls] = await Promise.all([
+    page.locator(".ringmaker-hero-copy").boundingBox(),
+    page.locator(".ringmaker-controls").boundingBox(),
+  ]);
+
+  expect(narrative).not.toBeNull();
+  expect(controls).not.toBeNull();
+  expect(
+    rectanglesOverlap(narrative!, controls!),
+    "Ringmaker rule panel overlaps the desktop narrative",
+  ).toBe(false);
+  await expect(page.getByText("Restless Pacific rule", { exact: true }).first()).toBeVisible();
+  await expect(page.getByText("Your rule", { exact: true })).toHaveCount(0);
 });
 
 test("editorial title stacks keep labels and supporting copy clear", async ({ page }) => {

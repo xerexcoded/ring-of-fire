@@ -74,6 +74,10 @@ describes the region record; individual membership remains versioned in
 
 ### `core.volcano`
 
+The activated GVP 5.3.6 fixture contains the complete 1,215-record Holocene
+catalog. PROF membership is not implied by presence in this table; it is joined
+from the separately reviewed `core.ring_membership` relationship.
+
 | Column | Type | Notes |
 |---|---|---|
 | `volcano_number` | integer, primary key | Smithsonian stable identifier |

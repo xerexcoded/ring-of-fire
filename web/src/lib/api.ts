@@ -1,5 +1,6 @@
 import {
   fallbackBoundaries,
+  fallbackDefinitionComparison,
   fallbackEarthquakes,
   fallbackSourceStatus,
   fallbackTsunamis,
@@ -7,6 +8,8 @@ import {
 } from "@/lib/data";
 import type {
   BoundaryProperties,
+  DefinitionComparisonResponse,
+  DefinitionRule,
   EarthquakeProperties,
   FeatureCollection,
   LineGeometry,
@@ -63,6 +66,17 @@ export function buildAtlasQuery(filters: AtlasFilters = {}) {
   return query ? `?${query}` : "";
 }
 
+export function buildDefinitionQuery(rule: DefinitionRule) {
+  const params = new URLSearchParams({ tectonic: rule.tectonic });
+  if (rule.maxDistanceKm !== null) {
+    params.set("maxDistanceKm", String(rule.maxDistanceKm));
+  }
+  if (rule.eruptedSince !== null) {
+    params.set("eruptedSince", String(rule.eruptedSince));
+  }
+  return `?${params.toString()}`;
+}
+
 async function request<T>(path: string, fallback: T, signal?: AbortSignal): Promise<T> {
   try {
     const response = await fetch(`${API_BASE}${path}`, {
@@ -104,6 +118,12 @@ export const atlasApi = {
     ),
   sourceStatus: (signal?: AbortSignal) =>
     request<SourceStatusResponse>("/sources/status", fallbackSourceStatus, signal),
+  definitionComparison: (rule: DefinitionRule, signal?: AbortSignal) =>
+    request<DefinitionComparisonResponse>(
+      `/definitions/compare${buildDefinitionQuery(rule)}`,
+      fallbackDefinitionComparison(rule),
+      signal,
+    ),
 };
 
 export function isFallbackCollection(collection: { meta?: { isFallback?: boolean } }) {
