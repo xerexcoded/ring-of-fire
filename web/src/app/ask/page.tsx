@@ -15,7 +15,7 @@ export default function AskPage() {
     <main className="ask-page">
       <div className="ask-page-intro">
         <p className="eyebrow">Agentic geology guide</p>
-        <h1>Ask the <em>Pacific.</em></h1>
+        <div className="ask-display-title" aria-hidden="true">Ask the <em>Pacific.</em></div>
         <p>Follow an answer from observation to explanation, with governed analytical queries, source receipts, and interactive evidence kept in view.</p>
       </div>
       <AskExperience available={availability.available} unavailableReason={availability.reason} />

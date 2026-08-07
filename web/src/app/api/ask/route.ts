@@ -16,8 +16,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 45;
 
-function jsonError(status: number, code: string, message: string, headers?: HeadersInit) {
-  return Response.json({ error: { code, message } }, {
+function jsonError(status: number, code: string, message: string, headers?: HeadersInit, details?: Record<string, unknown>) {
+  return Response.json({ error: { code, message, ...details } }, {
     status,
     headers: { "Cache-Control": "no-store", ...headers },
   });
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     if (error instanceof AskRateLimitError) {
       return jsonError(error.code === "request-active" ? 409 : 429, error.code, error.code === "request-active"
         ? "Another answer is already active for this session."
-        : "Ask the Pacific has reached this session's rate limit.", { "Retry-After": String(error.retryAfterSeconds) });
+        : "Ask the Pacific has reached this session's rate limit.", { "Retry-After": String(error.retryAfterSeconds) }, { retryAfterSeconds: error.retryAfterSeconds });
     }
     return jsonError(503, "chat-unavailable", "Ask the Pacific is temporarily unavailable.");
   }

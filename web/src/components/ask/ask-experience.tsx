@@ -3,14 +3,19 @@
 import { useChat } from "@ai-sdk/react";
 import { useJsonRenderMessage } from "@json-render/react";
 import { DefaultChatTransport, isToolUIPart, type ToolUIPart } from "ai";
-import { Clipboard, RefreshCcw, Trash2, Waves } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Conversation,
-  ConversationContent,
-  ConversationEmptyState,
-  ConversationScrollButton,
-} from "@/components/ai-elements/conversation";
+  Activity,
+  ArrowUp,
+  Clipboard,
+  Layers3,
+  MapPinned,
+  Mountain,
+  RefreshCcw,
+  Square,
+  Trash2,
+  Waves,
+} from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Message,
   MessageAction,
@@ -20,31 +25,37 @@ import {
 } from "@/components/ai-elements/message";
 import {
   PromptInput,
-  PromptInputBody,
-  PromptInputFooter,
-  PromptInputSubmit,
+  PromptInputActions,
   PromptInputTextarea,
-  PromptInputTools,
-} from "@/components/ai-elements/prompt-input";
+} from "@/components/prompt-kit/prompt-input";
+import {
+  ChatContainerContent,
+  ChatContainerRoot,
+  ChatContainerScrollAnchor,
+} from "@/components/prompt-kit/chat-container";
+import { PromptSuggestion } from "@/components/prompt-kit/prompt-suggestion";
+import { ScrollButton } from "@/components/prompt-kit/scroll-button";
 import { Source, Sources, SourcesContent, SourcesTrigger } from "@/components/ai-elements/sources";
-import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
-import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from "@/components/ai-elements/tool";
-import { GenerativeBlocks } from "@/components/ask/generative-blocks";
+import { GenerativeBlocks, WorkspaceBlock } from "@/components/ask/generative-blocks";
+import { ToolSteps } from "@/components/ask/tool-steps";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { askErrorNotice } from "@/lib/ask/errors";
+import { presentGuideText } from "@/lib/ask/presentation";
 import {
   clearStoredConversation,
   loadStoredConversation,
   storeConversation,
 } from "@/lib/ask/storage";
 import type { AskUIMessage, NormalizedResult, SourceReceipt } from "@/lib/ask/types";
+import { specIncludesWorkspace, workspaceFromToolParts } from "@/lib/ask/workspaces";
 import { withBasePath } from "@/lib/paths";
 
 const starterPrompts = [
-  "What does the Ring of Fire actually mean?",
-  "Compare reviewed volcanoes by Pacific region",
-  "Why do deep earthquakes occur near subduction zones?",
-  "What is missing from historical tsunami records?",
+  { label: "Define the ring", prompt: "What does the Ring of Fire actually mean?", icon: Layers3 },
+  { label: "Compare volcanoes", prompt: "Compare reviewed volcanoes by Pacific region", icon: Mountain },
+  { label: "Read seismic depth", prompt: "Why do deep earthquakes occur near subduction zones?", icon: Activity },
+  { label: "Audit the record", prompt: "What is missing from historical tsunami records?", icon: Waves },
 ];
 
 function textOnlyMessages(messages: AskUIMessage[]) {
@@ -64,37 +75,6 @@ function receiptParts(message: AskUIMessage) {
   return message.parts.flatMap((part) => part.type === "data-sourceReceipt" ? [part.data as SourceReceipt] : []);
 }
 
-function compactToolOutput(output: unknown) {
-  if (typeof output !== "object" || output === null) return output;
-  const value = output as Record<string, unknown>;
-  if (typeof value.resultId === "string") {
-    return { resultId: value.resultId, resource: value.resource, rowCount: value.rowCount, truncated: value.truncated, querySummary: value.querySummary };
-  }
-  return output;
-}
-
-function errorLabel(error: Error | undefined) {
-  if (!error) return null;
-  if (error.message.includes("rate-limited")) return "This session has reached its question limit. Please try again after the retry window.";
-  if (error.message.includes("request-active")) return "Another answer is already active in this session.";
-  if (error.message.includes("chat-unavailable")) return "The model or governed analytics service is temporarily unavailable.";
-  return "The guide could not complete that answer. You can retry without losing the conversation.";
-}
-
-function ToolPartView({ part }: { part: ToolUIPart }) {
-  const output = "output" in part ? compactToolOutput(part.output) : undefined;
-  const errorText = "errorText" in part ? part.errorText : undefined;
-  return (
-    <Tool defaultOpen={part.state === "output-error"}>
-      <ToolHeader type={part.type} state={part.state} />
-      <ToolContent>
-        {"input" in part && <ToolInput input={part.input} />}
-        <ToolOutput output={output} errorText={errorText} />
-      </ToolContent>
-    </Tool>
-  );
-}
-
 function TranscriptMessage({
   message,
   results,
@@ -109,16 +89,26 @@ function TranscriptMessage({
   onRetry: () => void;
 }) {
   const { text, spec, hasSpec } = useJsonRenderMessage(message.parts);
+  const presentedText = presentGuideText(text, message.role);
   const sources = receiptParts(message);
   const toolParts = message.parts.filter(isToolUIPart) as ToolUIPart[];
-  const copy = useCallback(() => { if (text) void navigator.clipboard.writeText(text); }, [text]);
+  const toolWorkspace = workspaceFromToolParts(message.parts);
+  const hasGeneratedWorkspace = specIncludesWorkspace(spec);
+  const copy = useCallback(() => { if (presentedText) void navigator.clipboard.writeText(presentedText); }, [presentedText]);
 
   return (
     <Message from={message.role} data-message-id={message.id}>
-      <MessageContent>
-        {text && <MessageResponse isAnimating={isStreaming && isLatestAssistant}>{text}</MessageResponse>}
-        {toolParts.map((part) => <ToolPartView key={part.toolCallId} part={part} />)}
+      <div className="ask-message-meta" aria-hidden="true">
+        <span>{message.role === "assistant" ? <MapPinned /> : null}</span>
+        {message.role === "assistant" ? "Pacific field guide" : "You"}
+      </div>
+      <MessageContent className="ask-message-body">
+        {presentedText && <MessageResponse isAnimating={isStreaming && isLatestAssistant}>{presentedText}</MessageResponse>}
+        <ToolSteps parts={toolParts} isStreaming={isStreaming && isLatestAssistant} />
         {message.role === "assistant" && hasSpec && <GenerativeBlocks spec={spec} results={results} loading={isStreaming && isLatestAssistant} />}
+        {message.role === "assistant" && toolWorkspace && !hasGeneratedWorkspace && !isStreaming && (
+          <WorkspaceBlock resourceKey={toolWorkspace.resourceKey} title={toolWorkspace.title} />
+        )}
         {sources.length > 0 && (
           <Sources>
             <SourcesTrigger count={sources.length} />
@@ -126,13 +116,41 @@ function TranscriptMessage({
           </Sources>
         )}
       </MessageContent>
-      {message.role === "assistant" && text && !isStreaming && (
+      {message.role === "assistant" && presentedText && !isStreaming && (
         <MessageActions>
           <MessageAction tooltip="Copy answer" onClick={copy}><Clipboard aria-hidden="true" /></MessageAction>
           {isLatestAssistant && <MessageAction tooltip="Retry answer" onClick={onRetry}><RefreshCcw aria-hidden="true" /></MessageAction>}
         </MessageActions>
       )}
     </Message>
+  );
+}
+
+function StarterPrompts({
+  compact = false,
+  disabled,
+  onSelect,
+}: {
+  compact?: boolean;
+  disabled: boolean;
+  onSelect: (prompt: string) => void;
+}) {
+  return (
+    <div className={compact ? "ask-quick-prompts" : "ask-starter-prompts"} aria-label="Suggested geology questions">
+      {starterPrompts.map(({ label, prompt, icon: Icon }, index) => (
+        <PromptSuggestion
+          key={prompt}
+          className={compact ? "ask-quick-prompt" : "ask-starter-prompt"}
+          onClick={() => onSelect(prompt)}
+          disabled={disabled}
+          aria-label={prompt}
+        >
+          {!compact && <span className="ask-starter-index">0{index + 1}</span>}
+          {!compact && <Icon aria-hidden="true" />}
+          <span><small>{label}</small>{!compact && <strong>{prompt}</strong>}</span>
+        </PromptSuggestion>
+      ))}
+    </div>
   );
 }
 
@@ -191,31 +209,43 @@ export function AskExperience({ available, unavailableReason }: { available: boo
   }, [clearError, isGenerating, setMessages, stop]);
 
   const latestAssistantIndex = messages.findLastIndex((message) => message.role === "assistant");
-  const statusMessage = !available
-    ? unavailableReason === "disabled" ? "The guide is being prepared and is not enabled yet." : "The model or governed analytics connection is not configured."
-    : status === "submitted" ? "Opening the field notebook…"
-      : status === "streaming" ? "Reading evidence and composing…"
-        : errorLabel(error);
+  const errorNotice = askErrorNotice(error);
+  const statusNotice = !available
+    ? { message: unavailableReason === "disabled" ? "The guide is being prepared and is not enabled yet." : "The model or governed analytics connection is not configured.", tone: "error" as const }
+    : status === "submitted" ? { message: "Opening the field notebook…", tone: "progress" as const }
+      : status === "streaming" ? { message: "Reading evidence and composing…", tone: "progress" as const }
+        : errorNotice ? { message: errorNotice.message, tone: "error" as const } : null;
 
   return (
     <TooltipProvider>
       <section className="ask-console" aria-label="Ask the Pacific geology guide">
         <header className="ask-console-head">
-          <div><span className="ask-live-mark" data-active={isGenerating} /><p>{available ? "Geology guide online" : "Guide unavailable"}</p></div>
-          <Button type="button" variant="ghost" size="sm" onClick={clear} disabled={!messages.length}><Trash2 aria-hidden="true" />Clear conversation</Button>
+          <div className="ask-agent-identity">
+            <span className="ask-agent-mark" data-active={isGenerating}><Activity aria-hidden="true" /></span>
+            <div><h1>Ask the Pacific</h1><p>{available ? "Geology guide online" : "Guide unavailable"}</p></div>
+          </div>
+          <div className="ask-console-actions">
+            <span className="ask-governed-label"><span />Governed evidence</span>
+            <Button type="button" variant="ghost" size="sm" onClick={clear} disabled={!messages.length}><Trash2 aria-hidden="true" />Clear <span className="ask-clear-long">conversation</span></Button>
+          </div>
         </header>
 
-        <Conversation className="ask-conversation">
-          <ConversationContent className="ask-transcript">
+        <div className="ask-conversation-wrap">
+          <ChatContainerRoot className="ask-conversation" data-prompt-kit="chat-container" aria-label="Conversation transcript">
+            <ChatContainerContent className="ask-transcript" tabIndex={0}>
             {!messages.length && (
-              <ConversationEmptyState icon={<Waves />} title="Start with a place, process, or piece of evidence" description="Ask about volcanoes, earthquakes, plates, tsunamis, or how this project defines and measures the Ring of Fire.">
-                <div className="ask-empty-state">
-                  <Waves aria-hidden="true" />
-                  <p className="eyebrow">Ask the Pacific</p>
-                  <h2>Read the restless edge through its evidence.</h2>
-                  <p>Questions can stay conversational or open a map, series, evidence table, definition receipt, or published Data Lab workspace.</p>
+              <div className="ask-empty-state">
+                <div className="ask-empty-copy">
+                  <span className="ask-empty-orbit"><MapPinned aria-hidden="true" /></span>
+                  <p className="eyebrow">Source-aware field guide</p>
+                  <h2>Explore the restless Pacific.</h2>
+                  <p>Ask for an explanation, compare the observed record, or open an interactive Data Lab view. Every analytical answer keeps its evidence attached.</p>
                 </div>
-              </ConversationEmptyState>
+                <StarterPrompts disabled={!available || isGenerating} onSelect={submit} />
+                <div className="ask-capability-line" aria-label="Available evidence views">
+                  <span>Maps</span><span>Series</span><span>Evidence tables</span><span>Metabase workspaces</span>
+                </div>
+              </div>
             )}
             {messages.map((message, index) => (
               <TranscriptMessage
@@ -227,30 +257,65 @@ export function AskExperience({ available, unavailableReason }: { available: boo
                 onRetry={retry}
               />
             ))}
-            {statusMessage && <div className="ask-status" role="status" data-error={Boolean(error) || !available}><span />{statusMessage}{error && available && <button type="button" onClick={retry}>Retry</button>}</div>}
-          </ConversationContent>
-          <ConversationScrollButton />
-        </Conversation>
+            {statusNotice && (
+              <div className="ask-status" role="status" data-tone={statusNotice.tone}>
+                <span aria-hidden="true" />
+                <div className="ask-status-copy">
+                  <p>{statusNotice.message}</p>
+                  {errorNotice && available && (errorNotice.canRetry || errorNotice.canStartFresh) && (
+                    <div className="ask-status-actions">
+                      {errorNotice.canRetry && <button type="button" onClick={retry}>Retry answer</button>}
+                      {errorNotice.canStartFresh && <button type="button" onClick={clear}>Start fresh conversation</button>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            <ChatContainerScrollAnchor />
+            </ChatContainerContent>
+            <div className="ask-scroll-control"><ScrollButton /></div>
+          </ChatContainerRoot>
+        </div>
 
         <div className="ask-composer-shell">
-          <Suggestions className="ask-suggestions">
-            {starterPrompts.map((suggestion) => <Suggestion key={suggestion} suggestion={suggestion} onClick={submit} disabled={!available || isGenerating} />)}
-          </Suggestions>
-          <PromptInput className="ask-prompt" onSubmit={({ text }) => submit(text)}>
-            <PromptInputBody>
-              <PromptInputTextarea
-                value={input}
-                onChange={(event) => setInput(event.currentTarget.value)}
-                placeholder={available ? "Ask about the Pacific’s restless geology…" : "Ask the Pacific is temporarily unavailable"}
-                maxLength={2_000}
-                disabled={!available}
-                aria-label="Question for Ask the Pacific"
-              />
-            </PromptInputBody>
-            <PromptInputFooter>
-              <PromptInputTools><span>{input.length.toLocaleString()} / 2,000</span><span>Observed records stay distinct from explanation.</span></PromptInputTools>
-              <PromptInputSubmit status={status} onStop={stop} disabled={!available || (!input.trim() && !isGenerating)} />
-            </PromptInputFooter>
+          {messages.length > 0 && <StarterPrompts compact disabled={!available || isGenerating} onSelect={submit} />}
+          <PromptInput
+            className="ask-prompt"
+            value={input}
+            onValueChange={setInput}
+            onSubmit={() => submit(input)}
+            maxHeight={176}
+            isLoading={isGenerating}
+            disabled={!available}
+            data-prompt-kit="prompt-input"
+          >
+            <PromptInputTextarea
+              placeholder={available ? "Ask about the Pacific’s restless geology…" : "Ask the Pacific is temporarily unavailable"}
+              maxLength={2_000}
+              aria-label="Question for Ask the Pacific"
+            />
+            <div className="ask-prompt-footer">
+              <PromptInputActions className="ask-prompt-context">
+                <span>{input.length.toLocaleString()} / 2,000</span>
+                <span>Observed records stay distinct from explanation.</span>
+              </PromptInputActions>
+              <PromptInputActions>
+                <kbd>Shift ↵</kbd>
+                <Button
+                  type="button"
+                  size="icon-lg"
+                  className="ask-send-button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (isGenerating) stop(); else submit(input);
+                  }}
+                  disabled={!available || (!input.trim() && !isGenerating)}
+                  aria-label={isGenerating ? "Stop generating" : "Send question"}
+                >
+                  {isGenerating ? <Square aria-hidden="true" /> : <ArrowUp aria-hidden="true" />}
+                </Button>
+              </PromptInputActions>
+            </div>
           </PromptInput>
           <p className="ask-disclaimer">Educational context only—not an alert, forecast, or emergency-response product. Conversation history remains in this browser for seven days.</p>
         </div>

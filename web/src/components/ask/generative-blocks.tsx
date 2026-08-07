@@ -2,7 +2,7 @@
 
 import type { Spec } from "@json-render/core";
 import { createRenderer } from "@json-render/react";
-import { ExternalLink } from "lucide-react";
+import { Database, ExternalLink, ShieldCheck } from "lucide-react";
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   Bar,
@@ -21,7 +21,9 @@ import {
 import { LazyMetabaseEmbed } from "@/components/metabase-embed";
 import { askCatalog, validateAskSpec } from "@/lib/ask/catalog";
 import { curatedSources } from "@/lib/ask/sources";
-import type { NormalizedResult, ResultValue } from "@/lib/ask/types";
+import type { DashboardResourceKey, NormalizedResult, ResultValue } from "@/lib/ask/types";
+import { workspacePresentations } from "@/lib/ask/workspaces";
+import { withBasePath } from "@/lib/paths";
 
 const ResultsContext = createContext<Map<string, NormalizedResult>>(new Map());
 
@@ -161,8 +163,30 @@ function DefinitionReceiptBlock({ resultId, title }: { resultId: string; title: 
   return <section className="ask-generative-block ask-definition-receipt"><header><p>Definition receipt</p><h3>{title}</h3></header><p className="ask-definition-warning">A transparent comparison rule—not a scientific hazard boundary.</p><dl>{["baselineLabel", "baselineVersion", "baselineCount", "candidateCount", "both", "smithsonianOnly", "ruleOnly", "tectonic", "maxDistanceKm", "eruptedSince", "fingerprint"].map((field) => <div key={field}><dt>{field.replaceAll(/([A-Z])/g, " $1")}</dt><dd>{formatValue(row[field])}</dd></div>)}</dl>{row.notice && <p>{String(row.notice)}</p>}<EvidenceReceipt result={result} /></section>;
 }
 
-function WorkspaceBlock({ resourceKey, title }: { resourceKey: string; title: string }) {
-  return <section className="ask-generative-block ask-workspace-block"><header><p>Published Data Lab workspace</p><h3>{title}</h3></header><LazyMetabaseEmbed resourceKey={resourceKey} /></section>;
+export function WorkspaceBlock({ resourceKey, title }: { resourceKey: DashboardResourceKey; title: string }) {
+  const workspace = workspacePresentations[resourceKey];
+  return (
+    <section className="ask-generative-block ask-workspace-block">
+      <header><p>Interactive evidence workspace</p><h3>{title}</h3></header>
+      <div className="ask-workspace-toolbar">
+        <div className="ask-workspace-identity">
+          <Database aria-hidden="true" />
+          <span><small>Published Data Lab</small><strong>{workspace.number} · Metabase</strong></span>
+        </div>
+        <p>{workspace.context}</p>
+        <span className="ask-workspace-readonly"><ShieldCheck aria-hidden="true" />Read-only</span>
+        <a href={withBasePath(`/data#${workspace.anchor}`)}>Open full Data Lab <ExternalLink aria-hidden="true" /></a>
+      </div>
+      <div className="ask-workspace-viewport">
+        <span className="ask-workspace-corner" aria-hidden="true" />
+        <LazyMetabaseEmbed resourceKey={resourceKey} />
+      </div>
+      <footer className="ask-workspace-note">
+        <span>Filters and chart interactions remain live inside this response.</span>
+        <span>Published dashboard · governed guest embed</span>
+      </footer>
+    </section>
+  );
 }
 
 function SourceListBlock({ title, sourceIds }: { title: string; sourceIds: Array<keyof typeof curatedSources> }) {
@@ -186,6 +210,6 @@ export function GenerativeBlocks({ spec, results, loading }: { spec: Spec | null
     if (!spec) return null;
     return validateAskSpec(spec);
   }, [spec]);
-  if (spec && !validatedSpec) return <div className="ask-block-missing" role="status">The generated evidence layout did not pass the safe component catalog.</div>;
+  if (spec && !validatedSpec) return null;
   return <ResultsContext.Provider value={byId}><AskSpecRenderer spec={validatedSpec as Spec | null} loading={loading} /></ResultsContext.Provider>;
 }

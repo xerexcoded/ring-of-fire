@@ -1,6 +1,7 @@
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
-import { stepCountIs, ToolLoopAgent } from "ai";
+import { hasToolCall, stepCountIs, ToolLoopAgent } from "ai";
 import { askCatalogPrompt } from "@/lib/ask/catalog";
+import { evidenceBudgetStep } from "@/lib/ask/budget";
 import type { AskServerConfig } from "@/lib/ask/config";
 import { createAskTools } from "@/lib/ask/tools";
 import type { NormalizedResult, SourceReceipt } from "@/lib/ask/types";
@@ -19,6 +20,7 @@ Evidence discipline:
 Tool discipline:
 - Inspect a resource before querying it when field names are uncertain.
 - Use no more tools than necessary and respect the four-data-tool budget.
+- When the reader asks to open, show, or embed a published Data Lab workspace, call showWorkspace and no other tool. The client renders that successful tool result directly; do not query the dashboard's rows or emit a MetabaseWorkspace specification.
 - Never request raw SQL, writes, saved questions, dashboards, arbitrary resources, or hidden identifiers.
 - Cite the returned source receipts near factual claims. Do not invent URLs.
 - If a dependency is unavailable, explain the limitation and answer only from context you actually have.
@@ -58,7 +60,18 @@ export function createAskAgent({
     appName: "Restless Pacific - Ask the Pacific",
     appUrl: process.env.NEXT_PUBLIC_SITE_URL,
   });
-  const tools = createAskTools({ config, signal, emitResult, emitReceipt, onToolExecuted });
+  let completedDataTools = 0;
+  const instructions = `${GEOLOGY_INSTRUCTIONS}\n\n${askCatalogPrompt}`;
+  const tools = createAskTools({
+    config,
+    signal,
+    emitResult,
+    emitReceipt,
+    onToolExecuted: (name, rowCount) => {
+      completedDataTools += 1;
+      onToolExecuted?.(name, rowCount);
+    },
+  });
 
   return new ToolLoopAgent({
     id: "ask-the-pacific-v1",
@@ -66,9 +79,10 @@ export function createAskAgent({
       provider: { allow_fallbacks: false, require_parameters: true, data_collection: "deny" },
       usage: { include: true },
     }),
-    instructions: `${GEOLOGY_INSTRUCTIONS}\n\n${askCatalogPrompt}`,
+    instructions,
     tools,
-    stopWhen: stepCountIs(6),
+    stopWhen: [hasToolCall("showWorkspace"), stepCountIs(6)],
+    prepareStep: () => evidenceBudgetStep(completedDataTools, instructions),
     maxRetries: 0,
     temperature: 0.2,
     onEnd: (event) => onEnd?.({

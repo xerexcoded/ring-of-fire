@@ -46,6 +46,7 @@ fixture must hash to
 | Profiles/history | all named routes render; partial dates, citation, confidence, and caveats visible |
 | Data Lab | four lazy guest dashboards, sixteen positioned cards, native filters, active section navigation, token renewal remounts once |
 | Metabase outage | retryable per-workspace fallback while the other analytical sections and site routes remain usable |
+| Ask the Pacific | Prompt Kit auto-scroll/composer states, prose and tool responses, deterministic `showWorkspace` rendering, bounded generative blocks, read-only Metabase workspace frame, retry/clear, local-storage restore |
 | Keyboard/a11y | skip link, landmarks, visible focus, dialog focus trap/return, table controls, axe scan |
 | Responsive | narrow mobile, tablet, desktop screenshots; no overflow or map/embed layout shift |
 

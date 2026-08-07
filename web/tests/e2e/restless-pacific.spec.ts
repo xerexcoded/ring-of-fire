@@ -87,26 +87,208 @@ test("history and sourcebook expose uncertainty and provenance", async ({ page }
   await expect(page.getByText("GET /api/v1/definitions/compare")).toBeVisible();
 });
 
-test("Ask the Pacific is discoverable and fails closed before activation", async ({ page }) => {
+test("Ask the Pacific Prompt Kit surface is responsive and accessible", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/ask");
 
   await expect(page).toHaveTitle(/Ask the Pacific/);
   await expect(page.getByRole("heading", { level: 1, name: /Ask the Pacific/i })).toBeVisible();
-  await expect(page.getByText("Guide unavailable")).toBeVisible();
-  await expect(page.getByRole("status")).toContainText(/not enabled yet|not configured/i);
-  await expect(page.getByLabel("Question for Ask the Pacific")).toBeDisabled();
-  await expect(page.getByRole("button", { name: "What does the Ring of Fire actually mean?" })).toBeDisabled();
-  const suggestionsViewport = page.locator('[data-slot="scroll-area-viewport"]');
-  await expect(suggestionsViewport).toHaveAttribute("tabindex", "0");
-  await suggestionsViewport.focus();
-  await expect(suggestionsViewport).toBeFocused();
+  await expect(page.locator('[data-prompt-kit="chat-container"]')).toBeVisible();
+  await expect(page.locator('[data-prompt-kit="prompt-input"]')).toBeVisible();
+  const question = page.getByLabel("Question for Ask the Pacific");
+  const firstPrompt = page.getByRole("button", { name: "What does the Ring of Fire actually mean?" });
+  const unavailable = await page.getByText("Guide unavailable").isVisible();
+  if (unavailable) {
+    await expect(page.getByRole("status")).toContainText(/not enabled yet|not configured/i);
+    await expect(question).toBeDisabled();
+    await expect(firstPrompt).toBeDisabled();
+  } else {
+    await expect(question).toBeEnabled();
+    await expect(firstPrompt).toBeEnabled();
+    await question.focus();
+    const focusTreatment = await question.evaluate((element) => ({
+      textareaOutline: getComputedStyle(element).outlineStyle,
+      composerShadow: getComputedStyle(element.closest('[data-prompt-kit="prompt-input"]') as Element).boxShadow,
+    }));
+    expect(focusTreatment.textareaOutline).toBe("none");
+    expect(focusTreatment.composerShadow).not.toBe("none");
+  }
+  await expect(firstPrompt).toBeVisible();
+  expect((await firstPrompt.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+  const viewport = await page.evaluate(() => ({
+    innerWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    composerRight: document.querySelector(".ask-composer-shell")?.getBoundingClientRect().right,
+  }));
+  expect(viewport.documentWidth).toBe(viewport.innerWidth);
+  expect(viewport.composerRight).toBeLessThanOrEqual(viewport.innerWidth);
   await expect(page.getByText(/Educational context only/)).toBeVisible();
 
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations.filter(({ impact }) =>
     impact === "critical" || impact === "serious",
   )).toEqual([]);
+});
+
+test("successful workspace tool result stays polished and bounded inside chat", async ({ page }) => {
+  const storedConversation = {
+    schemaVersion: 1,
+    expiresAt: Date.now() + 60_000,
+    messages: [{
+      id: "workspace-response",
+      role: "assistant",
+      parts: [
+        { type: "text", text: "I opened the published seismic workspace so you can inspect depth, timing, and plate-boundary context together." },
+        {
+          type: "tool-showWorkspace",
+          toolCallId: "workspace-call",
+          state: "output-available",
+          input: { resourceKey: "earthquake-plate-data-lab" },
+          output: { resourceKey: "earthquake-plate-data-lab" },
+        },
+      ],
+    }],
+  };
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, JSON.stringify(value)), {
+    key: "restless-pacific:ask:v1",
+    value: storedConversation,
+  });
+  await page.route("**/api/v1/metabase/resources/earthquake-plate-data-lab", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({ entityType: "dashboard", entityId: 23 }),
+  }));
+  await page.route("**/api/v1/metabase/guest-token", (route) => route.fulfill({
+    contentType: "application/json",
+    body: JSON.stringify({ jwt: "test-signed-token" }),
+  }));
+  await page.route("http://analytics.localhost/app/embed.js", (route) => route.fulfill({
+    contentType: "application/javascript",
+    body: `customElements.define("metabase-dashboard", class extends HTMLElement {
+      connectedCallback() {
+        this.setAttribute("aria-label", "Interactive Metabase earthquake dashboard");
+        this.innerHTML = '<div style="height:100%;display:grid;place-items:center;background:#101719;color:#a9b7ba;font:14px system-ui">Interactive Metabase dashboard</div>';
+      }
+    });`,
+  }));
+
+  await page.goto("/ask");
+  const workspace = page.locator(".ask-workspace-block");
+  const workspaceHeading = workspace.getByRole("heading", { name: "Earthquakes and plate boundaries" });
+  await workspaceHeading.scrollIntoViewIfNeeded();
+  await expect(workspaceHeading).toBeVisible();
+  await expect(workspace.getByText("Read-only")).toBeVisible();
+  await expect(workspace.getByRole("link", { name: /Open full Data Lab/ })).toHaveAttribute("href", /\/data#seismicity$/);
+  await workspace.locator(".ask-workspace-viewport").scrollIntoViewIfNeeded();
+  await expect(page.locator("metabase-dashboard")).toHaveAttribute("aria-label", "Interactive Metabase earthquake dashboard");
+
+  const layout = await page.evaluate(() => {
+    const block = document.querySelector(".ask-workspace-block")?.getBoundingClientRect();
+    const viewport = document.querySelector(".ask-workspace-viewport")?.getBoundingClientRect();
+    return {
+      innerWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      blockLeft: block?.left,
+      blockRight: block?.right,
+      viewportHeight: viewport?.height,
+      viewportRight: viewport?.right,
+    };
+  });
+  expect(layout.documentWidth).toBe(layout.innerWidth);
+  expect(layout.blockLeft).toBeGreaterThanOrEqual(0);
+  expect(layout.blockRight).toBeLessThanOrEqual(layout.innerWidth);
+  expect(layout.viewportRight).toBeLessThanOrEqual(layout.innerWidth);
+  expect(layout.viewportHeight).toBeLessThanOrEqual(680);
+
+  const results = await new AxeBuilder({ page }).include(".ask-workspace-block").analyze();
+  expect(results.violations.filter(({ impact }) =>
+    impact === "critical" || impact === "serious",
+  )).toEqual([]);
+});
+
+test("tool calls render as one compact Prompt Kit evidence process", async ({ page }) => {
+  const storedConversation = {
+    schemaVersion: 1,
+    expiresAt: Date.now() + 60_000,
+    messages: [{
+      id: "evidence-response",
+      role: "assistant",
+      parts: [
+        { type: "text", text: "The completed records are enough to compare the reviewed regions." },
+        {
+          type: "tool-inspectAnalytics",
+          toolCallId: "inspect-call",
+          state: "output-available",
+          input: { resource: "volcanoes" },
+          output: { fields: ["region", "prof_region"] },
+        },
+        {
+          type: "tool-queryAnalytics",
+          toolCallId: "query-call",
+          state: "output-available",
+          input: { resource: "volcanoes", groupBy: ["region"] },
+          output: { resultId: "regions", rowCount: 41 },
+        },
+        {
+          type: "tool-lookupAtlas",
+          toolCallId: "atlas-call",
+          state: "output-available",
+          input: { kind: "volcanoes" },
+          output: { resultId: "atlas", rowCount: 12 },
+        },
+        {
+          type: "tool-lookupCuratedSource",
+          toolCallId: "source-call",
+          state: "output-available",
+          input: { ids: ["gvp"] },
+          output: { sources: ["gvp"] },
+        },
+        {
+          type: "tool-lookupCuratedSource",
+          toolCallId: "skipped-call",
+          state: "output-error",
+          input: { ids: ["gvp"] },
+          errorText: "Tool execution failed.",
+        },
+      ],
+    }],
+  };
+  await page.addInitScript(({ key, value }) => localStorage.setItem(key, JSON.stringify(value)), {
+    key: "restless-pacific:ask:v1",
+    value: storedConversation,
+  });
+
+  await page.goto("/ask");
+  const process = page.locator(".ask-tool-steps");
+  await expect(process.getByRole("button", { name: /Evidence process.*4 complete.*1 skipped/i })).toBeVisible();
+  await process.getByRole("button", { name: /Evidence process/i }).click();
+  await expect(process.getByText("Inspect analytics fields")).toBeVisible();
+  await expect(process.getByText("Query analytical records")).toBeVisible();
+  await expect(process.getByText("Evidence budget reached; completed results were kept.")).toBeVisible();
+  await expect(process.getByText("Error", { exact: true })).toHaveCount(0);
+  await expect(process).not.toContainText("Tool execution failed");
+  await expect(page.locator(".ask-transcript [data-slot='collapsible']")).toHaveCount(1);
+
+  const results = await new AxeBuilder({ page }).include(".ask-tool-steps").analyze();
+  expect(results.violations.filter(({ impact }) => impact === "critical" || impact === "serious")).toEqual([]);
+});
+
+test("rate-limit recovery asks the reader to wait instead of promising a fresh-session reset", async ({ page }) => {
+  await page.goto("/ask");
+  test.skip(await page.getByText("Guide unavailable").isVisible(), "chat is not configured in this environment");
+  await page.route("**/api/ask", (route) => route.fulfill({
+    status: 429,
+    headers: { "Retry-After": "125" },
+    contentType: "application/json",
+    body: JSON.stringify({ error: { code: "rate-limited", message: "limited", retryAfterSeconds: 125 } }),
+  }));
+
+  await page.getByLabel("Question for Ask the Pacific").fill("Compare reviewed volcanoes by region");
+  await page.getByRole("button", { name: "Send question" }).click();
+  const status = page.locator(".ask-status");
+  await expect(status).toContainText("Question limit reached");
+  await expect(status).toContainText("Try again in 3 minutes");
+  await expect(status).toContainText("Starting a new conversation will not reset this wait");
+  await expect(status.getByRole("button", { name: "Start fresh conversation" })).toHaveCount(0);
 });
 
 test("Ringmaker turns definition rules into shareable, inspectable evidence", async ({ page }) => {

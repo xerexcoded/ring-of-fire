@@ -19,9 +19,15 @@ researcher, or a source of hazard forecasts.
   tool executions, 45 seconds, and no automatic model fallback.
 - Pin `deepseek/deepseek-v4-flash-0731` through OpenRouter while keeping the
   model ID server-configurable for explicit evaluation deployments.
-- Use official AI Elements transcript primitives and json-render inline mode.
-  The project owns an eight-component catalog; components receive server-issued
-  result IDs rather than model-authored data arrays.
+- Use Prompt Kit's headless chat container, scroll recovery, autosizing prompt
+  input, and suggestion primitives for the responsive conversation shell. Keep
+  AI Elements for streamed Markdown, tool, source, and message-action rendering,
+  with json-render inline mode for generative UI. The project owns an
+  eight-component catalog; components receive server-issued result IDs rather
+  than model-authored data arrays.
+- Treat a successful `showWorkspace` result as the authoritative instruction to
+  render its allow-listed Metabase dashboard, and stop the tool loop at that
+  point. Workspace rendering must not depend on a later model-authored spec.
 - Upgrade the tested Metabase image to `v0.63.5` and use its Agent API with a
   separate `Ring AI Reader` API-key group. Next.js exposes only search,
   inspection, and constrained portable-query construction over the five

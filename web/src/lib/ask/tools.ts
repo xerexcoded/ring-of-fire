@@ -1,6 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { compareRingDefinition, lookupAtlas } from "@/lib/ask/atlas-client";
+import { ASK_DATA_TOOL_BUDGET, ASK_DATA_TOOL_BUDGET_ERROR } from "@/lib/ask/budget";
 import type { AskServerConfig } from "@/lib/ask/config";
 import { lookupCuratedSources, curatedSourceIds } from "@/lib/ask/sources";
 import { MetabaseAgentClient } from "@/lib/ask/metabase-client";
@@ -28,7 +29,7 @@ export function createAskTools({ config, signal, emitResult, emitReceipt, onTool
 
   async function bounded<T>(name: string, run: () => Promise<T>, rowCount?: (value: T) => number | undefined) {
     dataToolExecutions += 1;
-    if (dataToolExecutions > 4) throw new Error("The four-tool data budget for this answer has been exhausted.");
+    if (dataToolExecutions > ASK_DATA_TOOL_BUDGET) throw new Error(ASK_DATA_TOOL_BUDGET_ERROR);
     const value = await run();
     onToolExecuted?.(name, rowCount?.(value));
     return value;
