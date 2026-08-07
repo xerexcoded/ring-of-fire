@@ -97,6 +97,10 @@ test("Ask the Pacific is discoverable and fails closed before activation", async
   await expect(page.getByRole("status")).toContainText(/not enabled yet|not configured/i);
   await expect(page.getByLabel("Question for Ask the Pacific")).toBeDisabled();
   await expect(page.getByRole("button", { name: "What does the Ring of Fire actually mean?" })).toBeDisabled();
+  const suggestionsViewport = page.locator('[data-slot="scroll-area-viewport"]');
+  await expect(suggestionsViewport).toHaveAttribute("tabindex", "0");
+  await suggestionsViewport.focus();
+  await expect(suggestionsViewport).toBeFocused();
   await expect(page.getByText(/Educational context only/)).toBeVisible();
 
   const results = await new AxeBuilder({ page }).analyze();
