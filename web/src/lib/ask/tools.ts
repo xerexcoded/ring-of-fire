@@ -52,7 +52,7 @@ export function createAskTools({ config, signal, emitResult, emitReceipt, onTool
       execute: ({ resource }) => bounded("inspectAnalytics", () => metabase.inspect(resource)),
     }),
     queryAnalytics: tool({
-      description: "Construct and run a read-only select or aggregate query through Metabase Agent API. No SQL, writes, saved questions, or unlisted resources are possible. Request source_version when provenance detail is useful.",
+      description: "Construct and run a read-only select or aggregate query through Metabase Agent API. No SQL, writes, saved questions, or unlisted resources are possible. For a row count, use aggregation function count without a field. To sort grouped results by their aggregate value, set orderBy.field to aggregation, never count, sum, or another output alias. Request source_version when provenance detail is useful.",
       inputSchema: z.object({
         resource: z.enum(analyticsResources),
         select: z.array(fieldName).max(10).optional(),
@@ -74,11 +74,25 @@ export function createAskTools({ config, signal, emitResult, emitReceipt, onTool
           ...(input.select ?? []),
           ...(input.groupBy ?? []),
           ...(input.filters ?? []).map((filter) => filter.field),
-          ...(input.orderBy ?? []).map((order) => order.field),
           ...(input.aggregation?.field ? [input.aggregation.field] : []),
         ];
         for (const field of fields) {
           if (!allowed.includes(field)) context.addIssue({ code: "custom", message: `${field} is not available on analytics.${input.resource}.` });
+        }
+        const aggregationAlias = input.aggregation && {
+          count: "count",
+          sum: "sum",
+          average: "avg",
+          minimum: "min",
+          maximum: "max",
+        }[input.aggregation.function];
+        const aggregationAliases = input.aggregation
+          ? new Set(["aggregation", input.aggregation.function, aggregationAlias])
+          : new Set<string>();
+        for (const order of input.orderBy ?? []) {
+          if (!allowed.includes(order.field) && !aggregationAliases.has(order.field)) {
+            context.addIssue({ code: "custom", message: `${order.field} is not available on analytics.${input.resource}.` });
+          }
         }
         if (input.aggregation && input.aggregation.function !== "count" && !input.aggregation.field) {
           context.addIssue({ code: "custom", message: `${input.aggregation.function} requires a field.` });

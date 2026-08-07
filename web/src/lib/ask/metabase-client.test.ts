@@ -48,4 +48,36 @@ describe("MetabaseAgentClient", () => {
     await expect(client.query({ resource: "volcanoes", select: ["password"], limit: 10 })).rejects.toThrow(/not available/);
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  it("orders grouped results by the aggregate reference", async () => {
+    const fetchMock = vi.fn(async (_url: string, init?: RequestInit) => {
+      const body = JSON.parse(String(init?.body));
+      const stage = body.query.stages[0];
+      expect(stage.aggregation).toEqual([["count", {}]]);
+      expect(stage.breakout).toEqual([["field", {}, ["Restless Pacific Analytics", "analytics", "volcanoes", "region"]]]);
+      expect(stage["order-by"]).toEqual([["desc", {}, ["aggregation", {}, 0]]]);
+      expect(stage.limit).toBe(5);
+      return Response.json({
+        status: "completed",
+        data: {
+          cols: [
+            { name: "region", display_name: "Region", base_type: "type/Text" },
+            { name: "count", display_name: "Count", base_type: "type/Integer" },
+          ],
+          rows: [["Kuril", 66]],
+        },
+        row_count: 1,
+      }, { status: 202 });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new MetabaseAgentClient(config, new AbortController().signal);
+    const result = await client.query({
+      resource: "volcanoes",
+      groupBy: ["region"],
+      aggregation: { function: "count" },
+      orderBy: [{ field: "aggregation", direction: "descending" }],
+      limit: 5,
+    });
+    expect(result.rows).toEqual([["Kuril", 66]]);
+  });
 });

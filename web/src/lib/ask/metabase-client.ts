@@ -70,6 +70,18 @@ function fieldExpression(database: string, resource: AnalyticsResource, field: s
   return ["field", {}, [database, "analytics", resource, field]];
 }
 
+function isAggregationOrder(field: string, aggregation: QueryAnalyticsInput["aggregation"]) {
+  if (!aggregation) return false;
+  const operator = {
+    count: "count",
+    sum: "sum",
+    average: "avg",
+    minimum: "min",
+    maximum: "max",
+  }[aggregation.function];
+  return field === "aggregation" || field === aggregation.function || field === operator;
+}
+
 function buildExternalQuery(database: string, input: QueryAnalyticsInput) {
   const limit = Math.min(Math.max(Math.trunc(input.limit ?? 100), 1), 100);
   const stage: Record<string, unknown> = {
@@ -118,7 +130,9 @@ function buildExternalQuery(database: string, input: QueryAnalyticsInput) {
     stage["order-by"] = input.orderBy.slice(0, 3).map(({ field, direction }) => [
       direction === "ascending" ? "asc" : "desc",
       {},
-      fieldExpression(database, input.resource, field),
+      isAggregationOrder(field, input.aggregation)
+        ? ["aggregation", {}, 0]
+        : fieldExpression(database, input.resource, field),
     ]);
   }
 
