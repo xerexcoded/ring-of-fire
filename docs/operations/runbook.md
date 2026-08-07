@@ -142,6 +142,76 @@ Reapply/verify `metabase_reader` analytics grants after a no-ACL restore and run
 API, dashboard, token, and read-only permission smoke tests. Record recovery
 time and recovered timestamps. Delete plaintext dumps securely after the drill.
 
+## Metabase v0.63 and Ask the Pacific rollout
+
+Keep `AI_CHAT_ENABLED=false` throughout preparation. Metabase migrates its
+application database when the new container first starts, so a verified backup
+is a hard precondition, not a follow-up task.
+
+1. Stop configuration changes and take both the encrypted platform backup and
+   a focused custom-format snapshot of `metabase_app`:
+
+   ```sh
+   make backup-once
+   mkdir -p .data/pre-upgrade
+   docker compose exec -T postgres pg_dump --format=custom --no-owner \
+     --username postgres metabase_app > .data/pre-upgrade/metabase-app-v062.dump
+   docker compose exec -T postgres pg_restore --list \
+     < .data/pre-upgrade/metabase-app-v062.dump > /dev/null
+   ```
+
+2. Restore that focused snapshot into a disposable database and inspect the
+   dashboard/card counts before deleting only the disposable database:
+
+   ```sh
+   docker compose exec -T postgres createdb --username postgres metabase_restore_test
+   docker compose exec -T postgres pg_restore --no-owner --username postgres \
+     --dbname metabase_restore_test < .data/pre-upgrade/metabase-app-v062.dump
+   docker compose exec -T postgres psql --username postgres --dbname metabase_restore_test \
+     --command="WITH target AS (SELECT id FROM collection WHERE name = 'Restless Pacific') SELECT (SELECT count(*) FROM report_dashboard WHERE collection_id IN (SELECT id FROM target) AND NOT archived) AS dashboards, (SELECT count(*) FROM report_card WHERE collection_id IN (SELECT id FROM target) AND NOT archived) AS questions;"
+   docker compose exec -T postgres dropdb --username postgres metabase_restore_test
+   ```
+
+   The expected project inventory is four dashboards and sixteen questions.
+   Keep the pre-upgrade dump outside the deployment checkout according to the
+   backup retention policy after the verification.
+
+3. Pull/start the pinned `metabase/metabase:v0.63.5` container, wait for
+   health, rerun bootstrap, and run the full-stack suite. Verify all four
+   dashboard resource keys, sixteen questions, native filters, and guest embeds.
+
+4. In Metabase Admin, enable **AI > MCP / Agent API**. Create an API-key group
+   named `Ring AI Reader`. Grant view/query-builder access only to the five
+   `analytics` views. Deny native SQL, downloads that exceed policy, every
+   `core`, `staging`, and `ops` schema, collection curation, application
+   administration, subscriptions, write actions, and content creation. The
+   underlying `metabase_reader` role must still fail writes and direct access to
+   non-analytics schemas.
+
+5. Create an API key for that group and store it only as
+   `METABASE_AGENT_API_KEY` in the Next.js server environment. Set
+   `METABASE_INTERNAL_URL=http://metabase:3000`, a random 32-byte-or-longer
+   `AI_SESSION_SECRET`, the OpenRouter key, and an OpenRouter account spending
+   limit. None of these values may use a `NEXT_PUBLIC_` prefix.
+
+6. Deploy with chat disabled and run the deterministic authorization, schema,
+   exact-value, provenance, outage, base-path, and accessibility cases. Compare
+   the pinned DeepSeek model with `google/gemini-3.1-flash-lite` and
+   `qwen/qwen3.6-flash` in separate explicit evaluation runs. Enable only a
+   model that achieves 100% authorization/schema safety, at least 95% tool/UI
+   execution, at least 90% exactness on answerable dataset questions, and zero
+   critical hazard misinformation. Cost breaks a tie; automatic runtime
+   fallback remains disabled.
+
+7. Run a five-concurrent-session load smoke test, confirm the process memory
+   budget, then set `AI_CHAT_ENABLED=true`. Monitor normalized tool failures,
+   latency, tokens, rate-limit responses, and account spend without logging
+   prompt or answer content.
+
+Rollback chat immediately with the feature flag. A Metabase application
+downgrade requires restoring the verified pre-upgrade application database;
+never point an older Metabase binary at a schema migrated by a newer release.
+
 ## Incident playbooks
 
 ### Metabase unavailable
@@ -155,7 +225,7 @@ docker compose logs --since=1h metabase postgres > metabase-incident.log
 docker compose restart metabase
 ```
 
-The pinned v0.62.4.3 dashboard grid requires the style-only CSP compatibility
+The pinned v0.63.5 dashboard grid requires the style-only CSP compatibility
 rewrite documented in ADR 0002. If cards overlap after an upgrade, do not
 broaden `script-src`; run `make test-full-stack`, inspect the upstream CSP, and
 either update or remove the narrowly scoped Caddy rewrite based on the new

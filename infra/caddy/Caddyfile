@@ -35,7 +35,7 @@
 	# X-Frame-Options here: www and analytics are separate origins.
 	reverse_proxy metabase:3000 {
 		flush_interval -1
-		# Metabase v0.62.4.3 positions dashboard cards with inline style
+		# Metabase v0.63.5 positions dashboard cards with inline style
 		# attributes, but its generated CSP omits the allowance those grid
 		# transforms require. Relax styles only; scripts remain nonce-bound.
 		header_down Content-Security-Policy "style-src-attr 'self'" "style-src-attr 'self' 'unsafe-inline'"

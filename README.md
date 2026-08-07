@@ -51,6 +51,7 @@ the seeded last-good data. No clicks in Metabase setup are needed.
 | Ringmaker | <http://www.localhost/ringmaker> |
 | Data Lab | <http://www.localhost/data> |
 | Sourcebook | <http://www.localhost/sourcebook> |
+| Ask the Pacific | <http://www.localhost/ask> |
 | API health | <http://api.localhost/healthz> |
 | Metabase | <http://analytics.localhost> |
 
@@ -89,6 +90,10 @@ make down            # stop while retaining databases
   saved questions across coverage, volcanism, seismicity, and tsunami impacts.
 - `/sourcebook` makes dataset versions, freshness, uncertainty, licenses,
   architecture, and known gaps part of the product rather than a footnote.
+- `/ask` is a streaming, source-aware geology guide. It uses the existing Atlas
+  and Ringmaker contracts plus a restricted Metabase Agent API principal; the
+  feature remains visibly unavailable until its server-only flag and secrets
+  are configured.
 
 ## Architecture
 
@@ -102,8 +107,9 @@ flowchart LR
   subgraph Platform["Restless Pacific"]
     CLJ["Clojure ingestion and API"]
     PG[("PostgreSQL / PostGIS")]
-    MB["Metabase OSS v0.62.4.3"]
-    NX["Next.js atlas and story"]
+    MB["Metabase OSS v0.63.5"]
+    NX["Next.js atlas, story, and agent"]
+    OR["Pinned OpenRouter model"]
   end
   GVP --> CLJ
   USGS --> CLJ
@@ -114,6 +120,8 @@ flowchart LR
   CLJ -->|"GeoJSON + provenance"| NX
   CLJ -->|"allow-listed 60-minute JWT"| NX
   MB -->|"Modular Guest embeds"| NX
+  MB -->|"read-only Agent API"| NX
+  NX -->|"six-step tool loop"| OR
 ```
 
 The Postgres cluster contains two databases:
@@ -127,7 +135,8 @@ The Postgres cluster contains two databases:
 See [architecture](docs/architecture.md), the
 [data dictionary](docs/data-dictionary.md), and the two foundational decisions:
 [Ring definition](docs/adr/0001-ring-definition.md) and
-[OSS guest embedding](docs/adr/0002-oss-guest-embedding.md).
+[OSS guest embedding](docs/adr/0002-oss-guest-embedding.md), and
+[Ask the Pacific](docs/adr/0003-ask-the-pacific.md).
 
 ## Public API
 
@@ -181,7 +190,7 @@ versioned in the meantime.
 
 ## Metabase embedding
 
-The stack pins `metabase/metabase:v0.62.4.3`. It uses OSS Modular Guest embeds,
+The stack pins `metabase/metabase:v0.63.5`. It uses OSS Modular Guest embeds,
 not the paid React SDK. The Clojure bootstrap creates or reconciles the database
 connection, collection, sixteen questions, four dashboards, native filters,
 and guest publication, then records their numeric IDs in
@@ -190,6 +199,12 @@ and guest publication, then records their numeric IDs in
 The browser resolves stable resource keys only as each workspace approaches the
 viewport. Numeric Metabase IDs stay behind the resource-resolution endpoint,
 and an unavailable workspace can be retried without blanking the other three.
+
+The same Metabase instance can supply governed analytical data to Ask the
+Pacific through the versioned Agent API. That path uses a separate `Ring AI
+Reader` API-key group, can address only the five `analytics` views, is capped at
+100 rows in Next.js, and does not expose SQL or content-creation endpoints.
+The key and internal URL exist only in the server container.
 
 The frontend asks the Clojure API for a JWT using an official-style
 `{ entityType, entityId, customContext? }` body. The API signs only resources in

@@ -13,6 +13,7 @@ const links = [
   ["/history", "History"],
   ["/data", "Data Lab"],
   ["/sourcebook", "Sourcebook"],
+  ["/ask", "Ask the Pacific"],
 ] as const;
 
 export function SiteHeader() {

@@ -29,7 +29,7 @@ jobs:
       - name: Reject floating production images
         run: |
           ! grep -R --line-number -E 'image: .*:(latest|beta)([[:space:]]|$)' docker-compose.yml infra
-          grep -F 'metabase/metabase:v0.62.4.3' docker-compose.yml
+          grep -F 'metabase/metabase:v0.63.5' docker-compose.yml
 
   backend:
     name: Clojure tests

@@ -12,7 +12,7 @@ Run an exact Metabase version rather than `latest`:
 
 ```yaml
 metabase:
-  image: metabase/metabase:v0.62.4.3
+  image: metabase/metabase:v0.63.5
   environment:
     MB_DB_TYPE: postgres
     MB_DB_HOST: postgres

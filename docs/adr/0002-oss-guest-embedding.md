@@ -17,7 +17,8 @@ make provisioning behavior unpredictable and difficult to demonstrate.
 
 ## Decision
 
-- Pin `metabase/metabase:v0.62.4.3`.
+- Pin an exact tested image. The current integration pin is
+  `metabase/metabase:v0.63.5`; ADR 0003 records the migration gate.
 - Use Modular Guest embedding for published questions and dashboards.
 - Keep the custom Pacific map and detail interactions in Next.js/MapLibre.
 - Load Metabase `embed.js` only in the browser, resolve stable resource keys at
@@ -43,7 +44,7 @@ Data Lab must design native editable filters up front rather than rely on
 drill-through. A Metabase upgrade is a deliberate change with a bootstrap
 integration test, not a tag bump to `latest`.
 
-The pinned v0.62.4.3 build uses inline style attributes for dashboard-grid
+The pinned v0.63.5 build uses inline style attributes for dashboard-grid
 transforms while shipping a CSP that blocks them. Caddy therefore adds
 `unsafe-inline` to Metabase's `style-src` and `style-src-attr` directives only,
 replacing the ineffective style nonce; the separate nonce-based `script-src`

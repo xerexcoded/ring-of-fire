@@ -3,5 +3,7 @@ node_modules
 coverage
 playwright-report
 test-results
-.env.local
+.env
+.env.*
+!.env.example
 npm-debug.log*

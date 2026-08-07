@@ -87,6 +87,24 @@ test("history and sourcebook expose uncertainty and provenance", async ({ page }
   await expect(page.getByText("GET /api/v1/definitions/compare")).toBeVisible();
 });
 
+test("Ask the Pacific is discoverable and fails closed before activation", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/ask");
+
+  await expect(page).toHaveTitle(/Ask the Pacific/);
+  await expect(page.getByRole("heading", { level: 1, name: /Ask the Pacific/i })).toBeVisible();
+  await expect(page.getByText("Guide unavailable")).toBeVisible();
+  await expect(page.getByRole("status")).toContainText(/not enabled yet|not configured/i);
+  await expect(page.getByLabel("Question for Ask the Pacific")).toBeDisabled();
+  await expect(page.getByRole("button", { name: "What does the Ring of Fire actually mean?" })).toBeDisabled();
+  await expect(page.getByText(/Educational context only/)).toBeVisible();
+
+  const results = await new AxeBuilder({ page }).analyze();
+  expect(results.violations.filter(({ impact }) =>
+    impact === "critical" || impact === "serious",
+  )).toEqual([]);
+});
+
 test("Ringmaker turns definition rules into shareable, inspectable evidence", async ({ page }) => {
   await page.route("**/api/v1/definitions/compare**", (route) => route.fulfill({
     status: 503,
