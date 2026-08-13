@@ -39,4 +39,16 @@ describe("anonymous Ask rate limits", () => {
     second.release();
     expect(() => claimAnonymousRequest(nextRequest(cookie), config, 102)).toThrowError(/rate-limited/);
   });
+
+  it("keeps cookie-discarding callers inside an IP fallback budget", () => {
+    const request = () => new Request("http://localhost/api/ask", {
+      method: "POST",
+      headers: { "X-Forwarded-For": "203.0.113.8" },
+    });
+    const first = claimAnonymousRequest(request(), config, 100);
+    first.release();
+    const second = claimAnonymousRequest(request(), config, 101);
+    second.release();
+    expect(() => claimAnonymousRequest(request(), config, 102)).toThrowError(/rate-limited/);
+  });
 });

@@ -81,6 +81,20 @@ export function claimAnonymousRequest(request: Request, config: AskServerConfig,
   const sessionHash = createHmac("sha256", config.sessionSecret)
     .update(`${sessionId}:${clientIp(request)}`)
     .digest("hex");
+  const ipHash = createHmac("sha256", config.sessionSecret)
+    .update(`anonymous-ip:${clientIp(request)}`)
+    .digest("hex");
+  // A caller can discard the cookie and receive a fresh session ID on every
+  // request. Keep a separate IP bucket for cookie-less requests so that doing
+  // so cannot bypass the session limits, while valid sessions retain their
+  // independent per-session budget.
+  const sessionRateKey = `session:${sessionHash}`;
+  const ipRateKey = `ip:${ipHash}`;
+  // The first request is charged to both its new session and the IP fallback.
+  // Once the signed cookie is returned, subsequent requests use only the
+  // session bucket. This preserves per-session behavior while preventing
+  // cookie discarding from creating an unlimited stream of fresh sessions.
+  const rateKeys = existing ? [sessionRateKey] : [sessionRateKey, ipRateKey];
 
   claimCount += 1;
   if (claimCount % 100 === 0) {
@@ -89,26 +103,35 @@ export function claimAnonymousRequest(request: Request, config: AskServerConfig,
     }
   }
 
-  if (activeSessions.has(sessionHash)) throw new AskRateLimitError("request-active", 2);
+  if (rateKeys.some((key) => activeSessions.has(key))) throw new AskRateLimitError("request-active", 2);
 
-  const previous = rateStates.get(sessionHash) ?? {
-    window: { startedAt: now, count: 0 },
-    day: { startedAt: now, count: 0 },
-  };
-  const window = resetCounter(previous.window, now, config.windowMs);
-  const day = resetCounter(previous.day, now, DAY_MS);
-  if (window.count >= config.windowLimit) {
-    throw new AskRateLimitError("rate-limited", Math.max(1, Math.ceil((config.windowMs - (now - window.startedAt)) / 1000)));
-  }
-  if (day.count >= config.dailyLimit) {
-    throw new AskRateLimitError("rate-limited", Math.max(1, Math.ceil((DAY_MS - (now - day.startedAt)) / 1000)));
-  }
-
-  rateStates.set(sessionHash, {
-    window: { ...window, count: window.count + 1 },
-    day: { ...day, count: day.count + 1 },
+  const counters = rateKeys.map((key) => {
+    const previous = rateStates.get(key) ?? {
+      window: { startedAt: now, count: 0 },
+      day: { startedAt: now, count: 0 },
+    };
+    return {
+      key,
+      window: resetCounter(previous.window, now, config.windowMs),
+      day: resetCounter(previous.day, now, DAY_MS),
+    };
   });
-  activeSessions.add(sessionHash);
+  const windowLimit = counters.find(({ window }) => window.count >= config.windowLimit);
+  if (windowLimit) {
+    throw new AskRateLimitError("rate-limited", Math.max(1, Math.ceil((config.windowMs - (now - windowLimit.window.startedAt)) / 1000)));
+  }
+  const dailyLimit = counters.find(({ day }) => day.count >= config.dailyLimit);
+  if (dailyLimit) {
+    throw new AskRateLimitError("rate-limited", Math.max(1, Math.ceil((DAY_MS - (now - dailyLimit.day.startedAt)) / 1000)));
+  }
+
+  for (const { key, window, day } of counters) {
+    rateStates.set(key, {
+      window: { ...window, count: window.count + 1 },
+      day: { ...day, count: day.count + 1 },
+    });
+    activeSessions.add(key);
+  }
   let released = false;
 
   return {
@@ -124,7 +147,7 @@ export function claimAnonymousRequest(request: Request, config: AskServerConfig,
     release: () => {
       if (released) return;
       released = true;
-      activeSessions.delete(sessionHash);
+      rateKeys.forEach((key) => activeSessions.delete(key));
     },
   };
 }

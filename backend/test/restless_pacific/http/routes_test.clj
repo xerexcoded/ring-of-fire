@@ -2,7 +2,8 @@
   (:require [cheshire.core :as json]
             [clojure.test :refer [deftest is]]
             [restless-pacific.http.routes :as routes]
-            [restless-pacific.repository.atlas :as repo]))
+            [restless-pacific.repository.atlas :as repo])
+  (:import (java.io ByteArrayInputStream)))
 
 (def token-config
   {:secret "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
@@ -50,6 +51,17 @@
            (get-in response [:headers "Content-Type"])))
     (is (= 400 (:status body)))
     (is (= "/api/v1/atlas/volcanoes" (:instance body)))))
+
+(deftest rejects-oversized-json-before-parsing
+  (let [handler (routes/handler {:db :db :token-config token-config})
+        response (handler {:request-method :post
+                           :uri "/api/v1/metabase/guest-token"
+                           :headers {"content-type" "application/json"}
+                           :body (ByteArrayInputStream. (byte-array 131073))})
+        body (json/parse-string (:body response) true)]
+    (is (= 413 (:status response)))
+    (is (= "Request body too large" (:title body)))
+    (is (= 413 (:status body)))))
 
 (deftest definition-comparison-is-a-versioned-geojson-contract
   (with-redefs [repo/definition-comparison

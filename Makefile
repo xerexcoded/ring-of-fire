@@ -4,7 +4,7 @@ COMPOSE := docker compose
 .DEFAULT_GOAL := help
 
 .PHONY: help env dev dev-low-memory provision refresh-live backfill-history ps logs down clean reset \
-	test test-backend test-web test-e2e test-full-stack smoke lint compose-check images backup backup-once
+	test test-backend test-web test-e2e test-full-stack smoke lint compose-check production-check images backup backup-once
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*## "; printf "Restless Pacific\n\n"} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-18s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -82,6 +82,9 @@ lint: ## Validate Clojure, TypeScript, and repository configuration
 
 compose-check: env ## Render and validate the Compose model
 	$(COMPOSE) config --quiet
+
+production-check: ## Reject development credentials before a production deployment
+	./infra/scripts/validate-production-env .env
 
 images: env ## Build production container images
 	$(COMPOSE) build backend web backup

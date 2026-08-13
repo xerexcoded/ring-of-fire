@@ -1,0 +1,75 @@
+#!/bin/sh
+set -eu
+
+env_file=${1:-.env}
+
+value() {
+    key=$1
+    if [ "$env_file" = "-" ]; then
+        printenv "$key" 2>/dev/null || true
+    else
+        awk -v key="$key" '
+            $0 ~ "^" key "=" { sub("^[^=]*=", ""); print; exit }
+        ' "$env_file" 2>/dev/null || true
+    fi
+}
+
+failures=""
+check_required() {
+    key=$1
+    actual=$(value "$key")
+    expected=$2
+    if [ -z "$actual" ] || [ "$actual" = "$expected" ]; then
+        failures="$failures $key"
+    fi
+}
+
+if [ "$env_file" != "-" ] && [ ! -f "$env_file" ]; then
+    echo "Production environment file not found: $env_file" >&2
+    exit 1
+fi
+
+if [ "$(value APP_ENV)" != "production" ]; then
+    echo "APP_ENV must be production for a production deployment." >&2
+    exit 1
+fi
+
+check_required POSTGRES_PASSWORD dev-only-postgres-change-me
+check_required RING_WRITER_PASSWORD dev-only-ring-writer-change-me
+check_required METABASE_DB_PASSWORD dev-only-metabase-app-change-me
+check_required METABASE_READER_PASSWORD dev-only-metabase-reader-change-me
+check_required METABASE_ADMIN_PASSWORD 'RestlessPacific-Atlas!2026-Local'
+check_required METABASE_EMBEDDING_SECRET '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef'
+check_required METABASE_ENCRYPTION_SECRET dev-only-encryption-secret-change-me-32chars
+
+embedding_secret=$(value METABASE_EMBEDDING_SECRET)
+encryption_secret=$(value METABASE_ENCRYPTION_SECRET)
+backup_recipient=$(value BACKUP_AGE_RECIPIENT)
+
+if ! printf '%s' "$embedding_secret" | grep -Eq '^[0-9a-fA-F]{64}$'; then
+    failures="$failures METABASE_EMBEDDING_SECRET(format)"
+fi
+if [ "${#encryption_secret}" -lt 32 ]; then
+    failures="$failures METABASE_ENCRYPTION_SECRET(length)"
+fi
+if ! printf '%s' "$backup_recipient" | grep -Eq '^age1[0-9a-z]+$'; then
+    failures="$failures BACKUP_AGE_RECIPIENT"
+fi
+
+secrets="$(value POSTGRES_PASSWORD)
+$(value RING_WRITER_PASSWORD)
+$(value METABASE_DB_PASSWORD)
+$(value METABASE_READER_PASSWORD)
+$(value METABASE_ADMIN_PASSWORD)
+$(value METABASE_EMBEDDING_SECRET)
+$(value METABASE_ENCRYPTION_SECRET)"
+if [ "$(printf '%s\n' "$secrets" | sort | uniq -d | wc -l | tr -d ' ')" -ne 0 ]; then
+    failures="$failures duplicate-secret-values"
+fi
+
+if [ -n "$failures" ]; then
+    echo "Production environment validation failed for:$failures" >&2
+    exit 1
+fi
+
+echo "Production environment validation passed (secret values were not printed)."
