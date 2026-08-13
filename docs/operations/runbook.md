@@ -10,8 +10,10 @@ Compose topology. Commands run from the repository root unless noted.
    application diagnostic ports beyond loopback.
 3. Install Docker Engine, Compose v2, Git, and an external uptime agent if used.
 4. Clone into `/srv/restless-pacific` (or the protected `DEPLOY_PATH`).
-5. Copy `.env.example` to `.env`, set production origins, and replace every
-   committed credential and secret with independently generated values.
+5. Copy `.env.example` to `.env`, set `APP_ENV=production` and production
+   origins, and replace every committed credential and secret with independently
+   generated values. Run `make production-check` before starting or upgrading
+   the stack; it fails closed without printing secret values.
 6. Set `BACKUP_AGE_RECIPIENT` to a public age recipient. Store its private key
    offline and in the controlled restore location, never on this VPS.
 7. Point `www`, `api`, and `analytics` DNS records to the host. Use bare HTTPS
@@ -155,9 +157,9 @@ is a hard precondition, not a follow-up task.
    make backup-once
    mkdir -p .data/pre-upgrade
    docker compose exec -T postgres pg_dump --format=custom --no-owner \
-     --username postgres metabase_app > .data/pre-upgrade/metabase-app-v062.dump
-   docker compose exec -T postgres pg_restore --list \
-     < .data/pre-upgrade/metabase-app-v062.dump > /dev/null
+     --username postgres metabase_app > .data/pre-upgrade/metabase-app-pre-v06310.dump
+     docker compose exec -T postgres pg_restore --list \
+     < .data/pre-upgrade/metabase-app-pre-v06310.dump > /dev/null
    ```
 
 2. Restore that focused snapshot into a disposable database and inspect the
@@ -166,7 +168,7 @@ is a hard precondition, not a follow-up task.
    ```sh
    docker compose exec -T postgres createdb --username postgres metabase_restore_test
    docker compose exec -T postgres pg_restore --no-owner --username postgres \
-     --dbname metabase_restore_test < .data/pre-upgrade/metabase-app-v062.dump
+     --dbname metabase_restore_test < .data/pre-upgrade/metabase-app-pre-v06310.dump
    docker compose exec -T postgres psql --username postgres --dbname metabase_restore_test \
      --command="WITH target AS (SELECT id FROM collection WHERE name = 'Restless Pacific') SELECT (SELECT count(*) FROM report_dashboard WHERE collection_id IN (SELECT id FROM target) AND NOT archived) AS dashboards, (SELECT count(*) FROM report_card WHERE collection_id IN (SELECT id FROM target) AND NOT archived) AS questions;"
    docker compose exec -T postgres dropdb --username postgres metabase_restore_test
@@ -176,9 +178,10 @@ is a hard precondition, not a follow-up task.
    Keep the pre-upgrade dump outside the deployment checkout according to the
    backup retention policy after the verification.
 
-3. Pull/start the pinned `metabase/metabase:v0.63.5` container, wait for
-   health, rerun bootstrap, and run the full-stack suite. Verify all four
-   dashboard resource keys, sixteen questions, native filters, and guest embeds.
+3. Pull/start the security-hardened `metabase/metabase:v0.63.10` container, wait
+   for health, rerun bootstrap, and run the full-stack suite. Verify all four
+   dashboard resource keys, sixteen questions, native filters, guest embeds,
+   Agent API authorization, and read-only database permissions.
 
 4. In Metabase Admin, enable **AI > MCP / Agent API**. Create an API-key group
    named `Ring AI Reader`. Grant view/query-builder access only to the five
@@ -225,11 +228,11 @@ docker compose logs --since=1h metabase postgres > metabase-incident.log
 docker compose restart metabase
 ```
 
-The pinned v0.63.5 dashboard grid requires the style-only CSP compatibility
-rewrite documented in ADR 0002. If cards overlap after an upgrade, do not
-broaden `script-src`; run `make test-full-stack`, inspect the upstream CSP, and
-either update or remove the narrowly scoped Caddy rewrite based on the new
-Metabase behavior.
+The Caddy config retains a style-only CSP compatibility rewrite for the
+v0.63.10 dashboard grid pending runtime verification. After an upgrade, do not
+broaden `script-src`: run `make test-full-stack`, inspect the upstream CSP, and
+remove or adjust only the narrowly scoped rewrite if the new Metabase behavior
+makes it unnecessary.
 
 ### Source refresh failed
 

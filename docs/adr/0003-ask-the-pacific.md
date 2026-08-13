@@ -28,7 +28,7 @@ researcher, or a source of hazard forecasts.
 - Treat a successful `showWorkspace` result as the authoritative instruction to
   render its allow-listed Metabase dashboard, and stop the tool loop at that
   point. Workspace rendering must not depend on a later model-authored spec.
-- Upgrade the tested Metabase image to `v0.63.5` and use its Agent API with a
+- Upgrade the tested Metabase image to the security-hardened `v0.63.10` and use its Agent API with a
   separate `Ring AI Reader` API-key group. Next.js exposes only search,
   inspection, and constrained portable-query construction over the five
   `analytics` views. Raw SQL and every Metabase write endpoint are absent.

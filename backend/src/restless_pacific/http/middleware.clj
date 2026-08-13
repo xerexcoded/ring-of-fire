@@ -2,24 +2,59 @@
   (:require [cheshire.core :as json]
             [clojure.string :as str]
             [restless-pacific.http.problem :as problem])
-  (:import (java.io InputStream)))
+  (:import (java.io ByteArrayOutputStream InputStream)
+           (java.nio.charset StandardCharsets)))
+
+(def max-json-body-bytes 131072)
 
 (defn- json-content-type? [request]
   (some-> (get-in request [:headers "content-type"])
           str/lower-case
           (str/starts-with? "application/json")))
 
+(defn- content-length [request]
+  (try
+    (some-> (get-in request [:headers "content-length"]) Long/parseLong)
+    (catch NumberFormatException _ nil)))
+
+(defn- read-limited-utf8 [^InputStream input]
+  (let [buffer (byte-array 8192)
+        output (ByteArrayOutputStream.)]
+    (loop [total 0]
+      (let [read (.read input buffer)]
+        (cond
+          (= -1 read) (String. (.toByteArray output) StandardCharsets/UTF_8)
+          (> (+ total read) max-json-body-bytes)
+          (throw (ex-info "JSON request body exceeds the configured limit."
+                          {:type ::body-too-large
+                           :max-bytes max-json-body-bytes}))
+          :else (do
+                  (.write output buffer 0 read)
+                  (recur (+ total read))))))))
+
+(defn- body-too-large-response [request]
+  (problem/response request
+                    (problem/problem 413 "Request body too large"
+                                     "JSON request bodies must be 128 KiB or smaller.")))
+
 (defn wrap-json-body [handler]
   (fn [request]
     (if (and (json-content-type? request) (:body request))
-      (try
-        (handler (assoc request :json-body
-                        (json/parse-stream
-                         (java.io.InputStreamReader. ^InputStream (:body request)) true)))
-        (catch com.fasterxml.jackson.core.JsonParseException _
-          (problem/response request
-                            (problem/problem 400 "Malformed JSON"
-                                             "The request body is not valid JSON."))))
+      (if (when-let [length (content-length request)]
+            (> length max-json-body-bytes))
+        (body-too-large-response request)
+        (try
+          (handler (assoc request :json-body
+                          (json/parse-string
+                           (read-limited-utf8 ^InputStream (:body request)) true)))
+          (catch clojure.lang.ExceptionInfo error
+            (if (= ::body-too-large (:type (ex-data error)))
+              (body-too-large-response request)
+              (throw error)))
+          (catch com.fasterxml.jackson.core.JsonParseException _
+            (problem/response request
+                              (problem/problem 400 "Malformed JSON"
+                                               "The request body is not valid JSON.")))))
       (handler request))))
 
 (defn wrap-json-response [handler]

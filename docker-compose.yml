@@ -1,12 +1,14 @@
 name: ${COMPOSE_PROJECT_NAME:-restless-pacific}
 
 x-backend-environment: &backend-environment
+  APP_ENV: ${APP_ENV:-development}
   DB_HOST: postgres
   DB_PORT: "5432"
   DB_NAME: ring_data
   DATABASE_URL: jdbc:postgresql://postgres:5432/ring_data
   DATABASE_USER: ring_writer
   DATABASE_PASSWORD: ${RING_WRITER_PASSWORD:-dev-only-ring-writer-change-me}
+  RING_WRITER_PASSWORD: ${RING_WRITER_PASSWORD:-dev-only-ring-writer-change-me}
   ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:3000,http://www.localhost}
   METABASE_URL: http://metabase:3000
   METABASE_PUBLIC_URL: ${ANALYTICS_ORIGIN:-http://analytics.localhost}
@@ -16,6 +18,9 @@ x-backend-environment: &backend-environment
   METABASE_ADMIN_LAST_NAME: ${METABASE_ADMIN_LAST_NAME:-Pacific}
   METABASE_SITE_NAME: ${METABASE_SITE_NAME:-Restless Pacific Data Lab}
   METABASE_EMBEDDING_SECRET: ${METABASE_EMBEDDING_SECRET:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+  METABASE_ENCRYPTION_SECRET: ${METABASE_ENCRYPTION_SECRET:-dev-only-encryption-secret-change-me-32chars}
+  METABASE_DB_PASSWORD: ${METABASE_DB_PASSWORD:-dev-only-metabase-app-change-me}
+  POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev-only-postgres-change-me}
   METABASE_TOKEN_TTL_SECONDS: ${METABASE_TOKEN_TTL_SECONDS:-3600}
   METABASE_READER_USER: metabase_reader
   METABASE_READER_PASSWORD: ${METABASE_READER_PASSWORD:-dev-only-metabase-reader-change-me}
@@ -74,7 +79,7 @@ services:
     networks: [atlas]
 
   metabase:
-    image: metabase/metabase:v0.63.5
+    image: metabase/metabase:v0.63.10
     restart: unless-stopped
     environment:
       MB_DB_TYPE: postgres

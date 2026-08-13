@@ -18,7 +18,7 @@ make provisioning behavior unpredictable and difficult to demonstrate.
 ## Decision
 
 - Pin an exact tested image. The current integration pin is
-  `metabase/metabase:v0.63.5`; ADR 0003 records the migration gate.
+  `metabase/metabase:v0.63.10`; ADR 0003 records the migration gate.
 - Use Modular Guest embedding for published questions and dashboards.
 - Keep the custom Pacific map and detail interactions in Next.js/MapLibre.
 - Load Metabase `embed.js` only in the browser, resolve stable resource keys at
@@ -44,13 +44,13 @@ Data Lab must design native editable filters up front rather than rely on
 drill-through. A Metabase upgrade is a deliberate change with a bootstrap
 integration test, not a tag bump to `latest`.
 
-The pinned v0.63.5 build uses inline style attributes for dashboard-grid
-transforms while shipping a CSP that blocks them. Caddy therefore adds
-`unsafe-inline` to Metabase's `style-src` and `style-src-attr` directives only,
-replacing the ineffective style nonce; the separate nonce-based `script-src`
-policy remains intact. This compatibility
-exception is covered by the full-stack browser check and must be reviewed when
-the Metabase pin changes.
+The v0.63.10 compatibility rule is retained pending the full-stack browser
+check: if dashboard-grid transforms still use inline style attributes while the
+upstream CSP blocks them, Caddy adds `unsafe-inline` to Metabase's `style-src`
+and `style-src-attr` directives only, replacing the ineffective style nonce;
+the separate nonce-based `script-src` policy remains intact. If v0.63.10 no
+longer needs the exception, remove it rather than broadening the policy. This
+compatibility decision must be reviewed whenever the Metabase pin changes.
 
 ## Alternatives considered
 
