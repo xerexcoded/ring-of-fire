@@ -43,5 +43,18 @@ jobs:
         run: |
           test -n "$DEPLOY_HOST"
           test -n "$DEPLOY_USER"
+          for attempt in 1 2 3 4 5; do
+            if timeout 10 bash -c ': > /dev/tcp/$1/22' _ "$DEPLOY_HOST" 2>/dev/null; then
+              break
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "Xenix SSH endpoint was unreachable after $attempt attempts." >&2
+              exit 1
+            fi
+            echo "Xenix SSH endpoint not reachable; retrying ($attempt/5)." >&2
+            sleep 5
+          done
           ssh -i ~/.ssh/xenix-deploy -o IdentitiesOnly=yes \
+            -o BatchMode=yes -o ConnectTimeout=15 -o ConnectionAttempts=1 \
+            -o ServerAliveInterval=15 -o ServerAliveCountMax=2 \
             "$DEPLOY_USER@$DEPLOY_HOST" "deploy $REVISION"
