@@ -13,10 +13,11 @@ describe("site telemetry", () => {
   });
 
   it.each([
-    [{ isAbort: false, isDisconnect: false, isError: false }, "ask_completed"],
+    [{ isAbort: false, isDisconnect: false, isError: false, finishReason: "stop" }, "ask_completed"],
     [{ isAbort: true, isDisconnect: false, isError: false }, "ask_failed"],
     [{ isAbort: false, isDisconnect: true, isError: false }, "ask_failed"],
     [{ isAbort: false, isDisconnect: false, isError: true }, "ask_failed"],
+    [{ isAbort: false, isDisconnect: false, isError: false }, "ask_failed"],
   ] as const)("records %o as %s", (completion, event) => {
     expect(askCompletionEvent(completion)).toBe(event);
   });

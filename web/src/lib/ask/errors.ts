@@ -35,7 +35,7 @@ export function askErrorNotice(error: Error | undefined): AskErrorNotice | null 
   const envelope = parseEnvelope(error);
   const code = typeof envelope?.code === "string"
     ? envelope.code
-    : ["rate-limited", "request-active", "chat-unavailable", "generation-failed"].find((candidate) => error.message.includes(candidate)) ?? "generation-failed";
+    : ["rate-limited", "request-active", "chat-unavailable", "provider-rate-limited", "timed-out", "incomplete", "generation-failed"].find((candidate) => error.message.includes(candidate)) ?? "generation-failed";
 
   if (code === "rate-limited") {
     const retryAfter = typeof envelope?.retryAfterSeconds === "number" && Number.isFinite(envelope.retryAfterSeconds)
@@ -60,6 +60,30 @@ export function askErrorNotice(error: Error | undefined): AskErrorNotice | null 
     return {
       code,
       message: "The model or governed analytics service is temporarily unavailable.",
+      canRetry: true,
+      canStartFresh: false,
+    };
+  }
+  if (code === "provider-rate-limited") {
+    return {
+      code,
+      message: "The model provider is busy right now. Please retry shortly; starting a fresh conversation will not change provider capacity.",
+      canRetry: true,
+      canStartFresh: false,
+    };
+  }
+  if (code === "timed-out") {
+    return {
+      code,
+      message: "The guide took too long to finish this answer. Try a shorter question or retry.",
+      canRetry: true,
+      canStartFresh: false,
+    };
+  }
+  if (code === "incomplete") {
+    return {
+      code,
+      message: "The answer stream ended early. Retry the answer to request a complete response.",
       canRetry: true,
       canStartFresh: false,
     };

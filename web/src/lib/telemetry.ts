@@ -16,6 +16,7 @@ type AskCompletion = {
   isAbort: boolean;
   isDisconnect: boolean;
   isError: boolean;
+  finishReason?: string;
 };
 
 function redactedUrl(value: unknown) {
@@ -41,6 +42,8 @@ export function captureTelemetry(event: TelemetryEvent) {
   posthog.capture(event);
 }
 
-export function askCompletionEvent({ isAbort, isDisconnect, isError }: AskCompletion): TelemetryEvent {
-  return isAbort || isDisconnect || isError ? "ask_failed" : "ask_completed";
+export function askCompletionEvent({ isAbort, isDisconnect, isError, finishReason }: AskCompletion): TelemetryEvent {
+  return isAbort || isDisconnect || isError || finishReason == null || finishReason === "error"
+    ? "ask_failed"
+    : "ask_completed";
 }

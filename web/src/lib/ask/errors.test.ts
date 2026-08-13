@@ -19,6 +19,19 @@ describe("Ask chat error notices", () => {
     });
   });
 
+  it("keeps provider capacity failures retryable without suggesting a fresh session", () => {
+    expect(askErrorNotice(new Error(JSON.stringify({ error: { code: "provider-rate-limited" } })))).toMatchObject({
+      code: "provider-rate-limited",
+      canRetry: true,
+      canStartFresh: false,
+    });
+  });
+
+  it("explains timeout and incomplete-stream failures distinctly", () => {
+    expect(askErrorNotice(new Error(JSON.stringify({ error: { code: "timed-out" } })))?.message).toContain("too long");
+    expect(askErrorNotice(new Error(JSON.stringify({ error: { code: "incomplete" } })))?.message).toContain("ended early");
+  });
+
   it("formats short and long retry windows", () => {
     expect(formatRetryAfter(12)).toBe("12 seconds");
     expect(formatRetryAfter(3_601)).toBe("2 hours");

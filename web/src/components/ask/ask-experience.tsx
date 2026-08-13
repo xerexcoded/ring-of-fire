@@ -175,7 +175,13 @@ export function AskExperience({ available, unavailableReason }: { available: boo
   } = useChat<AskUIMessage>({
     transport,
     throttle: 40,
-    onFinish: (completion) => captureTelemetry(askCompletionEvent(completion)),
+    onFinish: (completion) => {
+      captureTelemetry(askCompletionEvent(completion));
+      const { message, messages: completedMessages, isAbort, isDisconnect, isError, finishReason } = completion;
+      const completed = !isAbort && !isDisconnect && !isError && finishReason != null && finishReason !== "error";
+      if (completed && hydratedRef.current) storeConversation(window.localStorage, completedMessages);
+      else if (!completed) setMessages((current) => current.filter((item) => item.id !== message.id));
+    },
   });
   const isGenerating = status === "submitted" || status === "streaming";
   const results = useMemo(() => resultParts(messages), [messages]);
@@ -191,11 +197,6 @@ export function AskExperience({ available, unavailableReason }: { available: boo
   useEffect(() => {
     captureTelemetry("ask_opened");
   }, []);
-
-  useEffect(() => {
-    if (hydratedRef.current) storeConversation(window.localStorage, messages);
-  }, [messages]);
-
   const submit = useCallback((text: string) => {
     const value = text.trim();
     if (!available || !value || value.length > 2_000 || isGenerating) return;
