@@ -139,6 +139,8 @@ services:
         NEXT_PUBLIC_METABASE_URL: ${NEXT_PUBLIC_METABASE_URL:-http://analytics.localhost}
         NEXT_PUBLIC_REPOSITORY_URL: ${NEXT_PUBLIC_REPOSITORY_URL:-https://github.com/}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+        NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: ${NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN:-}
+        NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}
     restart: unless-stopped
     init: true
     environment:
@@ -159,6 +161,8 @@ services:
       NEXT_PUBLIC_METABASE_URL: ${NEXT_PUBLIC_METABASE_URL:-http://analytics.localhost}
       NEXT_PUBLIC_REPOSITORY_URL: ${NEXT_PUBLIC_REPOSITORY_URL:-https://github.com/}
       NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: ${NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN:-}
+      NEXT_PUBLIC_POSTHOG_HOST: ${NEXT_PUBLIC_POSTHOG_HOST:-https://eu.i.posthog.com}
       NODE_ENV: production
     ports:
       - 127.0.0.1:${WEB_PORT:-3000}:3000
