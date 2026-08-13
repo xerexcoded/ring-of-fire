@@ -76,7 +76,12 @@ export function createAskAgent({
   return new ToolLoopAgent({
     id: "ask-the-pacific-v1",
     model: openrouter.chat(config.modelId, {
-      provider: { allow_fallbacks: false, require_parameters: true, data_collection: "deny" },
+      models: config.fallbackModelId !== config.modelId ? [config.fallbackModelId] : undefined,
+      provider: {
+        allow_fallbacks: true,
+        require_parameters: true,
+        data_collection: "deny",
+      },
       usage: { include: true },
     }),
     instructions,

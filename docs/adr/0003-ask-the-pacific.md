@@ -16,9 +16,13 @@ researcher, or a source of hazard forecasts.
 
 - Add `/ask` and `POST /api/ask` to the existing Next.js application.
 - Use the Vercel AI SDK tool-loop agent with a maximum of six steps, four data
-  tool executions, 45 seconds, and no automatic model fallback.
-- Pin `deepseek/deepseek-v4-flash-0731` through OpenRouter while keeping the
-  model ID server-configurable for explicit evaluation deployments.
+  tool executions, a 42-second internal timeout inside the 45-second route
+  budget, and an explicit terminal-stream check.
+- Route `google/gemini-2.5-flash` through OpenRouter with
+  `qwen/qwen3.5-122b-a10b` as the model-level fallback. Provider fallbacks are
+  enabled, require tool-compatible parameters, use OpenRouter's default
+  health-aware provider ordering, and deny data-collecting endpoints. Both
+  model IDs remain server-configurable for explicit evaluation deployments.
 - Use Prompt Kit's headless chat container, scroll recovery, autosizing prompt
   input, and suggestion primitives for the responsive conversation shell. Keep
   AI Elements for streamed Markdown, tool, source, and message-action rendering,

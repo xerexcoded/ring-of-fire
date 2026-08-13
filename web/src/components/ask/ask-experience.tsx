@@ -171,7 +171,15 @@ export function AskExperience({ available, unavailableReason }: { available: boo
     status,
     error,
     clearError,
-  } = useChat<AskUIMessage>({ transport, throttle: 40 });
+  } = useChat<AskUIMessage>({
+    transport,
+    throttle: 40,
+    onFinish: ({ message, isAbort, isDisconnect, isError, finishReason }) => {
+      const completed = !isAbort && !isDisconnect && !isError && finishReason != null && finishReason !== "error";
+      if (completed) storeConversation(window.localStorage, messages);
+      else setMessages((current) => current.filter((item) => item.id !== message.id));
+    },
+  });
   const isGenerating = status === "submitted" || status === "streaming";
   const results = useMemo(() => resultParts(messages), [messages]);
 
@@ -182,10 +190,6 @@ export function AskExperience({ available, unavailableReason }: { available: boo
     });
     return () => cancelAnimationFrame(frame);
   }, [setMessages]);
-
-  useEffect(() => {
-    if (hydratedRef.current) storeConversation(window.localStorage, messages);
-  }, [messages]);
 
   const submit = useCallback((text: string) => {
     const value = text.trim();

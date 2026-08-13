@@ -16,6 +16,23 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 45;
 
+const ASK_TOTAL_TIMEOUT_MS = 42_000;
+const ASK_TOOL_TIMEOUT_MS = 13_000;
+const ASK_FIRST_CHUNK_TIMEOUT_MS = 16_000;
+const ASK_CLAIM_FAILSAFE_MS = ASK_TOTAL_TIMEOUT_MS + 5_000;
+type AskFinalStatus =
+  | "running"
+  | "completed"
+  | "aborted"
+  | "timed-out"
+  | "incomplete"
+  | "provider-rate-limited"
+  | "metabase-offline"
+  | "atlas-offline"
+  | "model-offline"
+  | "invalid-upstream-response"
+  | "generation-failed";
+
 function jsonError(status: number, code: string, message: string, headers?: HeadersInit, details?: Record<string, unknown>) {
   return Response.json({ error: { code, message, ...details } }, {
     status,
@@ -40,12 +57,60 @@ function requestOriginAllowed(request: Request) {
   return allowed.has(origin);
 }
 
-function normalizedError(error: unknown) {
-  if (error instanceof Error && error.name === "AbortError") return "aborted";
-  if (error instanceof Error && ["metabase-offline", "atlas-offline", "model-offline", "invalid-upstream-response"].includes((error as Error & { code?: string }).code ?? "")) {
-    return (error as Error & { code: string }).code;
+function hasStatusCode(error: unknown, statusCode: number, depth = 0): boolean {
+  if (depth > 3 || typeof error !== "object" || error === null) return false;
+  const candidate = error as { statusCode?: unknown; status?: unknown; cause?: unknown };
+  return candidate.statusCode === statusCode || candidate.status === statusCode
+    || hasStatusCode(candidate.cause, statusCode, depth + 1);
+}
+
+export function normalizedError(error: unknown): Exclude<AskFinalStatus, "running" | "completed"> {
+  const candidate = error as { code?: unknown; message?: unknown; name?: unknown };
+  const code = typeof candidate.code === "string" ? candidate.code : "";
+  const message = typeof candidate.message === "string" ? candidate.message : "";
+  if (hasStatusCode(error, 429) || /(?:rate[ -]?limit|too many requests|\b429\b)/i.test(`${code} ${message}`)) {
+    return "provider-rate-limited";
+  }
+  if (candidate.name === "TimeoutError" || /(?:timed? ?out|timeout)/i.test(message)) return "timed-out";
+  if (candidate.name === "AbortError") return "aborted";
+  if (["metabase-offline", "atlas-offline", "model-offline", "invalid-upstream-response"].includes(code)) {
+    return code as Exclude<AskFinalStatus, "running" | "completed">;
   }
   return "generation-failed";
+}
+
+function streamErrorMessage(code: AskFinalStatus) {
+  const messages: Partial<Record<AskFinalStatus, string>> = {
+    "provider-rate-limited": "The model provider is busy right now. Please retry shortly.",
+    "timed-out": "The guide took too long to complete this answer. Please retry with a shorter question.",
+    incomplete: "The answer stream ended before the guide could finish. Please retry.",
+    "generation-failed": "The geology guide could not complete this answer. Please retry.",
+  };
+  return JSON.stringify({ error: { code, message: messages[code] ?? messages["generation-failed"] } });
+}
+
+export function withTerminalFailure(
+  stream: ReadableStream<InferUIMessageChunk<AskUIMessage>>,
+  requestSignal: AbortSignal,
+  onFailure: (status: "timed-out" | "incomplete") => void,
+) {
+  let sawTerminalFinish = false;
+  let sawError = false;
+  let sawAbort = false;
+  return stream.pipeThrough(new TransformStream<InferUIMessageChunk<AskUIMessage>, InferUIMessageChunk<AskUIMessage>>({
+    transform(chunk, controller) {
+      if (chunk.type === "finish" && chunk.finishReason != null && chunk.finishReason !== "error") sawTerminalFinish = true;
+      if (chunk.type === "error") sawError = true;
+      if (chunk.type === "abort") sawAbort = true;
+      controller.enqueue(chunk);
+    },
+    flush(controller) {
+      if (sawTerminalFinish || sawError || requestSignal.aborted) return;
+      const status = sawAbort ? "timed-out" : "incomplete";
+      onFailure(status);
+      controller.enqueue({ type: "error", errorText: streamErrorMessage(status) });
+    },
+  }));
 }
 
 export async function POST(request: Request) {
@@ -80,8 +145,8 @@ export async function POST(request: Request) {
   const rowCounts: number[] = [];
   const emittedSources = new Set<string>();
   let runSummary: AskRunSummary = {};
-  let finalStatus = "completed";
-  const releaseTimer = setTimeout(claim.release, 50_000);
+  let finalStatus: AskFinalStatus = "running";
+  const releaseTimer = setTimeout(claim.release, ASK_CLAIM_FAILSAFE_MS);
   releaseTimer.unref?.();
   request.signal.addEventListener("abort", () => {
     finalStatus = "aborted";
@@ -115,22 +180,35 @@ export async function POST(request: Request) {
         agent,
         uiMessages: messages,
         abortSignal: request.signal,
-        timeout: { totalMs: 45_000, toolMs: 15_000, firstChunkMs: 20_000 },
+        timeout: {
+          totalMs: ASK_TOTAL_TIMEOUT_MS,
+          toolMs: ASK_TOOL_TIMEOUT_MS,
+          firstChunkMs: ASK_FIRST_CHUNK_TIMEOUT_MS,
+        },
         sendReasoning: false,
         sendSources: false,
         messageMetadata: () => ({ requestId, modelId: config.modelId }),
         onError: (error) => {
           finalStatus = normalizedError(error);
-          return "The geology guide could not complete this answer. Please retry.";
+          return streamErrorMessage(finalStatus);
         },
       });
-      writer.merge(pipeJsonRender(agentStream) as ReadableStream<InferUIMessageChunk<AskUIMessage>>);
+      const typedAgentStream = agentStream as unknown as ReadableStream<InferUIMessageChunk<AskUIMessage>>;
+      writer.merge(pipeJsonRender(withTerminalFailure(typedAgentStream, request.signal, (status) => {
+        finalStatus = status;
+      })) as ReadableStream<InferUIMessageChunk<AskUIMessage>>);
     },
     onError: (error) => {
       finalStatus = normalizedError(error);
-      return "The geology guide could not complete this answer. Please retry.";
+      return streamErrorMessage(finalStatus);
     },
-    onEnd: () => {
+    onEnd: ({ isAborted, finishReason }) => {
+      if (finalStatus === "running") {
+        const hasTerminalFinish = finishReason != null && finishReason !== "error";
+        finalStatus = isAborted
+          ? request.signal.aborted ? "aborted" : "timed-out"
+          : hasTerminalFinish ? "completed" : "incomplete";
+      }
       clearTimeout(releaseTimer);
       claim.release();
       console.info(JSON.stringify({
@@ -145,7 +223,8 @@ export async function POST(request: Request) {
         toolNames,
         rowCounts,
         status: finalStatus,
-        finishReason: runSummary.finishReason,
+        finishReason: runSummary.finishReason ?? finishReason,
+        fallbackModelId: config.fallbackModelId,
       }));
     },
   });
