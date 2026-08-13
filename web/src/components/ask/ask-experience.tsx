@@ -47,6 +47,7 @@ import {
   loadStoredConversation,
   storeConversation,
 } from "@/lib/ask/storage";
+import { askCompletionEvent, captureTelemetry } from "@/lib/telemetry";
 import type { AskUIMessage, NormalizedResult, SourceReceipt } from "@/lib/ask/types";
 import { specIncludesWorkspace, workspaceFromToolParts } from "@/lib/ask/workspaces";
 import { withBasePath } from "@/lib/paths";
@@ -174,10 +175,12 @@ export function AskExperience({ available, unavailableReason }: { available: boo
   } = useChat<AskUIMessage>({
     transport,
     throttle: 40,
-    onFinish: ({ message, isAbort, isDisconnect, isError, finishReason }) => {
+    onFinish: (completion) => {
+      captureTelemetry(askCompletionEvent(completion));
+      const { message, messages: completedMessages, isAbort, isDisconnect, isError, finishReason } = completion;
       const completed = !isAbort && !isDisconnect && !isError && finishReason != null && finishReason !== "error";
-      if (completed) storeConversation(window.localStorage, messages);
-      else setMessages((current) => current.filter((item) => item.id !== message.id));
+      if (completed && hydratedRef.current) storeConversation(window.localStorage, completedMessages);
+      else if (!completed) setMessages((current) => current.filter((item) => item.id !== message.id));
     },
   });
   const isGenerating = status === "submitted" || status === "streaming";
@@ -191,17 +194,22 @@ export function AskExperience({ available, unavailableReason }: { available: boo
     return () => cancelAnimationFrame(frame);
   }, [setMessages]);
 
+  useEffect(() => {
+    captureTelemetry("ask_opened");
+  }, []);
   const submit = useCallback((text: string) => {
     const value = text.trim();
     if (!available || !value || value.length > 2_000 || isGenerating) return;
     clearError();
     setInput("");
+    captureTelemetry("ask_started");
     void sendMessage({ text: value });
   }, [available, clearError, isGenerating, sendMessage]);
 
   const retry = useCallback(() => {
     if (!available || isGenerating) return;
     clearError();
+    captureTelemetry("ask_started");
     void regenerate();
   }, [available, clearError, isGenerating, regenerate]);
 

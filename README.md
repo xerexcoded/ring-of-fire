@@ -239,6 +239,15 @@ public API and Metabase URLs to paths beneath the same prefix. The edge proxy
 must preserve the prefix when forwarding to Next.js and strip it when
 forwarding to the API or Metabase.
 
+### Optional site telemetry
+
+Set `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` and `NEXT_PUBLIC_POSTHOG_HOST` at
+image-build time to enable anonymous PostHog pageviews and Ask the Pacific
+lifecycle events. The client disables autocapture and session replay, redacts
+navigation query strings/fragments before delivery, and does not identify
+visitors. Chat prompts, responses, cookies, and tool payloads remain outside
+PostHog.
+
 Daily `age`-encrypted backups cover both databases. Keep the age private key
 off the VPS and replicate the encrypted backup directory off-host. Health
 checks, restoration drills, secret rotation, and rollback procedures are in the

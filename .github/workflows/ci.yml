@@ -106,6 +106,8 @@ jobs:
         env:
           NEXT_PUBLIC_API_BASE_URL: http://api.example.test/api/v1
           NEXT_PUBLIC_METABASE_URL: http://analytics.example.test
+          NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN: ${{ vars.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN }}
+          NEXT_PUBLIC_POSTHOG_HOST: https://eu.i.posthog.com
           METABASE_EMBEDDING_SECRET: ci-server-only-canary-never-ship-this-value
         run: npm run build
       - name: Confirm backend secret is absent from browser output
