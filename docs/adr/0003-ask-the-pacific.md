@@ -42,6 +42,11 @@ researcher, or a source of hazard forecasts.
 - Log identifiers, latency, model, token counts, tool names, row counts, status,
   and normalized errors only. Do not log prompts, answers, raw IPs, cookies, or
   tool payloads.
+- Use PostHog only for anonymous, aggregate site telemetry: pageviews and the
+  `ask_opened`, `ask_started`, `ask_completed`, and `ask_failed` lifecycle
+  events. Disable autocapture and session replay, redact navigation query
+  strings and fragments before delivery, and do not call `identify()` because
+  the site has no account system.
 - Keep `AI_CHAT_ENABLED=false` until the Metabase backup/migration, restricted
   permissions, model comparison, browser suite, and full-stack smoke tests pass.
 

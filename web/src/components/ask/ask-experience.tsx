@@ -47,6 +47,7 @@ import {
   loadStoredConversation,
   storeConversation,
 } from "@/lib/ask/storage";
+import { askCompletionEvent, captureTelemetry } from "@/lib/telemetry";
 import type { AskUIMessage, NormalizedResult, SourceReceipt } from "@/lib/ask/types";
 import { specIncludesWorkspace, workspaceFromToolParts } from "@/lib/ask/workspaces";
 import { withBasePath } from "@/lib/paths";
@@ -171,7 +172,11 @@ export function AskExperience({ available, unavailableReason }: { available: boo
     status,
     error,
     clearError,
-  } = useChat<AskUIMessage>({ transport, throttle: 40 });
+  } = useChat<AskUIMessage>({
+    transport,
+    throttle: 40,
+    onFinish: (completion) => captureTelemetry(askCompletionEvent(completion)),
+  });
   const isGenerating = status === "submitted" || status === "streaming";
   const results = useMemo(() => resultParts(messages), [messages]);
 
@@ -184,6 +189,10 @@ export function AskExperience({ available, unavailableReason }: { available: boo
   }, [setMessages]);
 
   useEffect(() => {
+    captureTelemetry("ask_opened");
+  }, []);
+
+  useEffect(() => {
     if (hydratedRef.current) storeConversation(window.localStorage, messages);
   }, [messages]);
 
@@ -192,12 +201,14 @@ export function AskExperience({ available, unavailableReason }: { available: boo
     if (!available || !value || value.length > 2_000 || isGenerating) return;
     clearError();
     setInput("");
+    captureTelemetry("ask_started");
     void sendMessage({ text: value });
   }, [available, clearError, isGenerating, sendMessage]);
 
   const retry = useCallback(() => {
     if (!available || isGenerating) return;
     clearError();
+    captureTelemetry("ask_started");
     void regenerate();
   }, [available, clearError, isGenerating, regenerate]);
 
