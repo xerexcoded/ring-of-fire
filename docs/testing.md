@@ -16,6 +16,11 @@ make test-e2e        # deterministic browser behavior and accessibility
 make test-full-stack # PostGIS roles + real guest embed on desktop/mobile
 ```
 
+CI also provisions the pinned Metabase image from empty volumes, runs the
+health and permission smoke checks, verifies resource IDs survive a second
+bootstrap, and exercises all four real guest dashboards on desktop and mobile.
+The deployment workflow waits for this job along with the other CI checks.
+
 ## Backend matrix
 
 | Area | Required cases |

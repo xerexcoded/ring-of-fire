@@ -79,7 +79,7 @@ services:
     networks: [atlas]
 
   metabase:
-    image: metabase/metabase:v0.63.10
+    image: metabase/metabase:v0.64.4.5
     restart: unless-stopped
     environment:
       MB_DB_TYPE: postgres

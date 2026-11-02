@@ -29,7 +29,7 @@ jobs:
       - name: Reject floating production images
         run: |
           ! grep -R --line-number -E 'image: .*:(latest|beta)([[:space:]]|$)' docker-compose.yml infra
-          grep -F 'metabase/metabase:v0.63.10' docker-compose.yml
+          grep -F 'metabase/metabase:v0.64.4.5' docker-compose.yml
 
   backend:
     name: Clojure tests
@@ -118,10 +118,52 @@ jobs:
             exit 1
           fi
 
+  metabase:
+    name: Metabase guest dashboards
+    runs-on: ubuntu-latest
+    needs: [repository-config, backend, web]
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install browser test dependencies
+        working-directory: web
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium webkit
+      - name: Provision the pinned Metabase image from empty volumes
+        run: make dev-low-memory
+      - name: Verify health, guest allow-list, and database isolation
+        run: make smoke
+      - name: Verify bootstrap preserves resource IDs
+        run: |
+          docker compose exec -T postgres psql -U postgres -d ring_data -Atc \
+            'SELECT resource_key, entity_type, entity_id FROM ops.metabase_resource WHERE enabled ORDER BY resource_key' > /tmp/resources-before
+          docker compose --profile tools run --rm metabase-bootstrap
+          docker compose exec -T postgres psql -U postgres -d ring_data -Atc \
+            'SELECT resource_key, entity_type, entity_id FROM ops.metabase_resource WHERE enabled ORDER BY resource_key' > /tmp/resources-after
+          diff -u /tmp/resources-before /tmp/resources-after
+      - name: Verify all sixteen guest charts and native filters on desktop and mobile
+        working-directory: web
+        env:
+          FULL_STACK: "1"
+          PLAYWRIGHT_BASE_URL: http://www.localhost
+        run: npm run test:e2e -- --grep 'live Data Lab' --workers=1 --timeout=180000
+      - name: Collect startup diagnostics
+        if: failure()
+        run: docker compose logs --no-color --tail=150
+      - name: Stop the isolated stack
+        if: always()
+        run: docker compose down --volumes --remove-orphans
+
   images:
     name: Container images
     runs-on: ubuntu-latest
-    needs: [repository-config, backend, web]
+    needs: [repository-config, backend, web, metabase]
     strategy:
       matrix:
         include:

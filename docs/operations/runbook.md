@@ -64,9 +64,38 @@ To roll back, dispatch the workflow from a known-good commit or run on the host:
 sudo /etc/ring-of-fire/deploy --revision GOOD_SHA
 ```
 
-Database migrations must be backwards-compatible with the immediately previous
-image. If a release requires a destructive migration, take and verify an
-encrypted backup and write a release-specific recovery plan before approval.
+Application database migrations must be backwards-compatible with the
+immediately previous image. Metabase major upgrades require a separate
+application-database backup and restore rehearsal before deployment. Rolling
+back the Git revision alone does not undo Metabase schema migrations: restore
+the matching pre-upgrade `metabase_app` snapshot before starting the old image.
+
+### Metabase 64 upgrade
+
+The pinned release is `metabase/metabase:v0.64.4.5`. Before deploying it:
+
+1. Record the running image, Git revision, dashboard/question inventory, and
+   enabled resource IDs. Back up both databases outside the source checkout
+   with restrictive permissions and encrypt a copy to the operator's recovery
+   key. Do not log the environment file or database credentials.
+2. Restore the application snapshot to a disposable database owned by
+   `metabase_app`. Use `pg_restore --no-owner --role=metabase_app`, and compare
+   the restored inventory with production. A readable dump index alone does
+   not verify restoration.
+3. Start the pinned image against that disposable database with the existing
+   encryption key and a loopback-only test port. Wait for migrations and
+   `/api/health`, confirm the reported version and preserved inventory, then
+   remove only the rehearsal container and disposable database.
+4. Run the backend, frontend, browser, and real guest-dashboard checks. Keep
+   the style-only CSP compatibility rules until a browser run verifies the
+   layout with the new upstream policy. Leave `script-src` unchanged.
+5. Deploy the CI-tested revision, rerun the idempotent bootstrap, and verify
+   four project dashboards, sixteen project questions, filters, read-only
+   database grants, public routes, and the enabled Agent API integration.
+
+For recovery, stop Metabase, restore the pre-upgrade application database with
+its ownership/grants, then deploy the recorded old revision and image. Retain
+the encrypted backup and revision record through the normal retention period.
 
 ## Routine health checks
 

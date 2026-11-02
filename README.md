@@ -107,7 +107,7 @@ flowchart LR
   subgraph Platform["Restless Pacific"]
     CLJ["Clojure ingestion and API"]
     PG[("PostgreSQL / PostGIS")]
-    MB["Metabase OSS v0.63.10"]
+    MB["Metabase OSS v0.64.4.5"]
     NX["Next.js atlas, story, and agent"]
     OR["Pinned OpenRouter model"]
   end
@@ -190,7 +190,7 @@ versioned in the meantime.
 
 ## Metabase embedding
 
-The stack pins the security-hardened `metabase/metabase:v0.63.10`. It uses OSS Modular Guest embeds,
+The stack pins the security-hardened `metabase/metabase:v0.64.4.5`. It uses OSS Modular Guest embeds,
 not the paid React SDK. The Clojure bootstrap creates or reconciles the database
 connection, collection, sixteen questions, four dashboards, native filters,
 and guest publication, then records their numeric IDs in
